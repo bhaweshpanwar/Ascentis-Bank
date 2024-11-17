@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SF-Pro_Regular';
+  src: url('./assets/Fonts/SF-Pro-Display-Regular.woff') format('woff2'),
+    url('./assets/Fonts/SF-Pro-Display-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF-Pro_Light';
+  src: url('./assets/Fonts/SF-Pro-Display-Light.woff') format('woff2'),
+    url('./assets/Fonts/SF-Pro-Display-Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'SF-Pro_Thin';
+  src: url('./assets/Fonts/SF-Pro-Display-Thin.woff') format('woff2'),
+    url('./assets/Fonts/SF-Pro-Display-Thin.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'SF-Pro_Semibold';
+  src: url('./assets/Fonts/SF-Pro-Display-Semibold.woff') format('woff2'),
+    url('./assets/Fonts/SF-Pro-Display-Semibold.woff') format('woff');
+}
+
+
+
+/* .spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid white;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} */
+
+/* HTML: <div class="loader"></div> */
+/* .spinner {
+  display: inline-flex;
+  gap: 10px;
+}
+.spinner:before,
+.spinner:after {
+  content: '';
+  height: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(#222 0 0) top/100% 40% no-repeat,
+    radial-gradient(farthest-side, #000 95%, #0000) 50%/8px 8px no-repeat #fff;
+  animation: l7 1.5s infinite alternate ease-in;
+}
+@keyframes l7 {
+  0%,
+  70% {
+    background-size: 100% 40%, 8px 8px;
+  }
+  85% {
+    background-size: 100% 120%, 8px 8px;
+  }
+  100% {
+    background-size: 100% 40%, 8px 8px;
+  }
+} */
+
+/* HTML: <div class="loader"></div> */
+/* .spinner {
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #000;
+  }
+  33% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #0002;
+  }
+  66% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #0002;
+  }
+  100% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #000;
+  }
+} */
+
+/* HTML: <div class="loader"></div> */
+/* .spinnerLogin {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid #0d427c;
+  animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
+}
+@keyframes l20-1 {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  }
+  12.5% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%
+    );
+  }
+  25% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      100% 100%,
+      100% 100%
+    );
+  }
+  50% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  62.5% {
+    clip-path: polygon(
+      50% 50%,
+      100% 0,
+      100% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  75% {
+    clip-path: polygon(
+      50% 50%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  100% {
+    clip-path: polygon(
+      50% 50%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+}
+@keyframes l20-2 {
+  0% {
+    transform: scaleY(1) rotate(0deg);
+  }
+  49.99% {
+    transform: scaleY(1) rotate(135deg);
+  }
+  50% {
+    transform: scaleY(-1) rotate(0deg);
+  }
+  100% {
+    transform: scaleY(-1) rotate(-135deg);
+  }
+} */
+
+/* HTML: <div class="loader"></div> */
+.spinner {
+  width: 120px;
+  height: 22px;
+  border-radius: 20px;
+  color: #0d427c;
+  border: 2px solid;
+  position: relative;
+}
+.spinner::before {
+  content: '';
+  position: absolute;
+  margin: 2px;
+  inset: 0 100% 0 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l6 2s infinite;
+}
+@keyframes l6 {
+  100% {
+    inset: 0;
+  }
+}
+
+/* Hide scrollbar for all browsers */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Add this to your CSS */
+.spinnerLogin {
+  width: 24px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  border-top-color: transparent; /* Make the spinner appear like it's spinning */
+  animation: spin 0.8s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

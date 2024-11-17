@@ -1,0 +1,248 @@
+import React, { useState } from 'react';
+
+const Header = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleToggleMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  return (
+    <header className='flex flex-col items-center w-full max-w-screen-2xl mx-auto bg-white'>
+      {/* Header Section 1 */}
+      <section className='flex items-center justify-end w-full bg-blue-900 px-4 py-2 space-x-6'>
+        <a href='#' className='text-gray-300 text-sm hover:text-white'>
+          Contact Us
+        </a>
+        <span className='text-gray-300'>|</span>
+        <a href='#' className='text-gray-300 text-sm hover:text-white'>
+          Apply Now
+        </a>
+        <span className='text-gray-300'>|</span>
+        <a href='#' className='text-gray-300 text-sm hover:text-white'>
+          Login or Register
+        </a>
+        <div className='relative flex items-center ml-4'>
+          <span className='material-symbols-outlined absolute left-2 text-gray-500'>
+            search
+          </span>
+          <input
+            type='text'
+            placeholder='Search'
+            className='pl-10 pr-4 py-2 w-48 text-sm bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+          />
+        </div>
+      </section>
+
+      {/* Header Section 2 */}
+      <section className='flex items-center justify-between w-full px-4 py-4 bg-gradient-to-r from-white/60 to-gray-400/60'>
+        <div className='w-40'>
+          <img src='Assets/03.png' alt='img' className='object-cover w-full' />
+        </div>
+        <nav className='hidden md:flex space-x-8'>
+          <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
+            Home
+          </a>
+          <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
+            Products
+          </a>
+          <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
+            Business Banking
+          </a>
+          <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
+            Personal Banking
+          </a>
+          <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
+            Custom Banking
+          </a>
+          <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
+            About us
+          </a>
+        </nav>
+
+        {/* Toggle Button for Mobile */}
+        <button
+          onClick={handleToggleMenu}
+          className='text-gray-700 text-2xl md:hidden focus:outline-none'
+        >
+          <span className='material-symbols-outlined'>menu</span>
+        </button>
+      </section>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className='fixed inset-0 bg-black bg-opacity-40 z-10 md:hidden'
+          onClick={handleToggleMenu}
+        ></div>
+      )}
+
+      {/* Mobile Menu with Slide-In Animation */}
+      <div
+        className={`fixed top-0 right-0 h-full w-3/4 bg-blue-900 text-center transform z-20 ${
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        } transition-transform duration-300 ease-in-out md:hidden`}
+      >
+        <button
+          onClick={handleToggleMenu}
+          className='absolute top-4 left-4 text-white text-2xl'
+        >
+          ✕
+        </button>
+        <ul className='space-y-6 pt-16'>
+          <li>
+            <a href='#' className='text-white text-lg hover:text-yellow-300'>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href='#' className='text-white text-lg hover:text-yellow-300'>
+              Products
+            </a>
+          </li>
+          <li>
+            <a href='#' className='text-white text-lg hover:text-yellow-300'>
+              Business Banking
+            </a>
+          </li>
+          <li>
+            <a href='#' className='text-white text-lg hover:text-yellow-300'>
+              Personal Banking
+            </a>
+          </li>
+          <li>
+            <a href='#' className='text-white text-lg hover:text-yellow-300'>
+              Custom Banking
+            </a>
+          </li>
+          <li>
+            <a href='#' className='text-white text-lg hover:text-yellow-300'>
+              About us
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
+
+const handleGetOtp = (event) => {
+  event.preventDefault(); // Prevent default form submission behavior
+
+  // Check if validation is needed for the first stage
+  if (activeStep === 1 && !validateForm()) {
+    return;
+  }
+
+  // First, check if the username exists
+  axios
+    .post(
+      'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/check_user_id',
+      {
+        username: FormData.username,
+      }
+    )
+    .then((response) => {
+      if (!response.data.exists) {
+        // Username is available; proceed to submit form data and get OTP
+
+        // Encode form data
+        const urlEncodedData = new URLSearchParams();
+        for (const key in FormData) {
+          urlEncodedData.append(key, FormData[key]);
+        }
+
+        // Send the data to the OTP API
+        axios({
+          method: 'post',
+          url: 'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/check_user_id',
+          data: urlEncodedData, // Send the URL-encoded data
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', // Set content type to URL-encoded
+          },
+          withCredentials: true,
+        })
+          .then((otpResponse) => {
+            console.log(otpResponse);
+            alert('Response Successfully Captured!');
+            setActiveStep((cur) => cur + 1);
+          })
+          .catch((error) => {
+            console.error(error);
+            alert('Something went wrong. Please try again.', error);
+          });
+      } else {
+        // Username already exists, alert user
+        alert(response.data.message);
+      }
+    })
+    .catch((error) => {
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+};
+
+//My Function
+
+// const handleGetOtp = (event) => {
+//   event.preventDefault(); // Prevent default form submission behavior
+
+//   // Check if validation is needed for the first stage
+//   if (activeStep === 1 && !validateForm()) {
+//     return;
+//   }
+
+//   // First, check if the username exists
+//   axios
+//     .post('https://jj3j7j-3000.csb.app/api/checkUsername', {
+//       username: FormData.username,
+//     })
+//     .then((response) => {
+//       if (!response.data.exists) {
+//         // Username is available; proceed to submit form data and get OTP
+
+//         // Encode form data
+//         const urlEncodedData = new URLSearchParams();
+//         for (const key in FormData) {
+//           urlEncodedData.append(key, FormData[key]);
+//         }
+
+//         // Send the data to the OTP API
+//         axios({
+//           method: 'post',
+//           url: 'https://jj3j7j-3000.csb.app/api/submit',
+//           data: urlEncodedData, // Send the URL-encoded data
+//           headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded', // Set content type to URL-encoded
+//           },
+//           withCredentials: true,
+//         })
+//           .then((otpResponse) => {
+//             console.log(otpResponse);
+//             alert('Response Successfully Captured!');
+//             setActiveStep((cur) => cur + 1);
+//           })
+//           .catch((error) => {
+//             console.error(error);
+//             alert('Something went wrong. Please try again.', error);
+//           });
+//       } else {
+//         // Username already exists, alert user
+//         alert(response.data.message);
+//       }
+//     })
+//     .catch((error) => {
+//       if (error.response) {
+//         alert(error.response.data.message);
+//       } else {
+//         console.error('Error:', error);
+//         alert('An error occurred. Please try again.');
+//       }
+//     });
+// };
