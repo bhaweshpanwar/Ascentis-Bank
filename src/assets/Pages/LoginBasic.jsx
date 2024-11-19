@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-
+import ReCAPTCHA from 'react-google-recaptcha';
+import { RECAPTCHA_KEY } from '/src/config.js';
 const LoginBasic = () => {
   const navigate = useNavigate();
 
+  const [capVal, setCapVal] = useState(null);
   const [userCredentials, setUserCredentails] = useState({
     username: '',
     password: '',
@@ -109,8 +111,8 @@ const LoginBasic = () => {
   // };
 
   return (
-    <div className='h-screen w-full'>
-      <div className='h-screen w-full flex justify-center items-center max-sm:items-start max-sm:justify-start max-sm:mt-20'>
+    <div className='h-screen w-full '>
+      <div className='h-screen w-full flex justify-center items-center max-sm:items-start max-sm:justify-start max-sm:mt-20 mb-16'>
         <div className='rounded-lg flex flex-col md:flex-row justify-center items-center h-[520px] w-[1100px]'>
           {/* Left section */}
           <div className='flex-1 h-full pt-14 w-full md:w-56 sm:px-8'>
@@ -200,16 +202,17 @@ const LoginBasic = () => {
               </div>
 
               <div className='flex-1 flex justify-center items-center'>
-                <div className='flex items-center'>
-                  <input type='checkbox' className='mr-2' />
-                  <span className='text-black'>I am not a robot</span>
-                </div>
+                <ReCAPTCHA
+                  sitekey={RECAPTCHA_KEY}
+                  onChange={(val) => setCapVal(val)}
+                />
               </div>
               {/* Submit Button */}
               <div className='flex-1 flex justify-center items-center'>
                 <button
                   className='h-[50px] w-[90%] bg-[#0D427C] text-white rounded-[180px] flex justify-center items-center'
                   onClick={handleSubmit}
+                  disabled={!capVal}
                 >
                   {isLoading ? <div className='spinnerLogin'></div> : 'Login'}
                 </button>
@@ -219,7 +222,7 @@ const LoginBasic = () => {
         </div>
       </div>
       <section className='flex justify-start items-start'>
-        <h2 className='text-center text-[12px] text-gray-400 px-4 md:px-40 my-4 sm:px-6 font-SF_PRO_Regular'>
+        <h2 className='text-center text-[12px] text-gray-700 px-4 md:px-40 my-4 sm:px-6 font-SF_PRO_Regular'>
           By logging in, you agree to Ascentis Bank Terms of Service and Privacy
           Policy. We are committed to protecting your personal information and
           ensuring a secure banking experience. Unauthorized access or use is

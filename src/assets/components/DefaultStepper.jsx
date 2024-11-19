@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Stepper, Step, Button } from '@material-tailwind/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { State, City } from 'country-state-city';
+import { Country, State, City } from 'country-state-city';
 
 export function DefaultStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -13,8 +13,10 @@ export function DefaultStepper() {
   const [otp, setOtp] = React.useState('');
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = React.useState(false);
+  const [countries, setCountries] = React.useState([]);
   const [states, setStates] = React.useState([]);
   const [cities, setCities] = React.useState([]);
+  const [selectedCountry, setSelectedCountry] = React.useState('');
   const [selectedState, setSelectedState] = React.useState('');
   const [formErrors, setFormErrors] = React.useState({});
   const [FormData, setFormData] = React.useState({
@@ -40,10 +42,56 @@ export function DefaultStepper() {
     confirm_password: '',
   });
 
+  const [resendDisabled, setResendDisabled] = React.useState(true);
+  const [timer, setTimer] = React.useState(120); // 2 minutes = 120 seconds
+
   useEffect(() => {
-    const indianStates = State.getStatesOfCountry('IN');
-    setStates(indianStates);
+    let interval;
+
+    if (activeStep === 2 && timer > 0) {
+      // Start timer only on OTP stage
+      interval = setInterval(() => {
+        setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : prevTimer));
+      }, 1000);
+    }
+
+    // When timer hits 0, enable Resend button
+    if (timer === 0) {
+      setResendDisabled(false);
+    }
+
+    // Cleanup timer
+    return () => clearInterval(interval);
+  }, [activeStep, timer]); // Dependencies
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  useEffect(() => {
+    const countries = Country.getAllCountries();
+    setCountries(countries);
   }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const statesOfCountry = State.getStatesOfCountry(selectedCountry);
+      setStates(statesOfCountry);
+      setCities([]);
+    }
+  }, [selectedCountry]);
+
+  useEffect(() => {
+    if (selectedState) {
+      const citiesOfState = City.getCitiesOfState(
+        selectedCountry,
+        selectedState
+      );
+      setCities(citiesOfState);
+    }
+  }, [selectedState, selectedCountry]);
 
   const overlayStyles = {
     position: 'fixed',
@@ -101,6 +149,12 @@ export function DefaultStepper() {
           errors.dob = `The provided Date of Birth does not match the provided age. Expected age based on Date of Birth: ${calculatedAge}`;
           errors.age = `The provided age does not match the Date of Birth. Expected age based on Date of Birth: ${calculatedAge}`;
         }
+      }
+      if (FormData.country !== 'IN') {
+        alert(
+          'Our banking services are currently available only in India. Please select India to proceed.'
+        );
+        errors.country = 'Service available only in India';
       }
     }
 
@@ -166,21 +220,21 @@ export function DefaultStepper() {
     });
   };
 
-  const handleCityChange = (e) => {
-    setFormData({ ...FormData, city: e.target.value });
+  const handleCountryChange = (event) => {
+    const { value } = event.target;
+    setFormData({ ...FormData, country: value, state: '', city: '' });
+    setSelectedCountry(value);
   };
 
-  const handleStateChange = (e) => {
-    const stateCode = e.target.value;
-    setFormData({ ...FormData, state: stateCode, city: '' });
-    setSelectedState(stateCode);
+  const handleStateChange = (event) => {
+    const { value } = event.target;
+    setFormData({ ...FormData, state: value, city: '' });
+    setSelectedState(value);
+  };
 
-    if (stateCode) {
-      const citiesOfState = City.getCitiesOfState('IN', stateCode);
-      setCities(citiesOfState);
-    } else {
-      setCities([]);
-    }
+  const handleCityChange = (event) => {
+    const { value } = event.target;
+    setFormData({ ...FormData, city: value });
   };
 
   const handleCheckboxChange = (event) => {
@@ -199,6 +253,7 @@ export function DefaultStepper() {
       const params = new URLSearchParams({
         email: FormData.email,
         phone: FormData.phone,
+        form: 'register_email',
       });
 
       try {
@@ -244,7 +299,7 @@ export function DefaultStepper() {
   const handleGetOtp = async (event) => {
     event.preventDefault();
 
-    if (activeStep === 1 && !validateForm()) {
+    if (activeStep === 1 && !validateForm() && !isChecked) {
       return;
     }
 
@@ -310,51 +365,6 @@ export function DefaultStepper() {
     }
   };
 
-  /*const handleGetOtp = async (event) => {
-    event.preventDefault();
-
-    if (activeStep === 1 && !validateForm()) {
-      return;
-    }
-
-    setLoading(true);
-
-    // Encode form data to URLSearchParams format
-    const urlEncodedData = new URLSearchParams();
-    for (const key in FormData) {
-      urlEncodedData.append(key, FormData[key]);
-    }
-
-    try {
-      // API request using axios
-      const response = await axios.post(
-        'https://sturdy-space-funicular-7v7wvvvg6pvg2xrvj-3000.app.github.dev/api/submitForm',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
-
-      const responseData = response.data;
-      const otpSent = responseData?.otpSent;
-      const message = responseData?.message;
-
-      if (otpSent) {
-        setActiveStep((cur) => cur + 1);
-      } else {
-        alert(message || 'Failed to send OTP.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };*/
-
   const handleOtpSubmit = () => {
     // Validate that OTP input is provided
     if (!otp) {
@@ -391,13 +401,49 @@ export function DefaultStepper() {
       });
   };
 
+  const handleOtpReset = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axios.get(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/otp',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+
+      const { exists: emailSent, message: additionalMessage } = response.data;
+
+      if (emailSent) {
+        alert(
+          'OTP has been sent to your registered email. This OTP is only valid for 2 minutes.'
+        );
+        setTimer(120); // Reset timer to 2 minutes
+        setResendDisabled(true); // Disable "Resend" again
+      } else {
+        alert(
+          additionalMessage || 'Required data not found in the secondary API.'
+        );
+      }
+    } catch (error) {
+      console.error('Error fetching data from secondary API:', error);
+      alert('The server has an issue. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className='h-full w-full flex justify-center items-center'>
       <div className='w-full py-4 md:px-8 px-3 max-w-[1200px]'>
         <img
           src='/src/assets/Images/only_ascentis.png'
           alt=''
-          className='h-20 w-44 max-sm:h-24 max-sm:w-52 mt-8'
+          className='h-20 w-44 max-sm:h-24 max-sm:w-52 mt-8 cursor-pointer'
           onClick={() => navigate('/')}
         />
         <h1 className='pl-2 text-gray-600 text-[24px] font-SF_PRO_Light'>
@@ -413,9 +459,9 @@ export function DefaultStepper() {
             isLastStep={(value) => setIsLastStep(value)}
             isFirstStep={(value) => setIsFirstStep(value)}
           >
-            <Step>1</Step>
-            <Step>2</Step>
-            <Step>3</Step>
+            <Step onClick={() => setActiveStep(0)}>1</Step>
+            <Step onClick={() => setActiveStep(1)}>2</Step>
+            <Step onClick={() => setActiveStep(2)}>3</Step>
           </Stepper>
           {/* onClick={() => setActiveStep(0)} */}
           {/* onClick={() => setActiveStep(1)} */}
@@ -606,6 +652,36 @@ export function DefaultStepper() {
                     )}
                   </div>
 
+                  {/* Country */}
+                  <div>
+                    <label
+                      htmlFor='country'
+                      className='block mb-2 text-sm font-medium text-gray-900'
+                    >
+                      Country
+                    </label>
+                    <select
+                      id='country'
+                      name='country'
+                      className={getInputClasses('country')}
+                      required
+                      value={FormData.country}
+                      onChange={handleCountryChange}
+                    >
+                      <option value=''>Select Country</option>
+                      {countries.map((country) => (
+                        <option key={country.isoCode} value={country.isoCode}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
+                    {formErrors.country && (
+                      <p className='text-red-500 text-sm'>
+                        {formErrors.country}
+                      </p>
+                    )}
+                  </div>
+
                   {/* State/Province */}
                   <div>
                     <label
@@ -621,6 +697,7 @@ export function DefaultStepper() {
                       required
                       value={FormData.state}
                       onChange={handleStateChange}
+                      disabled={!selectedCountry}
                     >
                       <option value=''>Select State</option>
                       {states.map((state) => (
@@ -651,9 +728,9 @@ export function DefaultStepper() {
                       onChange={handleCityChange}
                       disabled={!selectedState}
                     >
-                      <option value=''>Select City</option>
+                      <option value=''>Select City</option>{' '}
                       {cities.map((city) => (
-                        <option key={city.id} value={city.name}>
+                        <option key={city.name} value={city.name}>
                           {city.name}
                         </option>
                       ))}
@@ -684,31 +761,6 @@ export function DefaultStepper() {
                     {formErrors.postal_code && (
                       <p className='text-red-500 text-sm'>
                         {formErrors.postal_code}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Country */}
-                  <div>
-                    <label
-                      htmlFor='country'
-                      className='block mb-2 text-sm font-medium text-gray-900'
-                    >
-                      Country
-                    </label>
-                    <input
-                      type='text'
-                      id='country'
-                      name='country'
-                      className={getInputClasses('country')}
-                      placeholder='Country'
-                      required
-                      value={FormData.country}
-                      onChange={handleChange}
-                    />
-                    {formErrors.country && (
-                      <p className='text-red-500 text-sm'>
-                        {formErrors.country}
                       </p>
                     )}
                   </div>
@@ -1059,6 +1111,24 @@ export function DefaultStepper() {
                       className={getInputClasses('otp')}
                     />
                   </div>
+                </div>
+                <div className='flex items-center'>
+                  <p className='font-SF_PRO_Light text-[18px]'>
+                    Didn&#39;t Receive Code{' '}
+                    <a
+                      className={`cursor-pointer text-[#bb524e] ${
+                        resendDisabled ? 'pointer-events-none opacity-50' : ''
+                      }`}
+                      onClick={resendDisabled ? null : handleOtpReset}
+                    >
+                      Resend
+                    </a>
+                  </p>
+                  {resendDisabled && (
+                    <p className='font-SF_PRO_Light text-[18px] text-[#bb524e] ml-4'>
+                      {formatTime(timer)}
+                    </p>
+                  )}
                 </div>
               </>
             )}

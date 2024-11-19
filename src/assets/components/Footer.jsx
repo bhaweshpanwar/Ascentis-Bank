@@ -13,9 +13,9 @@ const Footer = () => {
                                 <img
                                     src="src/assets/Images/04.png"
                                     alt="Ascentis Bank Logo"
-                                    className="w-16"
+                                    className="w-12"
                                 />
-                                <span className="text-black">Ascentis Bank</span>
+                                <span className="text-[#163172] font-SF_PRO_Semibold">Ascentis Bank</span>
                             </a>
                             <p className="max-w-md text-md text-gray-600">
                                 Empowering your financial future with comprehensive and innovative banking solutions for all your financial needs.
@@ -75,8 +75,8 @@ const Footer = () => {
                         <div>
                             <h3 className="text-md font-semibold leading-6 text-black">Contact Us</h3>
                             <p className="mt-6 text-md text-gray-600">Phone: +91 7223814415</p>
-                            <p className="mt-2 text-md text-gray-600">Email: ascentisbank@gmail.com</p>
-                            <p className="mt-2 text-md text-gray-600">Address: Sudama Nagar </p>
+                            <p className="mt-4 text-md text-gray-600">Email: ascentisbank@gmail.com</p>
+                            <p className="mt-4 text-md text-gray-600">Address: Sudama Nagar </p>
                         </div>
                     </div>
                     {/* Footer Bottom */}

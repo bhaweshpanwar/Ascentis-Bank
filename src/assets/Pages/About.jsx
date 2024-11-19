@@ -195,7 +195,7 @@ const About = () => {
 
             <div className='h-auto w-full max-w-screen-2xl m-auto flex flex-col justify-center items-center'>
                 <div className='h-[400px] pt-48'>
-                    <h1 className='text-[72px] font-SF_Pro_Light'>Building <span style={{
+                    <h1 className='text-[60px] font-SF_PRO_Light'>Building <span style={{
                         background: 'var(--Brand-Gradient, linear-gradient(270deg, #8CB9BD 0%, #163172 100%))',
                         backgroundClip: 'text',
                         webkitBackgroundClip: 'text',
@@ -286,15 +286,15 @@ const About = () => {
 
             </div>
 
-            <div className='h-[600px] w-full py-32 px-32'>
-                <div className='h-full w-full bg-gray-50 rounded-3xl flex flex-col justify-center items-center'>
+            <div className='h-[600px] w-full py-32 px-32 flex flex-col justify-center items-center'>
+                <div className='h-full w-full rounded-3xl flex flex-col justify-center items-center'>
                     <div className='mt-12'>
-                        <p className='text-[#2B3031] font-SF_PRO_Light text-center'>
+                        <p className='text-[#2B3031] font-SF_PRO_Light text-center text-3xl'>
                             Open an Ascentis Account in Minutes.
                             <br/> Start Banking Smarter Today.
                         </p>
                     </div>
-                    <div className='w-full flex justify-center items-center mt-4'>
+                    <div className='w-full flex justify-center items-center mt-8'>
                         <button
                             className='bg-[#0D427C] rounded-full px-8 py-2 text-white font-SF_PRO_Light cursor-pointer'
                             onClick={() => navigate('/register')}

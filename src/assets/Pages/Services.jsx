@@ -79,6 +79,7 @@ const Services = () => {
   };
   return (
     <>
+
       <div className='h-auto md:h-[500px] w-full max-w-screen-2xl m-auto px-4 md:px-36 flex flex-col justify-center items-center md:gap-20 gap-10'>
         <h1
           className='relative z-10 md:text-center text-left text-4xl md:text-6xl font-SF_Pro_Regular mt-8 sm:mt-0'
@@ -90,8 +91,8 @@ const Services = () => {
             webkitTextFillColor: 'transparent',
           }}
         >
-          Empowering Your Financial Future with Acsentis Bank's Comprehensive
-          Services
+          Empowering Your Financial Future with Acsentis Bank&apos;s
+          Comprehensive Services
         </h1>
 
         <p className='font-SF_PRO_Light text-[#5A6161] text-[15px] sm:text-2xl md:text-center text-left md:px-40 sm:px-20 mb-12 sm:mb-0'>
@@ -115,14 +116,14 @@ const Services = () => {
             <div className='w-full md:w-[60%] h-auto md:h-full flex flex-col justify-center items-start px-8 py-8 md:py-0'>
               <div className='h-[40px] md:h-[90px]'>
                 <h1
-                  className='relative z-10 text-center text-2xl md:text-5xl h-full font-SF_Pro_Regular'
-                  style={{
-                    background:
-                      'var(--Brand-Gradient, linear-gradient(270deg, #8CB9BD 0%, #163172 100%))',
-                    backgroundClip: 'text',
-                    webkitBackgroundClip: 'text',
-                    webkitTextFillColor: 'transparent',
-                  }}
+                  className='relative z-10 text-center text-2xl md:text-4xl h-full font-SF_PRO_Light'
+                  // style={{
+                  //   background:
+                  //     'var(--Brand-Gradient, linear-gradient(270deg, #8CB9BD 0%, #163172 100%))',
+                  //   backgroundClip: 'text',
+                  //   webkitBackgroundClip: 'text',
+                  //   webkitTextFillColor: 'transparent',
+                  // }}
                 >
                   {heading}
                 </h1>

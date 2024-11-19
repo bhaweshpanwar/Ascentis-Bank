@@ -1,5 +1,6 @@
 import {useNavigate} from 'react-router-dom';
-import Header from '../components/Header';
+import UserReview from "../components/UserReview.jsx";
+import FAQ from "../components/FAQ.jsx";
 import {useState, useEffect, useRef} from 'react';
 
 const Home = () => {
@@ -134,7 +135,7 @@ const Home = () => {
         <>
 
             {/* Section-01 */}
-            <div className='h-[480px] w-full max-w-screen-2xl mx-auto  flex justify-center items-center '>
+            <div className='h-[400px] w-full max-w-screen-2xl mx-auto  flex justify-center items-center '>
                 <div
                     className='w-[95%] max-w-screen-lg mx-auto md:w-3/5 h-[300px] flex flex-col justify-center items-center'>
                     <div className='h-[143px] md:h-[150px] flex justify-center items-center'>
@@ -177,23 +178,23 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* Hero Image */}
-            <div className='h-[900px] w-full mx-auto overflow-hidden'>
-                <img
-                    src='\src\assets\Images\new.png'
-                    alt='dashboard'
-                    className='rounded-3xl w-full h-full object-cover absolute top-[450px] md:top-96
-               md:scale-140 scale-120 object-[15%_0]'
-                />
+            {/*Hero Image*/}
+            <div className='h-auto w-full max-w-screen-2xl mx-auto overflow-hidden flex items-start justify-center px-8'
+            >
+                <div className=' w-full'>
+                    <img src='src/assets/Images/atio_n.png'
+                         className='h-full w-full object-cover'/>
+                </div>
             </div>
+
 
             {/* Section-02 */}
             <div
-                className='h-auto w-full max-w-screen-2xl mx-auto flex flex-col justify-center items-center relative overflow-hidden py-16 px-4 md:px-8'>
+                className='h-auto bg-black w-full max-w-screen-2xl mx-auto flex flex-col justify-center items-center relative overflow-hidden py-16 px-4 md:px-8'>
                 <div className='text-center mb-16 mt-8 md:mt-20'>
                     <h1 className='text-[36px] text-left md:text-center ml-4 md:ml-0 md:text-[55px] font-SF_PRO_Thin text-[#787F7F] leading-tight'>
                         Helping You Find the{' '}
-                        <span className='md:text-[55px] text-black font-SF_PRO_Thin'>
+                        <span className='md:text-[55px] text-white font-SF_PRO_Thin'>
               Right Financial Solutions{' '}
             </span>{' '}
                         Customized for Your Goals.
@@ -310,15 +311,15 @@ const Home = () => {
 
             {/* Section-05 bg-[#CBCBCB] */}
             <div
-                className='h-auto w-full max-w-screen-2xl mx-auto rounded-t-[40px] md:rounded-t-[80px] flex flex-col justify-center items-center px-6 md:px-16 py-16 md:py-48'>
+                className='h-auto w-full max-w-screen-2xl mx-auto rounded-t-[40px] md:rounded-t-[80px] flex flex-col justify-center items-center px-6 md:px-16 py-16 md:py-32'>
                 <div className='h-auto w-full flex justify-center items-end mb-6 md:mb-12'>
-                    <h1 className='text-[#2B3031] font-SF_PRO_Light text-center text-[28px] md:text-[60px] leading-snug md:leading-none'>
+                    <h1 className='text-[#2B3031] font-SF_PRO_Light text-center text-[28px] md:text-[50px] leading-snug md:leading-none'>
                         Choose the Card That Fits Your Lifestyle
                     </h1>
                 </div>
                 <div className='h-auto w-full flex justify-center items-center mb-8'>
                     <div
-                        className='bg-[#163172] h-auto md:h-12 w-full max-w-[440px] md:max-w-[800px] rounded-full flex justify-center items-center gap-x-2 md:gap-x-20 py-2 px-4 md:p-0 font-SF_PRO_Light text-white text-[12px] md:text-[18px]'>
+                        className='bg-[#163172] h-auto md:h-12 w-full max-w-[440px] md:max-w-[600px] rounded-full flex justify-center items-center gap-x-2 md:gap-x-10 py-2 px-4 md:p-0 font-SF_PRO_Light text-white text-[12px] md:text-[18px]'>
                         <button
                             className={activeButtonStyle('Business')}
                             onClick={() => setActiveButton('Business')}
@@ -360,7 +361,7 @@ const Home = () => {
 
                     </div>
                     <div className='flex-1 h-full flex flex-col justify-center gap-4 md:gap-8 px-4'>
-                        <p className='text-[#787F7F] font-SF_PRO_Light text-[20px] md:text-[40px] text-center md:text-left leading-relaxed md:leading-snug'>
+                        <p className='text-[#787F7F] font-SF_PRO_Light text-[20px] md:text-[30px] text-center md:text-left leading-relaxed md:leading-snug'>
                             {activeCard.cardInfo}
                         </p>
                         <a className='font-SF_PRO_Light underline text-[#163172] cursor-pointer text-center md:text-left'>
@@ -369,45 +370,14 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Section-06 */}
-            <div className='h-auto w-full max-w-screen-2xl mx-auto flex justify-center items-center py-12 relative overflow-hidden'>
-                <img
-                    src='\src\assets\Images\india_map.png'
-                    alt='india_map'
-                    className='w-full max-w-[927px] h-auto sm:max-w-[500px] md:max-w-[927px] md:scale-100 scale-125 sm:scale-100 object-cover'
-                />
-
-                <div
-                    className='absolute h-[200px] sm:h-[400px] md:h-[400px] w-full max-w-[300px] sm:max-w-[500px] md:max-w-[727px] flex justify-center items-center p-4'
-                    style={{
-                        borderRadius: '20px',
-                        // border: '1px solid #FFF',
-                        background:
-                            'linear-gradient(110deg, rgba(217, 217, 217, 0.20) 0%, rgba(115, 115, 115, 0.20) 102.22%)',
-                        backdropFilter: 'blur(60px)',
-                    }}
-                >
-                    <div className='relative w-full max-w-[260px] sm:max-w-[400px] md:max-w-[500px]'>
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            viewBox='0 0 101 101'
-                            className='absolute top-1/2 left-2 transform -translate-y-1/2 h-5 w-5 text-gray-400'
-                        >
-                            <path
-                                d='M63.3 59.9c3.8-4.6 6.2-10.5 6.2-17 0-14.6-11.9-26.5-26.5-26.5S16.5 28.3 16.5 42.9 28.4 69.4 43 69.4c6.4 0 12.4-2.3 17-6.2l20.6 20.6c.5.5 1.1.7 1.7.7.6 0 1.2-.2 1.7-.7.9-.9.9-2.5 0-3.4L63.3 59.9zm-20.4 4.7c-12 0-21.7-9.7-21.7-21.7s9.7-21.7 21.7-21.7 21.7 9.7 21.7 21.7-9.7 21.7-21.7 21.7z'></path>
-                        </svg>
-                        <input
-                            type='text'
-                            placeholder='search nearest branch'
-                            className='w-full rounded-full px-10 py-3 text-sm sm:text-base focus:outline-none'
-                        />
-                    </div>
-                </div>
-            </div>
+            
 
             {/* Section-07 */}
-            <div className='h-screen w-full '></div>
+            <UserReview/>
+
+            <FAQ/>
+
+            <div className='h-[100px] w-full max-w-screen-2xl m-auto'></div>
         </>
     );
 };
