@@ -11,6 +11,7 @@ module.exports = withMT({
         SF_PRO_Thin: ['SF-Pro_Thin', 'sans-serif'],
         SF_PRO_Semibold: ['SF-Pro_Semibold', 'sans-serif'],
         geologica: ['Geologica', 'sans-serif'],
+        outfit: ['Outfit', 'sans-serif'],
       },
     },
   },

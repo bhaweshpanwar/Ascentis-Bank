@@ -3,6 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { RECAPTCHA_KEY } from '/src/config.js';
+
 const LoginBasic = () => {
   const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ const LoginBasic = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateLogin()) {
       return;
     }
@@ -46,69 +47,68 @@ const LoginBasic = () => {
     urlEncodedData.append('username', userCredentials.username);
     urlEncodedData.append('password', userCredentials.password);
 
-    axios
-      .post(
+    try {
+      const response = await axios.post(
         'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/login',
         urlEncodedData,
         {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          withCredentials: true,
         }
-      )
-      .then((response) => {
-        setIsLoading(false);
-        const respValue = response.data.data;
-        console.log(typeof response.data.data);
-        if (respValue === 0) {
-          setUserCredentailsErrors({
-            username: 'Username does not exist',
-          });
-        }
-        if (respValue === 1) {
-          setUserCredentailsErrors({
-            password: 'Password is incorrect',
-          });
-        } else if (response.status === 201) {
-          navigate('/dashboard');
-        }
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.error('Error:', error);
-        setUserCredentailsErrors({
-          general: 'An error occurred, please try again.',
-        });
-      });
-  };
+      );
 
-  // const handleSubmit = () => {
-  //   if (!validateLogin()) return;
-  //
-  //   setIsLoading(true); // Set loading to true to display spinner
-  //
-  //   // Simulate API call delay with setTimeout for testing spinner
-  //   setTimeout(() => {
-  //     // This code will run after 2 seconds to simulate server response
-  //
-  //     // Here you can set simulated response like 0, 1, or 2
-  //     const simulatedResponse = 1;
-  //
-  //     if (simulatedResponse === 0) {
-  //       setUserCredentailsErrors({
-  //         username: 'Username does not exist',
-  //       });
-  //     } else if (simulatedResponse === 1) {
-  //       setUserCredentailsErrors({
-  //         password: 'Password is incorrect',
-  //       });
-  //     } else {
-  //       navigate('/dashboard');
-  //     }
-  //
-  //     setIsLoading(false); // Reset loading after processing
-  //   }, 2000);
-  // };
+      setIsLoading(false);
+
+      if (response.status === 201) {
+        try {
+          // Fetch session details
+          const sessionResponse = await axios.get(
+            'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/home',
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              withCredentials: true,
+            }
+          );
+
+          // Debugging logs
+          console.log('Raw sessionResponse:', sessionResponse);
+          console.log(
+            'Type of sessionResponse.data:',
+            typeof sessionResponse.data
+          );
+
+          let parsedData;
+
+          // Handle string or object response
+          if (typeof sessionResponse.data === 'string') {
+            parsedData = JSON.parse(sessionResponse.data); // Parse if it's a string
+          } else {
+            parsedData = sessionResponse.data; // Use directly if it's already an object
+          }
+
+          console.log('Parsed SessionResponse data:', parsedData);
+
+          // Navigate with session details as state
+          navigate('/dashboard', {
+            state: { sessionAccountDetails: parsedData },
+          });
+        } catch (sessionError) {
+          console.error('Error fetching session details:', sessionError);
+          alert('Failed to fetch session details. Please try again.');
+        }
+      } else if (response.data.data === 0) {
+        setUserCredentailsErrors({ username: 'Username does not exist' });
+      } else if (response.data.data === 1) {
+        setUserCredentailsErrors({ password: 'Password is incorrect' });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      alert('An error occurred. Please try again.');
+      console.error('Error during login:', error);
+    }
+  };
 
   return (
     <div className='h-screen w-full '>

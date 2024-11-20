@@ -9,7 +9,8 @@ const Layout = () => {
         '/register',
         '/forgotPassword',
         '/successPage',
-        '/passwordsuccess'
+        '/passwordsuccess',
+        '/dashboard'
     ];
 
     const shouldRenderHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
