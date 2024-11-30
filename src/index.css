@@ -81,31 +81,27 @@
 
 /* HTML: <div class="loader"></div> */
 .loaderDashboard {
-  width: 100px;
+  width: 15px;
   aspect-ratio: 1;
-  padding: 10px;
-  box-sizing: border-box;
-  display: grid;
-  background: #fff;
-  filter: blur(3px) contrast(7) hue-rotate(290deg);
-  mix-blend-mode: darken;
-}
-.loaderDashboard:before {
-  content: '';
-  margin: auto;
-  width: 30px;
-  height: 30px;
   border-radius: 50%;
-  color: #ff0000;
-  background: currentColor;
-  box-shadow: -30px 0, 30px 0, 0 30px, 0 -30px;
-  animation: l6 1s infinite alternate;
+  animation: l5 1s infinite linear alternate;
 }
-@keyframes l6 {
-  90%,
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #323232, -20px 0 #32323233;
+    background: #323232;
+  }
+  33% {
+    box-shadow: 20px 0 #323232, -20px 0 #32323233;
+    background: #32323233;
+  }
+  66% {
+    box-shadow: 20px 0 #32323233, -20px 0 #323232;
+    background: #32323233;
+  }
   100% {
-    box-shadow: -10px 0, 10px 0, 0 10px, 0 -10px;
-    transform: rotate(180deg);
+    box-shadow: 20px 0 #32323233, -20px 0 #323232;
+    background: #323232;
   }
 }
 

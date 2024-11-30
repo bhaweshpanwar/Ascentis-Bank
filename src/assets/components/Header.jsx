@@ -10,8 +10,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-      // fixed z-20 top-0
-  <header className='flex items-center justify-between w-full max-w-screen-2xl mx-auto bg-white border-b border-gray-200 px-4 py-4'>
+    // fixed z-20 top-0
+    <header className='flex items-center justify-between w-full max-w-screen-2xl mx-auto bg-white border-b border-gray-200 px-4 py-4'>
       {/* Logo */}
       <div className='w-40'>
         <img
@@ -23,12 +23,20 @@ const Header = () => {
 
       {/* Desktop Navigation */}
       <nav className='hidden md:flex space-x-8 text-center font-SF_PRO_Light'>
-        <a className='text-gray-700 text-base hover:text-gray-900 cursor-pointer'
-        onClick={() => {navigate('/')}}>
+        <a
+          className='text-gray-700 text-base hover:text-gray-900 cursor-pointer'
+          onClick={() => {
+            navigate('/');
+          }}
+        >
           Home
         </a>
-        <a  className='text-gray-700 text-base hover:text-gray-900 cursor-pointer'
-            onClick={() => {navigate('/services')}}>
+        <a
+          className='text-gray-700 text-base hover:text-gray-900 cursor-pointer'
+          onClick={() => {
+            navigate('/services');
+          }}
+        >
           Services
         </a>
         <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
@@ -37,8 +45,12 @@ const Header = () => {
         <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
           Personal
         </a>
-        <a className='text-gray-700 text-base hover:text-gray-900 cursor-pointer'
-        onClick={() => {navigate('/about')}}>
+        <a
+          className='text-gray-700 text-base hover:text-gray-900 cursor-pointer'
+          onClick={() => {
+            navigate('/about');
+          }}
+        >
           About
         </a>
       </nav>
@@ -88,14 +100,23 @@ const Header = () => {
         </button>
         <ul className='space-y-6 pt-16 text-white font-SF_PRO_Light'>
           <li>
-            <a className='text-lg hover:text-yellow-300'
-               onClick={() => {navigate('/')}}>
+            <a
+              className='text-lg hover:text-yellow-300'
+              onClick={() => {
+                navigate('/');
+              }}
+            >
               Home
             </a>
           </li>
           <li>
-            <a href='#' className='text-lg hover:text-yellow-300'
-               onClick={() => {navigate('/services')}}>
+            <a
+              href='#'
+              className='text-lg hover:text-yellow-300'
+              onClick={() => {
+                navigate('/services');
+              }}
+            >
               Services
             </a>
           </li>
@@ -110,8 +131,13 @@ const Header = () => {
             </a>
           </li>
           <li>
-            <a href='#' className='text-lg hover:text-yellow-300'
-               onClick={() => {navigate('/about')}}>
+            <a
+              href='#'
+              className='text-lg hover:text-yellow-300'
+              onClick={() => {
+                navigate('/about');
+              }}
+            >
               About
             </a>
           </li>

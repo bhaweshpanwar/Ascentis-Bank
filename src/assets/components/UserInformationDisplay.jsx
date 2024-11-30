@@ -1,28 +1,11 @@
-// import {
-//   FiMail,
-//   FiPhone,
-//   FiUser,
-//   FiHash,
-//   FiCalendar,
-//   FiMapPin,
-// } from 'react-icons/fi';
-
-const UserInformationDisplay = () => {
-  // Dummy user data
-  const userData = {
-    fullName: 'Jonathan Anderson',
-    username: 'jon_anderson',
-    accountNumber: '2023456789',
-    age: '32',
-    email: 'jonathan.anderson@email.com',
-    phone: '+1 (555) 123-4567',
-    address: '123 Financial District, New York, NY 10004',
-    additionalInfo: [
-      { title: 'Account Type', value: 'Premium Savings' },
-      { title: 'Nominee Name', value: 'Sarah Anderson' },
-      { title: 'Occupation', value: 'Software Engineer' },
-    ],
-  };
+const UserInformationDisplay = ({ userData }) => {
+  if (!userData) {
+    return (
+      <div className='font-outfit text-gray-600'>
+        No user information available.
+      </div>
+    );
+  }
 
   return (
     <div className='min-h-screen bg-gray-50 p-4 md:p-8 font-outfit' role='main'>
@@ -119,20 +102,25 @@ const UserInformationDisplay = () => {
             <h2 className='text-xl font-semibold text-gray-800 mb-4'>
               Additional Details
             </h2>
-            <div className='max-h-60 overflow-y-auto pr-4 space-y-4'>
-              {userData.additionalInfo.map((info, index) => (
-                <div
-                  key={index}
-                  className='p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200'
-                  role='group'
-                  aria-label={info.title}
-                >
-                  <p className='text-sm text-gray-500'>{info.title}</p>
+            <div className='space-y-4'>
+              <div className='flex items-center space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200'>
+                <div>
+                  <p className='text-sm text-gray-500'>Account Type</p>
                   <p className='text-md font-medium text-gray-800'>
-                    {info.value}
+                    {userData.accountType}
                   </p>
                 </div>
-              ))}
+              </div>
+
+              {/* Occupation */}
+              <div className='flex items-center space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200'>
+                <div>
+                  <p className='text-sm text-gray-500'>Occupation</p>
+                  <p className='text-md font-medium text-gray-800'>
+                    {userData.occupation}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

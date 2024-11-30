@@ -1,32 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import UserInformationDisplay from '../components/UserInformationDisplay';
-const SessionAccountDetails = {
+
+const SessionFixedDepositDetailsDummy = [
+  {
+    fd_Id: '001FD',
+    name: 'John Doe',
+    interestRate: 5.5,
+    amount: 10000,
+    endDate: '2025-12-31',
+  },
+  {
+    fd_Id: '002FD',
+    name: 'Jane Smith',
+    interestRate: 6.2,
+    amount: 5000,
+    endDate: '2026-06-15',
+  },
+  {
+    fd_Id: '003FD',
+    name: 'Alice Johnson',
+    interestRate: 4.8,
+    amount: 20000,
+    endDate: '2024-09-10',
+  },
+];
+
+const SessionAccountDetailsDummy = {
   accountOwnerName: 'Bhawesh Panwar',
   accountBalance: 45000.0,
   recentTransactions: [
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
     {
       name: 'Tanmay Sharma',
       type: 'Outgoing',
@@ -64,106 +69,113 @@ const SessionAccountDetails = {
     },
   ],
 };
-const SessionAutoPayDetails = SessionAccountDetails;
-const SessionTransactionDetails = {
-  accountOwnerName: 'Bhawesh Panwar',
-  accountBalance: 45000.0,
-  recentTransactions: [
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
-    {
-      name: 'Krishna Yadav',
-      type: 'Incoming',
-      status: 'Completed',
-      date: new Date('2024-11-17T10:30:00'),
-      amount: 1000.0,
-    },
-    {
-      name: 'Raj Yadav',
-      type: 'Outgoing',
-      status: 'Pending',
-      date: new Date('2024-11-16T09:00:00'),
-      amount: 90.0,
-    },
-    {
-      name: 'MP Portal',
-      type: 'Outgoing',
-      status: 'Done',
-      date: new Date('2024-11-15T18:45:00'),
-      amount: 90.0,
-    },
-    {
-      name: 'Akash Singh',
-      type: 'Outgoing',
-      status: 'Completed',
-      date: new Date('2024-11-20T13:15:00'),
-      amount: 1000.0,
-    },
-  ],
-};
+
+const SessionAutoPayDetailsDummy = [
+  {
+    autopay_Id: '001AP',
+    name: 'Amit Sharma',
+    startDate: '2023-01-01',
+    endDate: '2024-01-01',
+    paymentFrequency: 'Monthly',
+    amount: 5000,
+  },
+  {
+    autopay_Id: '002AP',
+    name: 'Sneha Iyer',
+    startDate: '2022-06-15',
+    endDate: '2023-06-15',
+    paymentFrequency: 'Yearly',
+    amount: 60000,
+  },
+  {
+    autopay_Id: '003AP',
+    name: 'Rohan Mehta',
+    startDate: '2023-03-01',
+    endDate: '2023-12-01',
+    paymentFrequency: 'Weekly',
+    amount: 1200,
+  },
+  {
+    autopay_Id: '004AP',
+    name: 'Pooja Deshmukh',
+    startDate: '2023-07-10',
+    endDate: '2024-07-10',
+    paymentFrequency: 'Monthly',
+    amount: 7500,
+  },
+  {
+    autopay_Id: '005AP',
+    name: 'Karan Verma',
+    startDate: '2023-08-01',
+    endDate: '2024-08-01',
+    paymentFrequency: 'Weekly',
+    amount: 1000,
+  },
+];
 
 const Dashboard = () => {
   const [current, setCurrent] = useState('Home'); // State to track active section
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [currentPaymentState, setCurrentPaymentState] = useState(0);
-  const [currentAutoPayState, setCurrentAutoPayState] = useState(3);
+  const [currentAutoPayState, setCurrentAutoPayState] = useState(0);
+  const [currentFixedDepositState, setCurrentFixedDepositState] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState({});
   const [basicLoading, setBasicLoading] = useState(false);
+  const [userData, setUserData] = useState({ accountInfo: {} });
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
-  const [SessionTransactionDetails, setSessionTransactionDetails] = useState(
-    {}
+  const [fdpassword, setfdPassword] = useState('');
+  const [SessionTransactionDetails, setSessionTransactionDetails] = useState({
+    recentTransactions: [], // Default to an empty array
+  });
+
+  const navigate = useNavigate();
+  const [SessionAutoPayDetails, setSessionAutoPayDetails] = useState({
+    // existingAutopay: [],
+    existingAutopay: SessionAutoPayDetailsDummy,
+  });
+
+  const [SessionFixedDepositDetails, setSessionFixedDepositDetails] = useState({
+    // recentFD: [],
+    recentFD: SessionFixedDepositDetailsDummy,
+  });
+  const location = useLocation();
+  const BeforeSessionAccountDetails = location.state?.sessionAccountDetails;
+  const [SessionAccountDetails, setSessionAccountDetails] = useState(
+    BeforeSessionAccountDetails
   );
-  // const location = useLocation();
-  // const BeforeSessionAccountDetails = location.state?.sessionAccountDetails;
-  // const [SessionAccountDetails, setSessionAccountDetails] = useState(
-  //   BeforeSessionAccountDetails
-  // );
+  // const { sessionId } = useParams(); // Extract sessionId from the URL
+  // console.log('Session ID:', sessionId);
 
-  // useEffect(() => {
-  //   if (current === 'Pay or Transfer' && currentPaymentState === 2) {
-  //     const timer = setTimeout(() => {
-  //       setCurrentPaymentState(0);
-  //     }, 5000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [currentPaymentState, current]);
+  useEffect(() => {
+    if (current === 'Pay or Transfer' && currentPaymentState === 2) {
+      const timer = setTimeout(() => {
+        setCurrentPaymentState(0);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentPaymentState, current]);
 
-  // useEffect(() => {
-  //   if (current === 'Auto Pay' && currentAutoPayState === 3) {
-  //     const timer = setTimeout(() => {
-  //       setCurrentAutoPayState(0);
-  //       handleAutoPayUIUpdate();
-  //     }, 3000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [currentAutoPayState, current]);
+  useEffect(() => {
+    if (current === 'Auto Pay' && currentAutoPayState === 3) {
+      const timer = setTimeout(() => {
+        setCurrentAutoPayState(0);
+        handleAutoPayUIUpdate();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentAutoPayState, current]);
+
+  useEffect(() => {
+    if (current === 'Fixed Deposit' && currentFixedDepositState === 3) {
+      const timer = setTimeout(() => {
+        setCurrentFixedDepositState(0);
+        handleFixedDepositUIUpdate();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentFixedDepositState, current]);
 
   useEffect(() => {
     if (current === 'Pay or Transfer' && currentPaymentState === 0) {
@@ -175,6 +187,72 @@ const Dashboard = () => {
       setFormPaymentDataErrors({});
     }
   }, [current, currentPaymentState]);
+
+  useEffect(() => {
+    if (current === 'Pay or Transfer' && currentPaymentState === 1) {
+      setOtp({
+        otp: '',
+      });
+      setFormPaymentDataErrors({});
+    }
+  }, [current, currentPaymentState]);
+
+  useEffect(() => {
+    if (current === 'Auto Pay' && currentAutoPayState === 1) {
+      setFormAutoPay({
+        recipientName: '',
+        recipientAccountNumber: '',
+        endDate: '',
+        paymentFrequency: '',
+        amount: '',
+      });
+      setFormPaymentDataErrors({});
+    }
+  }, [current, currentAutoPayState]);
+
+  useEffect(() => {
+    if (current === 'Fixed Deposit' && currentFixedDepositState === 1) {
+      setFormFixedDeposit({
+        depositAmount: '',
+        depositDuration: '',
+        interestRate: '',
+      });
+    }
+  }, [currentFixedDepositState, current]);
+
+  useEffect(() => {
+    if (current === 'Fixed Deposit' && currentFixedDepositState === 2) {
+      setfdPassword('');
+    }
+  }, [currentFixedDepositState, current]);
+
+  const fetchUserInfo = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.get(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/account_info',
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+
+      const parsedData =
+        typeof response.data === 'string'
+          ? JSON.parse(response.data)
+          : response.data;
+
+      setUserData(parsedData);
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+      alert('Failed to fetch user information.');
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
 
   const [formPaymentData, setFormPaymentData] = useState({
     recipientName: '',
@@ -193,6 +271,14 @@ const Dashboard = () => {
   });
 
   const [formAutoPayErrors, setFormAutoPayErrors] = useState({});
+
+  const [formFixedDeposit, setFormFixedDeposit] = useState({
+    amount: '',
+    duration: '',
+    interestRate: '',
+  });
+
+  const [formFixedDepositErrors, setFormFixedDepositErrors] = useState({});
 
   const toggleBalanceVisibility = () => {
     setBalanceVisible(!balanceVisible);
@@ -220,27 +306,75 @@ const Dashboard = () => {
       year: 'numeric',
     });
   };
-
+  useEffect(() => {
+    const handleBeforeUnload = async (event) => {
+      event.preventDefault();
+      event.returnValue = '';
+      try {
+        await axios.get(
+          'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/logout',
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+          }
+        );
+      } catch (error) {
+        console.error('Failed to logout:', error);
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (current === 'Auto Pay') {
+    // Handle Auto Pay form
+    if (current === 'Auto Pay' && currentAutoPayState === 1) {
       setFormAutoPay({
         ...formAutoPay,
         [name]: value,
       });
+
       setFormAutoPayErrors({
         ...formAutoPayErrors,
-        [name]: '',
+        [name]: '', // Clear error when user is typing
       });
-    } else {
+    }
+
+    // Handle Fixed Deposit form
+    if (current === 'Fixed Deposit' && currentFixedDepositState === 1) {
+      setFormFixedDeposit((prev) => ({
+        ...prev,
+        [name]: value,
+        ...(name === 'depositDuration' && {
+          interestRate:
+            {
+              6: 4.5,
+              1: 5.0,
+              3: 5.5,
+              5: 6.0,
+            }[value] || '',
+        }),
+      }));
+
+      // Only validate when explicitly triggered, not while user is typing
+      setFormFixedDepositErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: '', // Clear error when user is typing
+      }));
+    }
+
+    // Handle Pay or Transfer form
+    if (current === 'Pay or Transfer' && currentPaymentState === 0) {
       setFormPaymentData({
         ...formPaymentData,
         [name]: value,
       });
       setFormPaymentDataErrors({
         ...formPaymentDataErrors,
-        [name]: '',
+        [name]: '', // Clear error when user is typing
       });
     }
   };
@@ -288,6 +422,7 @@ const Dashboard = () => {
   const validatePayment = () => {
     let errors = {};
 
+    // Pay or Transfer: Initial State Validation
     if (current === 'Pay or Transfer' && currentPaymentState === 0) {
       if (!formPaymentData.recipientName)
         errors.recipientName = 'Recipient Name is Required.';
@@ -298,18 +433,31 @@ const Dashboard = () => {
       return Object.keys(errors).length === 0;
     }
 
+    // Pay or Transfer: OTP Validation
     if (current === 'Pay or Transfer' && currentPaymentState === 1) {
-      if (!formPaymentData.otp) errors.otp = 'Otp is Required.';
+      if (!formPaymentData.otp) errors.otp = 'OTP is Required.';
       setFormPaymentDataErrors(errors);
       return Object.keys(errors).length === 0;
     }
 
+    // Auto Pay: Form Fields Validation
     if (current === 'Auto Pay' && currentAutoPayState === 1) {
+      const date = new Date(); // Current date
+      const validAutoPayDate = new Date(date); // Create a new Date object
+      validAutoPayDate.setDate(date.getDate() + 7); // Add 7 days to the current date
+
       if (!formAutoPay.recipientName)
         errors.autoPayRecipientName = 'Recipient Name is Required.';
       if (!formAutoPay.recipientAccountNumber)
         errors.autoPayRecipientAccountNumber = 'Account Number is Required.';
-      if (!formAutoPay.endDate) errors.autoPayEndDate = 'End Date is Required.';
+      if (!formAutoPay.endDate) {
+        errors.autoPayEndDate = 'End Date is Required.';
+      } else {
+        const enteredEndDate = new Date(formAutoPay.endDate); // Parse the entered endDate
+        if (enteredEndDate <= validAutoPayDate) {
+          errors.autoPayEndDate = `End Date must be at least 7 days from today.`;
+        }
+      }
       if (!formAutoPay.paymentFrequency)
         errors.autoPayPaymentFrequency = 'Payment Frequency is Required.';
       if (!formAutoPay.amount) errors.autoPayAmount = 'Amount is Required.';
@@ -317,9 +465,29 @@ const Dashboard = () => {
       return Object.keys(errors).length === 0;
     }
 
+    // Auto Pay: Password Validation
     if (current === 'Auto Pay' && currentAutoPayState === 2) {
-      if (!password) errors.password = 'Password is Required.'; // Match key with formAutoPayErrors check in input
+      if (!password) errors.password = 'Password is Required.';
       setFormAutoPayErrors(errors);
+      return Object.keys(errors).length === 0;
+    }
+
+    // Fixed Deposit: Form Validation
+    if (current === 'Fixed Deposit' && currentFixedDepositState === 1) {
+      if (!formFixedDeposit.depositAmount)
+        errors.depositAmount = 'Deposit Amount is Required.';
+      if (formFixedDeposit.depositDuration === 'Duration')
+        errors.depositDuration = 'Deposit Duration is Required.';
+      if (!formFixedDeposit.interestRate)
+        errors.interestRate = 'Interest Rate is Required.';
+      setFormFixedDepositErrors(errors);
+      return Object.keys(errors).length === 0;
+    }
+
+    // Fixed Deposit: Password Validation
+    if (current === 'Fixed Deposit' && currentFixedDepositState === 2) {
+      if (!fdpassword) errors.fdpassword = 'Password is Required.';
+      setFormFixedDepositErrors(errors);
       return Object.keys(errors).length === 0;
     }
 
@@ -379,12 +547,12 @@ const Dashboard = () => {
             }
           );
 
-          if (secondaryResponse.data.exists === true) {
+          if (secondaryResponse.data?.exists === true) {
             setBasicLoading(false);
             setCurrentPaymentState((cur) => cur + 1);
           } else {
             setBasicLoading(false);
-            alert('Error sending OTP. Please try again later.');
+            alert(secondaryResponse.data.message);
           }
         } catch (secondaryError) {
           setBasicLoading(false);
@@ -395,6 +563,7 @@ const Dashboard = () => {
           alert('Error with secondary API. Please try again later.');
         }
       } else {
+        setBasicLoading(false);
         handleResponseErrors(response.data.data);
       }
     } catch (error) {
@@ -407,10 +576,9 @@ const Dashboard = () => {
   const handleResponseErrors = (data) => {
     const errors = {};
     if (data === 0) {
-      errors.recipientName = 'Please provide a valid account number ';
+      errors.recipientAccountNumber = 'Please provide a valid account number ';
     } else if (data === 1) {
-      errors.recipientAccountNumber =
-        'Account Number & Recipient Name does not match.';
+      errors.recipientName = 'Account Number & Recipient Name does not match.';
     }
     setFormPaymentDataErrors(errors);
   };
@@ -433,12 +601,17 @@ const Dashboard = () => {
         }
       );
 
-      setBasicLoading(false);
-
-      if (response.data.success || response.status === 201) {
+      if (response.data?.data === 2 || response.status === 201) {
+        setBasicLoading(false);
         setCurrentPaymentState((cur) => cur + 1);
-      } else {
-        alert('Invalid OTP. Please try again.');
+      } else if (response.data?.data === 0) {
+        setBasicLoading(false);
+        alert('Wrong Otp ,Transaction Failed!');
+        setCurrentPaymentState(0);
+      } else if (response.data?.data === 1) {
+        setBasicLoading(false);
+        alert('Insufficient balance');
+        setCurrentPaymentState(0);
       }
     } catch (error) {
       setBasicLoading(false);
@@ -471,7 +644,9 @@ const Dashboard = () => {
       console.error('Error fetching session details:', error);
       alert('Failed to fetch session details. Please try again.');
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false); // Hide the loader after the delay
+      }, 1000);
     }
   };
 
@@ -492,13 +667,78 @@ const Dashboard = () => {
       } else {
         parsedData = sessionResponse.data; // Use directly if object
       }
+      console.log(parsedData);
 
       setSessionTransactionDetails(parsedData); // Update session details
     } catch (error) {
       console.error('Error fetching session details:', error);
       alert('Failed to fetch session details. Please try again.');
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
+  const handleAutoPayUIUpdate = async () => {
+    setLoading(true); // Show the loader immediately
+
+    try {
+      const sessionResponse = await axios.get(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/autopayList',
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+
+      let parsedData;
+      if (typeof sessionResponse.data === 'string') {
+        parsedData = JSON.parse(sessionResponse.data); // Parse if string
+      } else {
+        parsedData = sessionResponse.data; // Use directly if object
+      }
+
+      setSessionAutoPayDetails(parsedData); // Update session details
+    } catch (error) {
+      console.error('Error fetching session details:', error);
+      alert('Failed to fetch session details. Please try again.');
+    } finally {
+      // Add a delay to ensure the loader stays visible for 2-3 seconds
+      setTimeout(() => {
+        setLoading(false); // Hide the loader after the delay
+      }, 1000); // Delay of 2 seconds
+    }
+  };
+
+  const handleFixedDepositUIUpdate = async () => {
+    setLoading(true); // Show the loader immediately
+
+    try {
+      const sessionResponse = await axios.get(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/existing_fd',
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+
+      let parsedData;
+      if (typeof sessionResponse.data === 'string') {
+        parsedData = JSON.parse(sessionResponse.data); // Parse if string
+      } else {
+        parsedData = sessionResponse.data; // Use directly if object
+      }
+
+      setSessionFixedDepositDetails(parsedData); // Update session details
+    } catch (error) {
+      console.error('Error fetching session details:', error);
+      alert('Failed to fetch session details. Please try again.');
+    } finally {
+      // Add a delay to ensure the loader stays visible for 2-3 seconds
+      setTimeout(() => {
+        setLoading(false); // Hide the loader after the delay
+      }, 1000); // Delay of 2 seconds
     }
   };
 
@@ -522,7 +762,7 @@ const Dashboard = () => {
 
     try {
       const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/pay',
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/autopay',
         urlEncodedData,
         {
           headers: {
@@ -547,7 +787,7 @@ const Dashboard = () => {
           autoPayRecipientName: 'Name & Account Number do not match.',
         }));
       } else if (response.data?.data === 2 || response.status === 201) {
-        setCurrentAutoPayState(3); // Move to next state
+        setCurrentAutoPayState(2); // Move to next state
       }
     } catch (error) {
       console.error('Error during setting auto-pay:', error);
@@ -566,7 +806,7 @@ const Dashboard = () => {
 
     try {
       const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/pay',
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/auto_pwd',
         urlEncodedData,
         {
           headers: {
@@ -576,13 +816,19 @@ const Dashboard = () => {
         }
       );
 
-      if (response.data?.exists === true) {
-        setCurrentAutoPayState(3);
-      } else {
+      if (response.data?.data === 0) {
         setFormAutoPayErrors((prevErrors) => ({
           ...prevErrors,
-          password: 'Wrong Password',
+          password: 'Wrong Password.',
         }));
+      }
+      if (response.data?.data === 1) {
+        setCurrentAutoPayState(3);
+        alert(
+          'Auto-pay setup was successful, but the transaction could not be completed due to insufficient balance.'
+        );
+      } else if (response.data?.data === 2) {
+        setCurrentAutoPayState(3);
       }
     } catch (error) {
       console.error('Error during sending payment:', error);
@@ -592,6 +838,257 @@ const Dashboard = () => {
     }
   };
 
+  // Logout handler
+  const handleLogout = useCallback(() => {
+    axios
+      .get('https://ghoul-causal-adder.ngrok-free.app/AscentisBank/logout', {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          navigate('/login'); // Redirect to login on successful logout
+        } else {
+          console.error('Logout failed with status:', response.status);
+          alert('Logout failed. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error during logout:', error);
+        alert('An error occurred. Please try again.');
+      });
+  }, [navigate]);
+
+  // Handle back button navigation
+  useEffect(() => {
+    const handlePopState = (event) => {
+      const userConfirmed = window.confirm(
+        'Are you sure you want to leave this page?'
+      );
+      if (!userConfirmed) {
+        // Prevent navigation
+        window.history.pushState(null, '', window.location.href);
+      } else {
+        handleLogout(); // Log out if the user confirms
+      }
+    };
+
+    // Push initial state into history stack
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', handlePopState);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [handleLogout]);
+
+  const handleLogoutButtonClick = () => {
+    const userConfirmed = window.confirm('Are you sure you want to log out?');
+    if (userConfirmed) handleLogout();
+  };
+
+  //   useEffect(() => {
+  //   const handleBeforeUnload = async (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = '';
+  //     try {
+  //       await axios.get('https://ghoul-causal-adder.ngrok-free.app/AscentisBank/logout', {
+  //         headers: { 'Content-Type': 'application/json' },
+  //         withCredentials: true,
+  //       });
+  //     } catch (error) {
+  //       console.error("Failed to logout:", error);
+  //     }
+  //   };
+
+  //     // Attach the event listener
+  //     window.addEventListener("beforeunload", handleBeforeUnload);
+
+  //     // Cleanup the event listener on component unmount
+  //     return () => {
+  //       window.removeEventListener("beforeunload", handleBeforeUnload);
+  //     };
+  //   }, []);
+  // };
+
+  const handleFdDelete = async (transaction) => {
+    setIsLoading((prevLoadingState) => ({
+      ...prevLoadingState,
+      [transaction.fd_Id]: true, // Use the unique ID
+    }));
+    console.log(transaction.fd_Id);
+    const urlEncodedData = new URLSearchParams();
+    urlEncodedData.append('fd_Id', transaction.fd_Id);
+    try {
+      const response = await axios.post(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/drop_fd',
+        urlEncodedData,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.data === 1 || response.status === 201) {
+        alert('FD deleted successfully');
+        handleFixedDepositUIUpdate();
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting FD:', error);
+      alert('Failed to delete Fixed Deposit. Please try again.');
+    } finally {
+      setIsLoading((prevLoadingState) => ({
+        ...prevLoadingState,
+        [transaction.fd_Id]: false, // Reset the loading state for the specific button
+      }));
+    }
+  };
+
+  const handleAutoPayDelete = async (transaction) => {
+    setIsLoading((prevLoadingState) => ({
+      ...prevLoadingState,
+      [transaction.autopay_Id]: true,
+    }));
+    console.log(transaction.autopay_Id);
+    const urlEncodedData = new URLSearchParams();
+    urlEncodedData.append('autopay_Id', transaction.autopay_Id);
+    try {
+      const response = await axios.post(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/drop_autopay',
+        urlEncodedData,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.data === 1 || response.status === 201) {
+        alert('Auto Pay Deleted successfully');
+        handleAutoPayUIUpdate();
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting Auto Pay:', error);
+      alert('Failed to delete Auto Pay. Please try again.');
+    } finally {
+      setIsLoading((prevLoadingState) => ({
+        ...prevLoadingState,
+        [transaction.autopay_Id]: false,
+      }));
+    }
+  };
+
+  const handleOpenFixedDeposit = async () => {
+    if (!validatePayment()) {
+      return;
+    }
+    setBasicLoading(true);
+
+    const urlEncodedData = new URLSearchParams();
+    for (const key in formFixedDeposit) {
+      if (Object.prototype.hasOwnProperty.call(formFixedDeposit, key)) {
+        urlEncodedData.append(key, formFixedDeposit[key]);
+      }
+    }
+    const today = new Date();
+    const formattedDate = formatDateSend(today);
+    urlEncodedData.append('fixedDepositDate', formattedDate);
+
+    try {
+      const response = await axios.post(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/fd',
+        urlEncodedData,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.data?.data === 0) {
+        alert('Insufficient balance to create FD');
+      } else if (response.data?.data === 1) {
+        setCurrentFixedDepositState(2);
+      }
+    } catch (error) {
+      console.error('Error during setting auto-pay:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setBasicLoading(false);
+    }
+  };
+
+  const handleFixedDepositPassword = async () => {
+    if (!validatePayment()) return;
+
+    setBasicLoading(true);
+    const urlEncodedData = new URLSearchParams();
+    urlEncodedData.append('fdpassword', fdpassword);
+
+    try {
+      const response = await axios.post(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/fd_pwd',
+        urlEncodedData,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.data?.data === 0) {
+        setFormFixedDepositErrors((prevErrors) => ({
+          ...prevErrors,
+          fdpassword: 'Wrong Password.',
+        }));
+      }
+      if (response.data?.data === 1 || response.status === 201) {
+        setCurrentFixedDepositState(3);
+      }
+    } catch (error) {
+      console.error('Error during Creating FD:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setBasicLoading(false);
+    }
+  };
+
+  if (!SessionAccountDetails) {
+    return (
+      <>
+        <section className='bg-white dark:bg-gray-900'>
+          <div className='py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6'>
+            <div className='mx-auto max-w-screen-sm text-center'>
+              <h1 className='mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500'>
+                Session Expired
+              </h1>
+              <p className='mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white'>
+                Your login session has expired.
+              </p>
+              <p className='mb-4 text-lg font-light text-gray-500 dark:text-gray-400'>
+                Please log in again to access your account.
+              </p>
+              <button
+                onClick={navigate('login')}
+                className='inline-flex text-white bg-[#0D427C] my-4 py-3 px-4 rounded-full font-SF_PRO_Light'
+              >
+                Go to Login
+              </button>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
   return (
     <div className='flex'>
       {/* Sidebar */}
@@ -649,12 +1146,37 @@ const Dashboard = () => {
                 }`}
                 onClick={() => {
                   setCurrent('Auto Pay');
-                  // setCurrentAutoPayState(0); // Update state
+                  setCurrentAutoPayState(0); // Update state
+                  setFormAutoPayErrors({});
+                  handleAutoPayUIUpdate();
                 }}
               >
                 <img src='src/assets/Images/auto_pay.png' alt='Auto Pay' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Auto Pay
+                </span>
+              </li>
+
+              {/* Fixed Deposit */}
+              <li
+                className={`h-[40px] w-full flex items-center gap-2 cursor-pointer rounded-[10px] pl-3 ${
+                  current === 'Fixed Deposit'
+                    ? 'bg-[#FAFAFA] bg-opacity-15'
+                    : ''
+                }`}
+                onClick={() => {
+                  setCurrent('Fixed Deposit');
+                  setCurrentFixedDepositState(0); // Update state
+                  setFormFixedDepositErrors({});
+                  handleFixedDepositUIUpdate();
+                }}
+              >
+                <img
+                  src='src/assets/Images/fixed_deposit.png'
+                  alt='Fixed Deposit'
+                />
+                <span className='font-outfit font-light text-[18px] text-white'>
+                  Fixed Deposit
                 </span>
               </li>
 
@@ -679,10 +1201,13 @@ const Dashboard = () => {
                 className={`h-[40px] w-full flex items-center gap-2 cursor-pointer rounded-[10px] pl-3 ${
                   current === 'Account Info' ? 'bg-[#FAFAFA] bg-opacity-15' : ''
                 }`}
-                onClick={() => setCurrent('Account Info')}
+                onClick={() => {
+                  setCurrent('Account Info');
+                  fetchUserInfo();
+                }}
               >
                 <img
-                  src='src/assets/Images/pay_vector.png'
+                  src='src/assets/Images/account_info.png'
                   alt='Pay or Transfer'
                 />
                 <span className='font-outfit font-light text-[18px] text-white'>
@@ -690,19 +1215,18 @@ const Dashboard = () => {
                 </span>
               </li>
 
-              {/* Settings */}
+              {/* Log Out */}
               <li
                 className={`h-[40px] w-full flex items-center gap-2 cursor-pointer rounded-[10px] pl-3 ${
-                  current === 'Settings' ? 'bg-[#FAFAFA] bg-opacity-15' : ''
+                  current === 'Log Out' ? 'bg-[#FAFAFA] bg-opacity-15' : ''
                 }`}
-                onClick={() => setCurrent('Settings')}
+                onClick={() => {
+                  handleLogoutButtonClick();
+                }}
               >
-                <img
-                  src='src/assets/Images/settings_vector.png'
-                  alt='Settings'
-                />
+                <img src='src/assets/Images/log_out.png' alt='Settings' />
                 <span className='font-outfit font-light text-[18px] text-white'>
-                  Settings
+                  Log Out
                 </span>
               </li>
             </ul>
@@ -778,55 +1302,61 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <div className='h-[80%] w-full px-14 overflow-y-auto'>
-                    {SessionAccountDetails.recentTransactions
-                      .slice()
-                      .map((transaction, index) => (
-                        <div
-                          key={index}
-                          className='h-[60px] w-full flex justify-center items-center mb-2 border-b-2 border-gray-300'
-                        >
-                          {/*Name*/}
-                          <div className='h-full w-[70%]  font-outfit flex justify-between items-start'>
-                            <section className='flex flex-col justify-center items-start'>
-                              <div className='text-[18px] '>
-                                {transaction.name}
-                              </div>
-                              <div className='text-[14px] text-[#5E5E5E]'>
-                                {transaction.type}
-                              </div>
-                            </section>
-                            <section className='text-[12px] flex justify-center items-center h-full mr-3'>
-                              {formatDate(transaction.date)}
-                            </section>
-                          </div>
+                    {SessionAccountDetails.recentTransactions.length > 0 ? (
+                      SessionAccountDetails.recentTransactions
+                        .slice()
+                        .map((transaction, index) => (
+                          <div
+                            key={index}
+                            className='h-[60px] w-full flex justify-center items-center mb-2 border-b-2 border-gray-300'
+                          >
+                            {/*Name*/}
+                            <div className='h-full w-[70%] font-outfit flex justify-between items-start'>
+                              <section className='flex flex-col justify-center items-start'>
+                                <div className='text-[18px]'>
+                                  {transaction.name}
+                                </div>
+                                <div className='text-[14px] text-[#5E5E5E]'>
+                                  {transaction.type}
+                                </div>
+                              </section>
+                              <section className='text-[12px] flex justify-center items-center h-full mr-3'>
+                                {formatDate(transaction.date)}
+                              </section>
+                            </div>
 
-                          {/*Status*/}
-                          <div className='h-full w-[15%]  font-outfit flex justify-center items-center'>
-                            {transaction.status === 'Completed' ? (
-                              <button className='text-[#363636] text-[14px] bg-[#9AEBBF] rounded-[10px] px-2 py-1'>
-                                Completed
-                              </button>
-                            ) : (
-                              <button className='text-[#363636] text-[14px] bg-[#FFE6BF] rounded-[10px] px-2 py-1'>
-                                {transaction.status}
-                              </button>
-                            )}
-                          </div>
+                            {/*Status*/}
+                            <div className='h-full w-[15%] font-outfit flex justify-center items-center'>
+                              {transaction.status === 'Completed' ? (
+                                <button className='text-[#363636] text-[14px] bg-[#9AEBBF] rounded-[10px] px-2 py-1'>
+                                  Completed
+                                </button>
+                              ) : (
+                                <button className='text-[#363636] text-[14px] bg-[#FFE6BF] rounded-[10px] px-2 py-1'>
+                                  {transaction.status}
+                                </button>
+                              )}
+                            </div>
 
-                          {/*Amount*/}
-                          <div className='h-full w-[15%]  flex justify-center items-center'>
-                            {transaction.type === 'Incoming' ? (
-                              <p className='text-[#3CB775] font-outfit'>
-                                {'+' + formatCurrency(transaction.amount)}
-                              </p>
-                            ) : (
-                              <p className='text-[#363636] font-outfit'>
-                                {'-' + formatCurrency(transaction.amount)}
-                              </p>
-                            )}
+                            {/*Amount*/}
+                            <div className='h-full w-[15%] flex justify-center items-center'>
+                              {transaction.type === 'Incoming' ? (
+                                <p className='text-[#3CB775] font-outfit'>
+                                  {'+' + formatCurrency(transaction.amount)}
+                                </p>
+                              ) : (
+                                <p className='text-[#363636] font-outfit'>
+                                  {'-' + formatCurrency(transaction.amount)}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))
+                    ) : (
+                      <div className='text-center text-gray-500 text-[16px] font-outfit mt-5'>
+                        No transactions available
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1041,7 +1571,10 @@ const Dashboard = () => {
                         {/*CTA TO STATE 2*/}
                         <button
                           className='font-outfit bg-[#EBEAFF] rounded-[10px] font-light gap-1.5 text-[#5C58FF] flex justify-center items-center py-2 px-4'
-                          onClick={() => setCurrentAutoPayState(1)}
+                          onClick={() => {
+                            setCurrentAutoPayState(1);
+                            setFormAutoPayErrors({});
+                          }}
                         >
                           <img
                             src='src/assets/Images/add_img.png'
@@ -1051,42 +1584,73 @@ const Dashboard = () => {
                         </button>
                       </div>
 
-                      {/*Recent Transaction Section*/}
-                      <div className='h-[90%] w-full flex flex-col justify-center items-center rounded-[10px] border-[1.5px] border-[#EBEBEB]'>
-                        <div className='h-[20%] w-full flex justify-between items-center px-3'>
-                          <p className='font-outfit font-medium text-[20px]'>
-                            Current Auto Pay
-                          </p>
-                        </div>
-                        <div className='h-[80%] w-full px-14 overflow-y-auto'>
-                          {SessionAutoPayDetails.recentTransactions
-                            .slice()
+                      {/* Recent Transaction Section */}
+                      <div className='h-[80%] w-full px-14 overflow-y-auto'>
+                        {Array.isArray(SessionAutoPayDetails.existingAutopay) &&
+                        SessionAutoPayDetails.existingAutopay.length > 0 ? (
+                          SessionAutoPayDetails.existingAutopay
+                            .filter(
+                              (transaction) =>
+                                transaction !== null &&
+                                transaction !== undefined
+                            ) // Ensure valid entries
                             .map((transaction, index) => (
                               <div
                                 key={index}
                                 className='h-[60px] w-full flex justify-center items-center mb-2 border-b-2 border-gray-300'
                               >
-                                {/*Name*/}
-                                <div className='h-full w-[70%]  font-outfit flex justify-between items-start'>
+                                {/* Name and Dates */}
+                                <div className='h-full w-[70%] font-outfit flex justify-between items-start'>
                                   <section className='flex flex-col justify-center items-start'>
-                                    <div className='text-[18px] '>
-                                      {transaction.name}
+                                    <div className='text-[18px]'>
+                                      {transaction.name || 'Unknown'}
+                                    </div>
+                                    <div className='text-[12px] text-gray-500'>
+                                      Start:{' '}
+                                      {transaction.startDate
+                                        ? formatDate(transaction.startDate)
+                                        : 'N/A'}{' '}
+                                      | End:{' '}
+                                      {transaction.endDate
+                                        ? formatDate(transaction.endDate)
+                                        : 'N/A'}
                                     </div>
                                   </section>
-                                  <section className='text-[12px] flex justify-center items-center h-full mr-3'>
-                                    {formatDate(transaction.date)}
+                                  <section className='text-[16px] font-outfit flex justify-start items-center w-[100px] h-full mr-3'>
+                                    {transaction.frequency || 'N/A'}
                                   </section>
                                 </div>
 
-                                {/*Amount*/}
-                                <div className='h-full w-[15%]  flex justify-center items-center'>
+                                {/* Amount */}
+                                <div className='h-full w-[15%] flex justify-end items-center'>
                                   <p className='text-[#363636] font-outfit'>
-                                    {formatCurrency(transaction.amount)}
+                                    {transaction.amount
+                                      ? formatCurrency(transaction.amount)
+                                      : 'N/A'}
                                   </p>
                                 </div>
+                                <div className='h-full w-[15%] flex justify-end items-center'>
+                                  <button
+                                    className='bg-[#ff86828c] hover:bg-[#e2625d] duration-700 font-outfit px-2 py-1 rounded-md text-white'
+                                    onClick={() =>
+                                      handleAutoPayDelete(transaction)
+                                    }
+                                    disabled={isLoading[transaction.autopay_Id]}
+                                  >
+                                    {isLoading[transaction.autopay_Id] ? (
+                                      <div className='spinnerLogin'></div>
+                                    ) : (
+                                      'Stop'
+                                    )}
+                                  </button>
+                                </div>
                               </div>
-                            ))}
-                        </div>
+                            ))
+                        ) : (
+                          <div className='text-gray-500 text-center mt-4'>
+                            No active auto-pay.
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>
@@ -1149,16 +1713,16 @@ const Dashboard = () => {
                       {/* Account Number */}
                       <div className='space-y-2'>
                         <label
-                          htmlFor='accountNumber'
+                          htmlFor='recipientAccountNumber'
                           className='block text-sm font-medium text-[#323232] font-outfit'
                         >
                           Account Number
                         </label>
                         <input
                           type='text'
-                          id='accountNumber'
-                          name='accountNumber'
-                          value={formAutoPay.accountNumber}
+                          id='recipientAccountNumber'
+                          name='recipientAccountNumber'
+                          value={formAutoPay.recipientAccountNumber}
                           onChange={handleChange}
                           className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200 ${
                             formAutoPayErrors?.autoPayRecipientAccountNumber
@@ -1184,15 +1748,15 @@ const Dashboard = () => {
                       {/* End Date */}
                       <div className='space-y-2'>
                         <label
-                          htmlFor='startDate'
+                          htmlFor='endDate'
                           className='block text-sm font-medium text-[#323232] font-outfit'
                         >
                           End Date
                         </label>
                         <input
                           type='date'
-                          id='startDate'
-                          name='startDate'
+                          id='endDate'
+                          name='endDate'
                           value={formAutoPay.endDate}
                           onChange={handleChange}
                           className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200 ${
@@ -1234,9 +1798,9 @@ const Dashboard = () => {
                           <option value='' disabled>
                             Select Payment Frequency
                           </option>
-                          <option value='monthly'>Monthly</option>
                           <option value='weekly'>Weekly</option>
-                          <option value='yearly'>Yearly</option>
+                          <option value='monthly'>Monthly</option>
+                          <option value='quaterly'>Quaterly</option>
                         </select>
                         {formAutoPayErrors?.autoPayPaymentFrequency && (
                           <p
@@ -1285,7 +1849,7 @@ const Dashboard = () => {
                       {/* Submit Button */}
                       <button
                         type='button'
-                        onClick={validatePayment}
+                        onClick={handleSetAutoPay}
                         className='w-full py-3 px-4 bg-[#323232] text-white rounded-lg shadow-md font-outfit font-light'
                       >
                         Set Auto Pay
@@ -1340,7 +1904,7 @@ const Dashboard = () => {
                       </div>
 
                       <button
-                        onClick={validatePayment}
+                        onClick={handleAutoPayPassword}
                         type='button'
                         className='w-full py-3 px-4 bg-[#323232] text-white rounded-lg shadow-md font-outfit font-light'
                       >
@@ -1362,14 +1926,6 @@ const Dashboard = () => {
               </>
             </>
           )}
-          {current === 'Settings' && (
-            <div>
-              <h1 className='font-outfit font-bold text-2xl'>Settings</h1>
-              <p className='font-outfit font-light text-lg text-gray-600'>
-                Manage your account settings here.
-              </p>
-            </div>
-          )}
 
           {current === 'Transactions' && (
             <>
@@ -1379,55 +1935,61 @@ const Dashboard = () => {
                   <h1 className='font-outfit text-2xl'>Transactions</h1>
                 </div>
                 <div className='h-[80%] w-full px-14 overflow-y-auto rounded-[10px] border-[1px] border-gray-300 p-5'>
-                  {SessionTransactionDetails.recentTransactions
-                    .slice()
-                    .map((transaction, index) => (
-                      <div
-                        key={index}
-                        className='h-[60px] w-full flex justify-center items-center mb-2 border-b-2 border-gray-300'
-                      >
-                        {/*Name*/}
-                        <div className='h-full w-[70%]  font-outfit flex justify-between items-start'>
-                          <section className='flex flex-col justify-center items-start'>
-                            <div className='text-[18px] '>
-                              {transaction.name}
-                            </div>
-                            <div className='text-[14px] text-[#5E5E5E]'>
-                              {transaction.type}
-                            </div>
-                          </section>
-                          <section className='text-[12px] flex justify-center items-center h-full mr-3'>
-                            {formatDate(transaction.date)}
-                          </section>
-                        </div>
+                  {SessionTransactionDetails.recentTransactions.length > 0 ? (
+                    SessionTransactionDetails.recentTransactions
+                      .slice()
+                      .map((transaction, index) => (
+                        <div
+                          key={index}
+                          className='h-[60px] w-full flex justify-center items-center mb-2 border-b-2 border-gray-300'
+                        >
+                          {/*Name*/}
+                          <div className='h-full w-[70%] font-outfit flex justify-between items-start'>
+                            <section className='flex flex-col justify-center items-start'>
+                              <div className='text-[18px]'>
+                                {transaction.name}
+                              </div>
+                              <div className='text-[14px] text-[#5E5E5E]'>
+                                {transaction.type}
+                              </div>
+                            </section>
+                            <section className='text-[12px] flex justify-center items-center h-full mr-3'>
+                              {formatDate(transaction.date)}
+                            </section>
+                          </div>
 
-                        {/*Status*/}
-                        <div className='h-full w-[15%]  font-outfit flex justify-center items-center'>
-                          {transaction.status === 'Completed' ? (
-                            <button className='text-[#363636] text-[14px] bg-[#9AEBBF] rounded-[10px] px-2 py-1'>
-                              Completed
-                            </button>
-                          ) : (
-                            <button className='text-[#363636] text-[14px] bg-[#FFE6BF] rounded-[10px] px-2 py-1'>
-                              {transaction.status}
-                            </button>
-                          )}
-                        </div>
+                          {/*Status*/}
+                          <div className='h-full w-[15%] font-outfit flex justify-center items-center'>
+                            {transaction.status === 'Completed' ? (
+                              <button className='text-[#363636] text-[14px] bg-[#9AEBBF] rounded-[10px] px-2 py-1'>
+                                Completed
+                              </button>
+                            ) : (
+                              <button className='text-[#363636] text-[14px] bg-[#FFE6BF] rounded-[10px] px-2 py-1'>
+                                {transaction.status}
+                              </button>
+                            )}
+                          </div>
 
-                        {/*Amount*/}
-                        <div className='h-full w-[15%]  flex justify-center items-center'>
-                          {transaction.type === 'Incoming' ? (
-                            <p className='text-[#3CB775] font-outfit'>
-                              {'+' + formatCurrency(transaction.amount)}
-                            </p>
-                          ) : (
-                            <p className='text-[#363636] font-outfit'>
-                              {'-' + formatCurrency(transaction.amount)}
-                            </p>
-                          )}
+                          {/*Amount*/}
+                          <div className='h-full w-[15%] flex justify-center items-center'>
+                            {transaction.type === 'Incoming' ? (
+                              <p className='text-[#3CB775] font-outfit'>
+                                {'+' + formatCurrency(transaction.amount)}
+                              </p>
+                            ) : (
+                              <p className='text-[#363636] font-outfit'>
+                                {'-' + formatCurrency(transaction.amount)}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                  ) : (
+                    <div className='text-center text-gray-500 text-[16px] font-outfit mt-5'>
+                      No transactions available
+                    </div>
+                  )}
                 </div>
               </div>
             </>
@@ -1435,7 +1997,286 @@ const Dashboard = () => {
 
           {current === 'Account Info' && (
             <>
-              <UserInformationDisplay />
+              {loading && <LoadingOverlayDashboard />}
+              <UserInformationDisplay userData={userData.accountInfo} />
+            </>
+          )}
+          {current === 'Fixed Deposit' && (
+            <>
+              {loading && <LoadingOverlayDashboard />}
+              <>
+                {currentFixedDepositState === 0 && (
+                  <>
+                    <div className='h-full w-full  flex flex-col justify-center items-center  gap-8'>
+                      {/*Auto Pay Top Section*/}
+                      <div className='h-[10%] w-full  flex justify-start items-center'>
+                        {/*CTA TO STATE 2*/}
+                        <button
+                          className='font-outfit bg-[#EBEAFF] rounded-[10px] font-light gap-1.5 text-[#5C58FF] flex justify-center items-center py-2 px-4'
+                          onClick={() => {
+                            setCurrentFixedDepositState(1);
+                            setFormFixedDepositErrors({});
+                            // setFormFixedDeposit({})
+                          }}
+                        >
+                          <img
+                            src='src/assets/Images/add_img.png'
+                            alt='Top Up'
+                          />
+                          New
+                        </button>
+                      </div>
+
+                      {/* Recent Transaction Section */}
+                      <div className='h-[80%] w-full px-14 overflow-y-auto'>
+                        {Array.isArray(SessionFixedDepositDetails.recentFD) &&
+                        SessionFixedDepositDetails.recentFD.length > 0 ? (
+                          SessionFixedDepositDetails.recentFD
+                            .filter(
+                              (transaction) =>
+                                transaction !== null &&
+                                transaction !== undefined
+                            ) // Ensure valid entries
+                            .map((transaction, index) => (
+                              <div
+                                key={index}
+                                className='h-[60px] w-full flex justify-center items-center mb-2 border-b-2 border-gray-300'
+                              >
+                                {/* Name and Dates */}
+                                <div className='h-full w-[70%] font-outfit flex justify-between items-start'>
+                                  <section className='flex flex-col justify-center items-start'>
+                                    <div className='text-[18px]'>
+                                      {transaction.name || 'Unknown'}
+                                    </div>
+                                    <div className='text-[12px] text-gray-500'>
+                                      End:{' '}
+                                      {transaction.endDate
+                                        ? formatDate(transaction.endDate)
+                                        : 'N/A'}
+                                    </div>
+                                  </section>
+                                  <section className='text-[16px] font-outfit flex justify-start items-center w-[100px] h-full mr-3'>
+                                    {transaction.interestRate}% Interest
+                                  </section>
+                                </div>
+
+                                {/* Amount */}
+                                <div className='h-full w-[15%] flex justify-end items-center'>
+                                  <p className='text-[#363636] font-outfit'>
+                                    {transaction.amount
+                                      ? formatCurrency(transaction.amount)
+                                      : 'N/A'}
+                                  </p>
+                                </div>
+                                <div className='h-full w-[15%] flex justify-end items-center'>
+                                  <button
+                                    className='bg-[#ff86828c] hover:bg-[#e2625d] duration-700 font-outfit px-2 py-1 rounded-md text-white'
+                                    onClick={() => handleFdDelete(transaction)}
+                                    disabled={isLoading[transaction.fd_Id]} // Disable this button while it's loading
+                                  >
+                                    {isLoading[transaction.fd_Id] ? (
+                                      <div className='spinnerLogin'></div>
+                                    ) : (
+                                      'Stop'
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            ))
+                        ) : (
+                          <div className='text-gray-500 text-center mt-4'>
+                            No active Fixed Deposits.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
+                {currentFixedDepositState === 1 && (
+                  <>
+                    {basicLoading && <LoadingOverlay />}
+                    <div>
+                      <button
+                        className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
+                        onClick={() => setCurrentFixedDepositState(0)}
+                      >
+                        <img src='src/assets/Images/back_arrow.png' />
+                      </button>
+                      <h1 className='font-outfit font-bold text-2xl'>
+                        Fixed Deposit
+                      </h1>
+                      <p className='font-outfit font-light text-lg text-gray-600'>
+                        Invest your savings and earn fixed returns.
+                      </p>
+                    </div>
+
+                    <form className='space-y-6 mt-8' noValidate>
+                      {/* Deposit Amount */}
+                      <div className='space-y-2'>
+                        <label
+                          htmlFor='depositAmount'
+                          className='block text-sm font-medium text-[#323232] font-outfit'
+                        >
+                          Deposit Amount
+                        </label>
+                        <input
+                          type='number'
+                          id='depositAmount'
+                          name='depositAmount'
+                          value={formFixedDeposit.depositAmount}
+                          onChange={handleChange}
+                          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200 ${
+                            formFixedDepositErrors?.depositAmount
+                              ? 'border-red-500'
+                              : 'border-gray-300'
+                          }`}
+                          aria-invalid={!!formFixedDepositErrors?.depositAmount}
+                          aria-describedby='depositAmount-error'
+                        />
+                        {formFixedDepositErrors?.depositAmount && (
+                          <p
+                            id='depositAmount-error'
+                            className='text-red-500 text-sm mt-1 animate-fade-in'
+                            role='alert'
+                          >
+                            {formFixedDepositErrors.depositAmount}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Deposit Duration */}
+                      <div className='space-y-2'>
+                        <label
+                          htmlFor='depositDuration'
+                          className='block text-sm font-medium text-[#323232] font-outfit'
+                        >
+                          Deposit Duration
+                        </label>
+                        <select
+                          id='depositDuration'
+                          name='depositDuration'
+                          value={formFixedDeposit.depositDuration}
+                          onChange={handleChange}
+                          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200 ${
+                            formFixedDepositErrors?.depositDuration
+                              ? 'border-red-500'
+                              : 'border-gray-300'
+                          }`}
+                        >
+                          <option value='Duration'>Select Duration</option>
+                          <option value='6'>6 Months</option>
+                          <option value='1'>1 Year</option>
+                          <option value='3'>3 Years</option>
+                          <option value='5'>5 Years</option>
+                        </select>
+                        {formFixedDepositErrors?.depositDuration && (
+                          <p
+                            id='depositDuration-error'
+                            className='text-red-500 text-sm mt-1 animate-fade-in'
+                            role='alert'
+                          >
+                            {formFixedDepositErrors.depositDuration}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Interest Rate */}
+                      <div className='space-y-2'>
+                        <label
+                          htmlFor='interestRate'
+                          className='block text-sm font-medium text-[#323232] font-outfit'
+                        >
+                          Interest Rate (%)
+                        </label>
+                        <input
+                          type='number'
+                          id='interestRate'
+                          name='interestRate'
+                          value={formFixedDeposit.interestRate}
+                          onChange={handleChange}
+                          disabled
+                          className='w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-500'
+                        />
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        type='button'
+                        className='w-full py-3 px-4 bg-[#323232] text-white rounded-lg shadow-md font-outfit font-light'
+                        onClick={handleOpenFixedDeposit}
+                      >
+                        Open Fixed Deposit
+                      </button>
+                    </form>
+                  </>
+                )}
+                {currentFixedDepositState === 2 && (
+                  <>
+                    {basicLoading && <LoadingOverlay />}
+                    <div>
+                      <h1 className='font-outfit font-bold text-2xl'>
+                        Enter Account Password
+                      </h1>
+                      <p className='font-outfit font-light text-lg text-gray-600'>
+                        To initiate Fixed Deposit, please enter your account
+                        password.
+                      </p>
+                    </div>
+
+                    <form className='space-y-6 mt-8' noValidate>
+                      <div className='space-y-2'>
+                        <label
+                          htmlFor='fdpassword'
+                          className='block text-sm font-medium text-[#323232] font-outfit'
+                        >
+                          Enter Password
+                        </label>
+                        <input
+                          type='password'
+                          id='fdpassword'
+                          name='fdpassword'
+                          value={fdpassword}
+                          onChange={(e) => setfdPassword(e.target.value)}
+                          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200 ${
+                            formFixedDepositErrors.fdpassword
+                              ? 'border-red-500'
+                              : 'border-gray-300'
+                          }`}
+                          aria-invalid={!!formFixedDepositErrors.fdpassword}
+                          aria-describedby='otp-error'
+                        />
+                        {formFixedDepositErrors.fdpassword && (
+                          <p
+                            id='otp-error'
+                            className='text-red-500 text-sm mt-1 animate-fade-in'
+                            role='alert'
+                          >
+                            {formFixedDepositErrors.fdpassword}
+                          </p>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={handleFixedDepositPassword}
+                        type='button'
+                        className='w-full py-3 px-4 bg-[#323232] text-white rounded-lg shadow-md font-outfit font-light'
+                      >
+                        Verify
+                      </button>
+                    </form>
+                  </>
+                )}
+                {currentFixedDepositState === 3 && (
+                  <>
+                    <div className='w-full h-full flex justify-center items-center flex-col gap-10'>
+                      <h1 className='font-outfit text-3xl text-green-600'>
+                        Fixed Deposit Created Successfull
+                      </h1>
+                      <img src='src\assets\Images\check.png' className='w-24' />
+                    </div>
+                  </>
+                )}
+              </>
             </>
           )}
         </div>

@@ -153,7 +153,7 @@ const ForgotPassPageOne = () => {
           if (secondaryResponse.data.exists === true) {
             setActiveStep((cur) => cur + 1);
           } else {
-            alert('Error sending OTP. Please try again later.');
+            alert(secondaryResponse.data.message);
           }
         } catch (secondaryError) {
           console.error(
@@ -164,10 +164,11 @@ const ForgotPassPageOne = () => {
         }
       } else {
         // Set error for unregistered email
-        setUserCredentialsErrors((prevErrors) => ({
-          ...prevErrors,
-          email: 'Please Enter a Registered Email.',
-        }));
+        // setUserCredentialsErrors((prevErrors) => ({
+        //   ...prevErrors,
+        //   email: 'Please Enter a Registered Email.',
+        // }));
+        alert(response.data.message);
       }
     } catch (error) {
       console.error('Error with primary API:', error);

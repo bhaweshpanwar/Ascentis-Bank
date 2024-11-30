@@ -79,7 +79,6 @@ const Services = () => {
   };
   return (
     <>
-
       <div className='h-auto md:h-[500px] w-full max-w-screen-2xl m-auto px-4 md:px-36 flex flex-col justify-center items-center md:gap-20 gap-10'>
         <h1
           className='relative z-10 md:text-center text-left text-4xl md:text-6xl font-SF_Pro_Regular mt-8 sm:mt-0'
@@ -148,7 +147,7 @@ const Services = () => {
             <div className='w-[40%] h-full justify-center items-center p-6 md:flex hidden'>
               <img
                 src={image}
-                className='h-full w-full object-cover rounded-[30px]'
+                className='h-full w-full object-cover rounded-[30px] '
               />
             </div>
           </div>

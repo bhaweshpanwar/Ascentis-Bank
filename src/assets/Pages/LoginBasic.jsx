@@ -37,6 +37,74 @@ const LoginBasic = () => {
     return Object.keys(errors).length === 0;
   };
 
+  /*const handleSubmit = async () => {
+    if (!validateLogin()) {
+      return;
+    }
+
+    setIsLoading(true);
+    const urlEncodedData = new URLSearchParams();
+    urlEncodedData.append('username', userCredentials.username);
+    urlEncodedData.append('password', userCredentials.password);
+
+    try {
+      const response = await axios.post(
+        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/login',
+        urlEncodedData,
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          withCredentials: true, // Ensures the cookie is set by the browser
+        }
+      );
+
+      setIsLoading(false);
+
+      if (response.status === 201) {
+        // Retrieve the session ID from response data
+        const sessionId = response.data.session; // Adjust if 'session' key differs
+        console.log('JSESSIONID:', sessionId);
+
+        if (!sessionId) {
+          throw new Error('Session ID not found in response');
+        }
+
+        // Encode the session ID and other parameters
+        const encodedSessionId = encodeURIComponent(sessionId);
+        const additionalParams = `user=${encodeURIComponent(
+          userCredentials.username
+        )}&extra=${encodeURIComponent('then%20or%20access')}`;
+        const dashboardUrl = `/dashboard/${encodedSessionId}?${additionalParams}`;
+
+        console.log('Navigating to URL:', dashboardUrl);
+
+        // Fetch additional session details if needed
+        const sessionResponse = await axios.get(
+          'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/home',
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true, // Sends the session cookie
+          }
+        );
+
+        const parsedData =
+          typeof sessionResponse.data === 'string'
+            ? JSON.parse(sessionResponse.data)
+            : sessionResponse.data;
+
+        console.log('Parsed SessionResponse data:', parsedData);
+
+        // Navigate to the encoded URL
+        navigate(dashboardUrl, {
+          state: { sessionAccountDetails: parsedData },
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      alert('An error occurred. Please try again.');
+      console.error('Error during login:', error);
+    }
+  };*/
+
   const handleSubmit = async () => {
     if (!validateLogin()) {
       return;
@@ -53,55 +121,38 @@ const LoginBasic = () => {
         urlEncodedData,
         {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          withCredentials: true,
+          withCredentials: true, // Ensures cookies are included
         }
       );
 
       setIsLoading(false);
 
       if (response.status === 201) {
-        try {
-          // Fetch session details
-          const sessionResponse = await axios.get(
-            'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/home',
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              withCredentials: true,
-            }
-          );
-
-          // Debugging logs
-          console.log('Raw sessionResponse:', sessionResponse);
-          console.log(
-            'Type of sessionResponse.data:',
-            typeof sessionResponse.data
-          );
-
-          let parsedData;
-
-          // Handle string or object response
-          if (typeof sessionResponse.data === 'string') {
-            parsedData = JSON.parse(sessionResponse.data); // Parse if it's a string
-          } else {
-            parsedData = sessionResponse.data; // Use directly if it's already an object
+        // Fetch additional session details (if needed)
+        const sessionResponse = await axios.get(
+          'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/home',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true, // Ensure the session cookie is sent
           }
+        );
 
-          console.log('Parsed SessionResponse data:', parsedData);
+        const parsedData =
+          typeof sessionResponse.data === 'string'
+            ? JSON.parse(sessionResponse.data)
+            : sessionResponse.data;
 
-          // Navigate with session details as state
-          navigate('/dashboard', {
-            state: { sessionAccountDetails: parsedData },
-          });
-        } catch (sessionError) {
-          console.error('Error fetching session details:', sessionError);
-          alert('Failed to fetch session details. Please try again.');
-        }
-      } else if (response.data.data === 0) {
-        setUserCredentailsErrors({ username: 'Username does not exist' });
-      } else if (response.data.data === 1) {
-        setUserCredentailsErrors({ password: 'Password is incorrect' });
+        console.log('Parsed SessionResponse data:', parsedData);
+
+        // Navigate to dashboard without hardcoding sessionId
+        navigate(`/dashboard`, {
+          state: { sessionAccountDetails: parsedData },
+          replace: false,
+        });
+      } else {
+        alert(response.data.message);
       }
     } catch (error) {
       setIsLoading(false);
