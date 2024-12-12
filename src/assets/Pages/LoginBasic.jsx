@@ -119,7 +119,7 @@ const LoginBasic = () => {
     try {
       const response = await axios.post(API_ENDPOINTS.LOGIN, urlEncodedData, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        // withCredentials: true,
+        withCredentials: true,
       });
 
       setIsLoading(false);
