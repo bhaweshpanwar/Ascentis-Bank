@@ -929,7 +929,7 @@ const Dashboard = () => {
 
   // Handle back button navigation
   useEffect(() => {
-    const handlePopState = (event) => {
+    const handlePopState = () => {
       const userConfirmed = window.confirm(
         'Are you sure you want to leave this page?'
       );
@@ -1359,7 +1359,10 @@ const Dashboard = () => {
       {/* Main Section */}
       <main className='flex-1 h-screen bg-[#F8F9FA] '>
         <header className=' h-[60px] w-full border-b-2 py-6 px-6 flex justify-end items-center cursor-pointer'>
-          <h1 className='font-outfit'>
+          <h1
+            className='font-outfit'
+            onClick={() => setCurrent('Account Info')}
+          >
             {SessionAccountDetails.accountOwnerName}
           </h1>
         </header>
