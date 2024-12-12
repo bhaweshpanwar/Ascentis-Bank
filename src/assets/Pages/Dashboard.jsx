@@ -1361,7 +1361,10 @@ const Dashboard = () => {
         <header className=' h-[60px] w-full border-b-2 py-6 px-6 flex justify-end items-center cursor-pointer'>
           <h1
             className='font-outfit'
-            onClick={() => setCurrent('Account Info')}
+            onClick={() => {
+              setCurrent('Account Info');
+              fetchUserInfo();
+            }}
           >
             {SessionAccountDetails.accountOwnerName}
           </h1>
