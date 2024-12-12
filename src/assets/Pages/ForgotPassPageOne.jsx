@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '/src/config.js';
 
 const ForgotPassPageOne = () => {
   const navigate = useNavigate();
@@ -126,29 +127,22 @@ const ForgotPassPageOne = () => {
       urlEncodedData.append('email', userCredentials.email);
       urlEncodedData.append('form', 'forgot_email');
 
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/forgot',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.FORGOT, urlEncodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      });
 
       if (response.data.exists === true) {
         try {
           // Second API Call
-          const secondaryResponse = await axios.get(
-            'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/otp',
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              withCredentials: true,
-            }
-          );
+          const secondaryResponse = await axios.get(API_ENDPOINTS.OTP, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          });
 
           if (secondaryResponse.data.exists === true) {
             setActiveStep((cur) => cur + 1);
@@ -192,7 +186,7 @@ const ForgotPassPageOne = () => {
       urlEncodedData.append('otp', userCredentials.otp);
 
       const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/validate',
+        API_ENDPOINTS.VALIDATE,
         urlEncodedData,
         {
           headers: {
@@ -220,15 +214,12 @@ const ForgotPassPageOne = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/otp',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(API_ENDPOINTS.OTP, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
 
       const { exists: emailSent, message: additionalMessage } = response.data;
 
@@ -262,16 +253,12 @@ const ForgotPassPageOne = () => {
       const urlEncodedData = new URLSearchParams();
       urlEncodedData.append('newPassword', userCredentials.newPassword);
 
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/change',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.CHANGE, urlEncodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      });
 
       if (response.status === 201) {
         navigate('/passwordsuccess', { state: { fromForgotPass: true } });

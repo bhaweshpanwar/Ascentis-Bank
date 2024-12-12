@@ -3,6 +3,7 @@ import { Stepper, Step, Button } from '@material-tailwind/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Country, State, City } from 'country-state-city';
+import { API_ENDPOINTS } from '/src/config.js';
 
 export function DefaultStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -12,7 +13,7 @@ export function DefaultStepper() {
   const [loading, setLoading] = React.useState(false);
   const [otp, setOtp] = React.useState('');
   const navigate = useNavigate();
-  const [isChecked, setIsChecked] = React.useState(false);
+  // const [isChecked, setIsChecked] = React.useState(false);
   const [countries, setCountries] = React.useState([]);
   const [states, setStates] = React.useState([]);
   const [cities, setCities] = React.useState([]);
@@ -237,9 +238,9 @@ export function DefaultStepper() {
     setFormData({ ...FormData, city: value });
   };
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
+  // const handleCheckboxChange = (event) => {
+  //   setIsChecked(event.target.checked);
+  // };
 
   const handleNext = async () => {
     // Controls moving to the next step in a multistep form.
@@ -257,16 +258,12 @@ export function DefaultStepper() {
       });
 
       try {
-        const response = await axios.post(
-          'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/check_email',
-          params,
-          {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            withCredentials: true,
-          }
-        );
+        const response = await axios.post(API_ENDPOINTS.CHECK_EMAIL, params, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+        });
 
         const { exists, message } = response.data;
 
@@ -299,7 +296,7 @@ export function DefaultStepper() {
   const handleGetOtp = async (event) => {
     event.preventDefault();
 
-    if (activeStep === 1 && !validateForm() && !isChecked) {
+    if (activeStep === 1 && !validateForm()) {
       return;
     }
 
@@ -314,7 +311,7 @@ export function DefaultStepper() {
 
       // Check user ID
       const checkUserResponse = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/check_user_id',
+        API_ENDPOINTS.CHECK_USER_ID,
         urlEncodedData,
         {
           headers: {
@@ -329,15 +326,12 @@ export function DefaultStepper() {
       if (exists === false) {
         // Fetch secondary data
         try {
-          const secondaryResponse = await axios.get(
-            'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/otp',
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              withCredentials: true,
-            }
-          );
+          const secondaryResponse = await axios.get(API_ENDPOINTS.OTP, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          });
           const newExist = secondaryResponse.data.exists;
           const additionalMessage = secondaryResponse.data.message;
           if (newExist === true) {
@@ -376,16 +370,12 @@ export function DefaultStepper() {
     urlencodedData.append('otp', otp);
 
     axios
-      .post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/validate_otp',
-        urlencodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      )
+      .post(API_ENDPOINTS.VALIDATE_OTP, urlencodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         console.log(response.data);
 
@@ -406,15 +396,12 @@ export function DefaultStepper() {
     setLoading(true);
 
     try {
-      const response = await axios.get(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/otp',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(API_ENDPOINTS.OTP, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
 
       const { exists: emailSent, message: additionalMessage } = response.data;
 
@@ -459,9 +446,9 @@ export function DefaultStepper() {
             isLastStep={(value) => setIsLastStep(value)}
             isFirstStep={(value) => setIsFirstStep(value)}
           >
-            <Step onClick={() => setActiveStep(0)}>1</Step>
-            <Step onClick={() => setActiveStep(1)}>2</Step>
-            <Step onClick={() => setActiveStep(2)}>3</Step>
+            <Step>1</Step>
+            <Step>2</Step>
+            <Step>3</Step>
           </Stepper>
           {/* onClick={() => setActiveStep(0)} */}
           {/* onClick={() => setActiveStep(1)} */}
@@ -1003,7 +990,7 @@ export function DefaultStepper() {
                     )}
                   </div>
 
-                  <div className='mt-16 mb-4'>
+                  {/* <div className='mt-16 mb-4'>
                     <p>
                       <strong className='text-xl font-bold '>
                         Terms and Conditions
@@ -1068,9 +1055,9 @@ export function DefaultStepper() {
                       If you have any questions about our Terms and Conditions,
                       please contact us at [email/contact info].
                     </p>
-                  </div>
+                  </div> */}
 
-                  <div>
+                  {/* <div>
                     <input
                       type='checkbox'
                       value='agree'
@@ -1081,7 +1068,7 @@ export function DefaultStepper() {
                     <label htmlFor='termsCheckbox' className='ml-4'>
                       Agree to All Terms and Conditions
                     </label>
-                  </div>
+                  </div> */}
                 </div>
               </>
             )}

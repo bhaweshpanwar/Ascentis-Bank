@@ -3,6 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { RECAPTCHA_KEY } from '/src/config.js';
+import { API_ENDPOINTS } from '/src/config.js';
 
 const LoginBasic = () => {
   const navigate = useNavigate();
@@ -116,28 +117,29 @@ const LoginBasic = () => {
     urlEncodedData.append('password', userCredentials.password);
 
     try {
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/login',
-        urlEncodedData,
-        {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          withCredentials: true, // Ensures cookies are included
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.LOGIN, urlEncodedData, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        withCredentials: true,
+      });
 
       setIsLoading(false);
 
-      if (response.status === 201) {
+      let errors = {};
+      if (response.data.data === 0) {
+        errors.username = 'Username does not exist.';
+      } else if (response.data.data === 1) {
+        errors.password = 'Wrong Password';
+      }
+      if (Object.keys(errors).length > 0) {
+        setUserCredentailsErrors(errors);
+      } else if (response.status === 201) {
         // Fetch additional session details (if needed)
-        const sessionResponse = await axios.get(
-          'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/home',
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true, // Ensure the session cookie is sent
-          }
-        );
+        const sessionResponse = await axios.get(API_ENDPOINTS.HOME, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
 
         const parsedData =
           typeof sessionResponse.data === 'string'
@@ -146,7 +148,6 @@ const LoginBasic = () => {
 
         console.log('Parsed SessionResponse data:', parsedData);
 
-        // Navigate to dashboard without hardcoding sessionId
         navigate(`/dashboard`, {
           state: { sessionAccountDetails: parsedData },
           replace: false,

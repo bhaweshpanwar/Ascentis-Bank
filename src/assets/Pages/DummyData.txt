@@ -1,0 +1,372 @@
+// const SessionAccountDetails = {
+//   accountOwnerName: 'Bhawesh Panwar',
+//   accountBalance: 45000.0,
+//   recentTransactions: [
+//     {
+//       name: 'Tanmay Sharma',
+//       type: 'Outgoing',
+//       status: 'In Progress',
+//       date: new Date('2024-11-18T14:00:00'),
+//       amount: 10000.0,
+//     },
+//     {
+//       name: 'Tanmay Sharma',
+//       type: 'Outgoing',
+//       status: 'In Progress',
+//       date: new Date('2024-11-18T14:00:00'),
+//       amount: 10000.0,
+//     },
+//     {
+//       name: 'Tanmay Sharma',
+//       type: 'Outgoing',
+//       status: 'In Progress',
+//       date: new Date('2024-11-18T14:00:00'),
+//       amount: 10000.0,
+//     },
+//     {
+//       name: 'Tanmay Sharma',
+//       type: 'Outgoing',
+//       status: 'In Progress',
+//       date: new Date('2024-11-18T14:00:00'),
+//       amount: 10000.0,
+//     },
+//     {
+//       name: 'Krishna Yadav',
+//       type: 'Incoming',
+//       status: 'Completed',
+//       date: new Date('2024-11-17T10:30:00'),
+//       amount: 1000.0,
+//     },
+//     {
+//       name: 'Raj Yadav',
+//       type: 'Outgoing',
+//       status: 'Pending',
+//       date: new Date('2024-11-16T09:00:00'),
+//       amount: 90.0,
+//     },
+//     {
+//       name: 'MP Portal',
+//       type: 'Outgoing',
+//       status: 'Done',
+//       date: new Date('2024-11-15T18:45:00'),
+//       amount: 90.0,
+//     },
+//     {
+//       name: 'Akash Singh',
+//       type: 'Outgoing',
+//       status: 'Completed',
+//       date: new Date('2024-11-20T13:15:00'),
+//       amount: 1000.0,
+//     },
+//   ],
+// };
+// const SessionAutoPayDetails = [
+//     {
+//         name: 'Amit Sharma',
+//         startDate: '2023-01-01',
+//         endDate: '2024-01-01',
+//         paymentFrequency: 'Monthly',
+//         amount: 5000,
+//     },
+//     {
+//         name: 'Sneha Iyer',
+//         startDate: '2022-06-15',
+//         endDate: '2023-06-15',
+//         paymentFrequency: 'Yearly',
+//         amount: 60000,
+//     },
+//     {
+//         name: 'Rohan Mehta',
+//         startDate: '2023-03-01',
+//         endDate: '2023-12-01',
+//         paymentFrequency: 'Weekly',
+//         amount: 1200,
+//     },
+//     {
+//         name: 'Pooja Deshmukh',
+//         startDate: '2023-07-10',
+//         endDate: '2024-07-10',
+//         paymentFrequency: 'Monthly',
+//         amount: 7500,
+//     },
+//     {
+//         name: 'Karan Verma',
+//         startDate: '2023-08-01',
+//         endDate: '2024-08-01',
+//         paymentFrequency: 'Weekly',
+//         amount: 1000,
+//     },
+// ];
+
+// const SessionTransactionDetails = {
+//     accountOwnerName: 'Bhawesh Panwar',
+//     accountBalance: 45000.0,
+//     recentTransactions: [
+//         {
+//             name: 'Tanmay Sharma',
+//             type: 'Outgoing',
+//             status: 'In Progress',
+//             date: new Date('2024-11-18T14:00:00'),
+//             amount: 10000.0,
+//         },
+//         {
+//             name: 'Tanmay Sharma',
+//             type: 'Outgoing',
+//             status: 'In Progress',
+//             date: new Date('2024-11-18T14:00:00'),
+//             amount: 10000.0,
+//         },
+//         {
+//             name: 'Tanmay Sharma',
+//             type: 'Outgoing',
+//             status: 'In Progress',
+//             date: new Date('2024-11-18T14:00:00'),
+//             amount: 10000.0,
+//         },
+//         {
+//             name: 'Tanmay Sharma',
+//             type: 'Outgoing',
+//             status: 'In Progress',
+//             date: new Date('2024-11-18T14:00:00'),
+//             amount: 10000.0,
+//         },
+//         {
+//             name: 'Krishna Yadav',
+//             type: 'Incoming',
+//             status: 'Completed',
+//             date: new Date('2024-11-17T10:30:00'),
+//             amount: 1000.0,
+//         },
+//         {
+//             name: 'Raj Yadav',
+//             type: 'Outgoing',
+//             status: 'Pending',
+//             date: new Date('2024-11-16T09:00:00'),
+//             amount: 90.0,
+//         },
+//         {
+//             name: 'MP Portal',
+//             type: 'Outgoing',
+//             status: 'Done',
+//             date: new Date('2024-11-15T18:45:00'),
+//             amount: 90.0,
+//         },
+//         {
+//             name: 'Akash Singh',
+//             type: 'Outgoing',
+//             status: 'Completed',
+//             date: new Date('2024-11-20T13:15:00'),
+//             amount: 1000.0,
+//         },
+//     ],
+// };
+// const SessionFixedDeposit = [
+//     {
+//         name: 'John Doe',
+//         interestRate: 5.5,
+//         amount: 10000,
+//         endDate: '2025-12-31',
+//     },
+//     {
+//         name: 'Jane Smith',
+//         interestRate: 6.2,
+//         amount: 5000,
+//         endDate: '2026-06-15',
+//     },
+//     {
+//         name: 'Alice Johnson',
+//         interestRate: 4.8,
+//         amount: 20000,
+//         endDate: '2024-09-10',
+//     },
+// ];
+{/* Recent Transaction Section */}
+                      <div className='h-[80%] w-full px-14 overflow-y-auto'>
+                        {Array.isArray(
+                          SessionFixedDepositDetails.existingFdDetails
+                        ) &&
+                        SessionFixedDepositDetails.existingFdDetails.length >
+                          0 ? (
+                          SessionFixedDepositDetails.existingFdDetails
+                            .filter(
+                              (transaction) =>
+                                transaction !== null &&
+                                transaction !== undefined
+                            ) // Ensure valid entries
+                            .map((transaction, index) => (
+                              <div
+                                key={index}
+                                className='h-[60px] w-full flex justify-center items-center mb-2 border-b-2 border-gray-300'
+                              >
+                                {/* Name and Dates */}
+                                <div className='h-full w-[70%] font-outfit flex justify-between items-start'>
+                                  <section className='flex flex-col justify-center items-start'>
+                                    <div className='text-[18px]'>
+                                      {transaction.name || 'Unknown'}
+                                    </div>
+                                    <div className='text-[12px] text-gray-500'>
+                                      End:{' '}
+                                      {transaction.endDate
+                                        ? formatDate(transaction.endDate)
+                                        : 'N/A'}
+                                    </div>
+                                  </section>
+                                  <section className='text-[16px] font-outfit flex justify-start items-center w-[100px] h-full mr-3'>
+                                    {{transaction.interestRate}% Interest || 'N/A}
+                                  </section>
+                                </div>
+
+                                {/* Amount */}
+                                <div className='h-full w-[15%] flex justify-end items-center'>
+                                  <p className='text-[#363636] font-outfit'>
+                                    {transaction.amount
+                                      ? formatCurrency(transaction.amount)
+                                      : 'N/A'}
+                                  </p>
+                                </div>
+                                <div className='h-full w-[15%] flex justify-end items-center'>
+                                  <button
+                                    className='bg-[#ff86828c] hover:bg-[#e2625d] duration-700 font-outfit px-2 py-1 rounded-md text-white'
+                                    onClick={() =>
+                                      handleAutoPayDelete(transaction)
+                                    }
+                                  >
+                                    {isLoading ? (
+                                      <div className='spinnerLogin'></div>
+                                    ) : (
+                                      'Stop'
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            ))
+                        ) : (
+                          <div className='text-gray-500 text-center mt-4'>
+                            No active auto-pay.
+                          </div>
+                        )}
+                      </div>
+
+
+                      
+const SessionFixedDepositDetailsDummy = [
+  {
+    name: 'John Doe',
+    interestRate: 5.5,
+    amount: 10000,
+    endDate: '2025-12-31',
+  },
+  {
+    name: 'Jane Smith',
+    interestRate: 6.2,
+    amount: 5000,
+    endDate: '2026-06-15',
+  },
+  {
+    name: 'Alice Johnson',
+    interestRate: 4.8,
+    amount: 20000,
+    endDate: '2024-09-10',
+  },
+];
+
+const SessionAccountDetailsDummy = {
+  accountOwnerName: 'Bhawesh Panwar',
+  accountBalance: 45000.0,
+  recentTransactions: [
+    {
+      name: 'Tanmay Sharma',
+      type: 'Outgoing',
+      status: 'In Progress',
+      date: new Date('2024-11-18T14:00:00'),
+      amount: 10000.0,
+    },
+    {
+      name: 'Tanmay Sharma',
+      type: 'Outgoing',
+      status: 'In Progress',
+      date: new Date('2024-11-18T14:00:00'),
+      amount: 10000.0,
+    },
+    {
+      name: 'Tanmay Sharma',
+      type: 'Outgoing',
+      status: 'In Progress',
+      date: new Date('2024-11-18T14:00:00'),
+      amount: 10000.0,
+    },
+    {
+      name: 'Tanmay Sharma',
+      type: 'Outgoing',
+      status: 'In Progress',
+      date: new Date('2024-11-18T14:00:00'),
+      amount: 10000.0,
+    },
+    {
+      name: 'Krishna Yadav',
+      type: 'Incoming',
+      status: 'Completed',
+      date: new Date('2024-11-17T10:30:00'),
+      amount: 1000.0,
+    },
+    {
+      name: 'Raj Yadav',
+      type: 'Outgoing',
+      status: 'Pending',
+      date: new Date('2024-11-16T09:00:00'),
+      amount: 90.0,
+    },
+    {
+      name: 'MP Portal',
+      type: 'Outgoing',
+      status: 'Done',
+      date: new Date('2024-11-15T18:45:00'),
+      amount: 90.0,
+    },
+    {
+      name: 'Akash Singh',
+      type: 'Outgoing',
+      status: 'Completed',
+      date: new Date('2024-11-20T13:15:00'),
+      amount: 1000.0,
+    },
+  ],
+};
+
+const SessionAutoPayDetailsDummy = [
+  {
+    name: 'Amit Sharma',
+    startDate: '2023-01-01',
+    endDate: '2024-01-01',
+    paymentFrequency: 'Monthly',
+    amount: 5000,
+  },
+  {
+    name: 'Sneha Iyer',
+    startDate: '2022-06-15',
+    endDate: '2023-06-15',
+    paymentFrequency: 'Yearly',
+    amount: 60000,
+  },
+  {
+    name: 'Rohan Mehta',
+    startDate: '2023-03-01',
+    endDate: '2023-12-01',
+    paymentFrequency: 'Weekly',
+    amount: 1200,
+  },
+  {
+    name: 'Pooja Deshmukh',
+    startDate: '2023-07-10',
+    endDate: '2024-07-10',
+    paymentFrequency: 'Monthly',
+    amount: 7500,
+  },
+  {
+    name: 'Karan Verma',
+    startDate: '2023-08-01',
+    endDate: '2024-08-01',
+    paymentFrequency: 'Weekly',
+    amount: 1000,
+  },
+];

@@ -3,115 +3,116 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import UserInformationDisplay from '../components/UserInformationDisplay';
+import { API_ENDPOINTS } from '/src/config.js';
 
-const SessionFixedDepositDetailsDummy = [
-  {
-    fd_Id: '001FD',
-    name: 'John Doe',
-    interestRate: 5.5,
-    amount: 10000,
-    endDate: '2025-12-31',
-  },
-  {
-    fd_Id: '002FD',
-    name: 'Jane Smith',
-    interestRate: 6.2,
-    amount: 5000,
-    endDate: '2026-06-15',
-  },
-  {
-    fd_Id: '003FD',
-    name: 'Alice Johnson',
-    interestRate: 4.8,
-    amount: 20000,
-    endDate: '2024-09-10',
-  },
-];
+// const SessionFixedDepositDetailsDummy = [
+//   {
+//     fd_Id: '001FD',
+//     name: 'John Doe',
+//     interestRate: 5.5,
+//     amount: 10000,
+//     endDate: '2025-12-31',
+//   },
+//   {
+//     fd_Id: '002FD',
+//     name: 'Jane Smith',
+//     interestRate: 6.2,
+//     amount: 5000,
+//     endDate: '2026-06-15',
+//   },
+//   {
+//     fd_Id: '003FD',
+//     name: 'Alice Johnson',
+//     interestRate: 4.8,
+//     amount: 20000,
+//     endDate: '2024-09-10',
+//   },
+// ];
 
-const SessionAccountDetailsDummy = {
-  accountOwnerName: 'Bhawesh Panwar',
-  accountBalance: 45000.0,
-  recentTransactions: [
-    {
-      name: 'Tanmay Sharma',
-      type: 'Outgoing',
-      status: 'In Progress',
-      date: new Date('2024-11-18T14:00:00'),
-      amount: 10000.0,
-    },
-    {
-      name: 'Krishna Yadav',
-      type: 'Incoming',
-      status: 'Completed',
-      date: new Date('2024-11-17T10:30:00'),
-      amount: 1000.0,
-    },
-    {
-      name: 'Raj Yadav',
-      type: 'Outgoing',
-      status: 'Pending',
-      date: new Date('2024-11-16T09:00:00'),
-      amount: 90.0,
-    },
-    {
-      name: 'MP Portal',
-      type: 'Outgoing',
-      status: 'Done',
-      date: new Date('2024-11-15T18:45:00'),
-      amount: 90.0,
-    },
-    {
-      name: 'Akash Singh',
-      type: 'Outgoing',
-      status: 'Completed',
-      date: new Date('2024-11-20T13:15:00'),
-      amount: 1000.0,
-    },
-  ],
-};
+// const SessionAccountDetailsDummy = {
+//   accountOwnerName: 'Bhawesh Panwar',
+//   accountBalance: 45000.0,
+//   recentTransactions: [
+//     {
+//       name: 'Tanmay Sharma',
+//       type: 'Outgoing',
+//       status: 'In Progress',
+//       date: new Date('2024-11-18T14:00:00'),
+//       amount: 10000.0,
+//     },
+//     {
+//       name: 'Krishna Yadav',
+//       type: 'Incoming',
+//       status: 'Completed',
+//       date: new Date('2024-11-17T10:30:00'),
+//       amount: 1000.0,
+//     },
+//     {
+//       name: 'Raj Yadav',
+//       type: 'Outgoing',
+//       status: 'Pending',
+//       date: new Date('2024-11-16T09:00:00'),
+//       amount: 90.0,
+//     },
+//     {
+//       name: 'MP Portal',
+//       type: 'Outgoing',
+//       status: 'Done',
+//       date: new Date('2024-11-15T18:45:00'),
+//       amount: 90.0,
+//     },
+//     {
+//       name: 'Akash Singh',
+//       type: 'Outgoing',
+//       status: 'Completed',
+//       date: new Date('2024-11-20T13:15:00'),
+//       amount: 1000.0,
+//     },
+//   ],
+// };
 
-const SessionAutoPayDetailsDummy = [
-  {
-    autopay_Id: '001AP',
-    name: 'Amit Sharma',
-    startDate: '2023-01-01',
-    endDate: '2024-01-01',
-    paymentFrequency: 'Monthly',
-    amount: 5000,
-  },
-  {
-    autopay_Id: '002AP',
-    name: 'Sneha Iyer',
-    startDate: '2022-06-15',
-    endDate: '2023-06-15',
-    paymentFrequency: 'Yearly',
-    amount: 60000,
-  },
-  {
-    autopay_Id: '003AP',
-    name: 'Rohan Mehta',
-    startDate: '2023-03-01',
-    endDate: '2023-12-01',
-    paymentFrequency: 'Weekly',
-    amount: 1200,
-  },
-  {
-    autopay_Id: '004AP',
-    name: 'Pooja Deshmukh',
-    startDate: '2023-07-10',
-    endDate: '2024-07-10',
-    paymentFrequency: 'Monthly',
-    amount: 7500,
-  },
-  {
-    autopay_Id: '005AP',
-    name: 'Karan Verma',
-    startDate: '2023-08-01',
-    endDate: '2024-08-01',
-    paymentFrequency: 'Weekly',
-    amount: 1000,
-  },
-];
+// const SessionAutoPayDetailsDummy = [
+//   {
+//     autopay_Id: '001AP',
+//     name: 'Amit Sharma',
+//     startDate: '2023-01-01',
+//     endDate: '2024-01-01',
+//     paymentFrequency: 'Monthly',
+//     amount: 5000,
+//   },
+//   {
+//     autopay_Id: '002AP',
+//     name: 'Sneha Iyer',
+//     startDate: '2022-06-15',
+//     endDate: '2023-06-15',
+//     paymentFrequency: 'Yearly',
+//     amount: 60000,
+//   },
+//   {
+//     autopay_Id: '003AP',
+//     name: 'Rohan Mehta',
+//     startDate: '2023-03-01',
+//     endDate: '2023-12-01',
+//     paymentFrequency: 'Weekly',
+//     amount: 1200,
+//   },
+//   {
+//     autopay_Id: '004AP',
+//     name: 'Pooja Deshmukh',
+//     startDate: '2023-07-10',
+//     endDate: '2024-07-10',
+//     paymentFrequency: 'Monthly',
+//     amount: 7500,
+//   },
+//   {
+//     autopay_Id: '005AP',
+//     name: 'Karan Verma',
+//     startDate: '2023-08-01',
+//     endDate: '2024-08-01',
+//     paymentFrequency: 'Weekly',
+//     amount: 1000,
+//   },
+// ];
 
 const Dashboard = () => {
   const [current, setCurrent] = useState('Home'); // State to track active section
@@ -129,16 +130,19 @@ const Dashboard = () => {
   const [SessionTransactionDetails, setSessionTransactionDetails] = useState({
     recentTransactions: [], // Default to an empty array
   });
+  const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false);
+  const [isAmountModalVisible, setIsAmountModalVisible] = useState(false);
+  const [forfeitedAmount, setForfeitedAmount] = useState(0);
 
   const navigate = useNavigate();
   const [SessionAutoPayDetails, setSessionAutoPayDetails] = useState({
-    // existingAutopay: [],
-    existingAutopay: SessionAutoPayDetailsDummy,
+    existingAutopay: [],
+    // existingAutopay: SessionAutoPayDetailsDummy,
   });
 
   const [SessionFixedDepositDetails, setSessionFixedDepositDetails] = useState({
-    // recentFD: [],
-    recentFD: SessionFixedDepositDetailsDummy,
+    recentFD: [],
+    // recentFD: SessionFixedDepositDetailsDummy,
   });
   const location = useLocation();
   const BeforeSessionAccountDetails = location.state?.sessionAccountDetails;
@@ -230,13 +234,10 @@ const Dashboard = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/account_info',
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(API_ENDPOINTS.ACCOUNT_INFO, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
 
       const parsedData =
         typeof response.data === 'string'
@@ -306,27 +307,59 @@ const Dashboard = () => {
       year: 'numeric',
     });
   };
+
   useEffect(() => {
-    const handleBeforeUnload = async (event) => {
+    const handleBeforeUnload = (event) => {
       event.preventDefault();
       event.returnValue = '';
-      try {
-        await axios.get(
-          'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/logout',
-          {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true,
+
+      // Perform the logout request
+      axios
+        .get(API_ENDPOINTS.LOGOUT, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            console.log('Logout successful before unload.');
+          } else {
+            console.error(
+              'Logout failed before unload with status:',
+              response.status
+            );
           }
-        );
-      } catch (error) {
-        console.error('Failed to logout:', error);
-      }
+        })
+        .catch((error) => {
+          console.error('Error during logout before unload:', error);
+        });
     };
+
     window.addEventListener('beforeunload', handleBeforeUnload);
+
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
+
+  // useEffect(() => {
+  //   const handleBeforeUnload = async (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = '';
+  //     try {
+  //       await axios.get(API_ENDPOINTS.LOGOUT, {
+  //         headers: { 'Content-Type': 'application/json' },
+  //         withCredentials: true,
+  //       });
+  //     } catch (error) {
+  //       console.error('Failed to logout:', error);
+  //     }
+  //   };
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -442,9 +475,8 @@ const Dashboard = () => {
 
     // Auto Pay: Form Fields Validation
     if (current === 'Auto Pay' && currentAutoPayState === 1) {
-      const date = new Date(); // Current date
-      const validAutoPayDate = new Date(date); // Create a new Date object
-      validAutoPayDate.setDate(date.getDate() + 7); // Add 7 days to the current date
+      let validAutoPayDate = new Date();
+      validAutoPayDate.setDate(validAutoPayDate.getDate() + 7);
 
       if (!formAutoPay.recipientName)
         errors.autoPayRecipientName = 'Recipient Name is Required.';
@@ -455,7 +487,9 @@ const Dashboard = () => {
       } else {
         const enteredEndDate = new Date(formAutoPay.endDate); // Parse the entered endDate
         if (enteredEndDate <= validAutoPayDate) {
-          errors.autoPayEndDate = `End Date must be at least 7 days from today.`;
+          errors.autoPayEndDate = `End Date must be at least 7 days from today .i.e. ${formatDate(
+            today
+          )}`;
         }
       }
       if (!formAutoPay.paymentFrequency)
@@ -522,30 +556,23 @@ const Dashboard = () => {
     urlEncodedData.append('transactionDate', formattedDate);
 
     try {
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/pay',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.PAY, urlEncodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      });
       console.log(response.data); // Log response data for debugging
 
       if (response.data.data === 2) {
         try {
           // Second API Call
-          const secondaryResponse = await axios.get(
-            'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/otp',
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              withCredentials: true,
-            }
-          );
+          const secondaryResponse = await axios.get(API_ENDPOINTS.OTP, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          });
 
           if (secondaryResponse.data?.exists === true) {
             setBasicLoading(false);
@@ -583,6 +610,63 @@ const Dashboard = () => {
     setFormPaymentDataErrors(errors);
   };
 
+  const handleAccountDelete = async () => {
+    if (current === 'Account Info' && !password) {
+      alert('Please enter your password to confirm deletion.');
+      return;
+    }
+    setBasicLoading(true);
+
+    const urlEncodedData = new URLSearchParams();
+    urlEncodedData.append('password', password); // Assuming `password` is your variable holding the password input
+
+    try {
+      const response = await axios.post(
+        API_ENDPOINTS.DELETE_ACCOUNT, // Replace with the actual endpoint
+        urlEncodedData,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+        }
+      );
+
+      const responseData = response.data?.data;
+
+      if (responseData === 0) {
+        setBasicLoading(false);
+        alert('Wrong Password. Please try again.');
+      } else if (responseData === 1) {
+        setBasicLoading(false);
+        alert(
+          'AutoPay is associated with your account. Please delete it before proceeding.'
+        );
+      } else if (responseData === 2) {
+        setBasicLoading(false);
+        alert(
+          'A Fixed Deposit is associated with your account. Please delete it before proceeding.'
+        );
+      } else if (responseData === 3 && response.status === 201) {
+        setBasicLoading(false);
+        setForfeitedAmount(response.data.amount || 0);
+        setIsPasswordModalVisible(false);
+        setIsAmountModalVisible(true);
+
+        // Navigate to /login after 2-3 seconds
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
+      }
+    } catch (error) {
+      setBasicLoading(false);
+      console.error('Error during account deletion:', error);
+      alert(
+        'An error occurred while processing your request. Please try again.'
+      );
+    }
+  };
+
   const handleOtpSubmit = async () => {
     setBasicLoading(true);
 
@@ -591,7 +675,7 @@ const Dashboard = () => {
 
     try {
       const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/transaction',
+        API_ENDPOINTS.TRANSACTION,
         urlEncodedData,
         {
           headers: {
@@ -624,13 +708,10 @@ const Dashboard = () => {
   const handleHomeUIUpdate = async () => {
     setLoading(true);
     try {
-      const sessionResponse = await axios.get(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/home',
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
+      const sessionResponse = await axios.get(API_ENDPOINTS.HOME, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
@@ -653,13 +734,10 @@ const Dashboard = () => {
   const handleTransactionUIUpdate = async () => {
     setLoading(true);
     try {
-      const sessionResponse = await axios.get(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/transactionList',
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
+      const sessionResponse = await axios.get(API_ENDPOINTS.TRANSACTION_LIST, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
@@ -684,13 +762,10 @@ const Dashboard = () => {
     setLoading(true); // Show the loader immediately
 
     try {
-      const sessionResponse = await axios.get(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/autopayList',
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
+      const sessionResponse = await axios.get(API_ENDPOINTS.AUTOPAY_LIST, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
@@ -715,13 +790,10 @@ const Dashboard = () => {
     setLoading(true); // Show the loader immediately
 
     try {
-      const sessionResponse = await axios.get(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/existing_fd',
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
+      const sessionResponse = await axios.get(API_ENDPOINTS.EXISTING_FD, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
@@ -761,16 +833,12 @@ const Dashboard = () => {
     urlEncodedData.append('autoPayDate', formattedDate);
 
     try {
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/autopay',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.AUTOPAY, urlEncodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      });
 
       console.log(response.data); // Debugging log, remove in production
 
@@ -806,7 +874,7 @@ const Dashboard = () => {
 
     try {
       const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/auto_pwd',
+        API_ENDPOINTS.AUTO_PWD,
         urlEncodedData,
         {
           headers: {
@@ -841,7 +909,7 @@ const Dashboard = () => {
   // Logout handler
   const handleLogout = useCallback(() => {
     axios
-      .get('https://ghoul-causal-adder.ngrok-free.app/AscentisBank/logout', {
+      .get(API_ENDPOINTS.LOGOUT, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       })
@@ -888,30 +956,6 @@ const Dashboard = () => {
     if (userConfirmed) handleLogout();
   };
 
-  //   useEffect(() => {
-  //   const handleBeforeUnload = async (event) => {
-  //     event.preventDefault();
-  //     event.returnValue = '';
-  //     try {
-  //       await axios.get('https://ghoul-causal-adder.ngrok-free.app/AscentisBank/logout', {
-  //         headers: { 'Content-Type': 'application/json' },
-  //         withCredentials: true,
-  //       });
-  //     } catch (error) {
-  //       console.error("Failed to logout:", error);
-  //     }
-  //   };
-
-  //     // Attach the event listener
-  //     window.addEventListener("beforeunload", handleBeforeUnload);
-
-  //     // Cleanup the event listener on component unmount
-  //     return () => {
-  //       window.removeEventListener("beforeunload", handleBeforeUnload);
-  //     };
-  //   }, []);
-  // };
-
   const handleFdDelete = async (transaction) => {
     setIsLoading((prevLoadingState) => ({
       ...prevLoadingState,
@@ -921,16 +965,12 @@ const Dashboard = () => {
     const urlEncodedData = new URLSearchParams();
     urlEncodedData.append('fd_Id', transaction.fd_Id);
     try {
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/drop_fd',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.DROP_FD, urlEncodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      });
 
       if (response.data.data === 1 || response.status === 201) {
         alert('FD deleted successfully');
@@ -959,7 +999,7 @@ const Dashboard = () => {
     urlEncodedData.append('autopay_Id', transaction.autopay_Id);
     try {
       const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/drop_autopay',
+        API_ENDPOINTS.DROP_AUTOPAY,
         urlEncodedData,
         {
           headers: {
@@ -1003,16 +1043,12 @@ const Dashboard = () => {
     urlEncodedData.append('fixedDepositDate', formattedDate);
 
     try {
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/fd',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.FD, urlEncodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      });
       if (response.data?.data === 0) {
         alert('Insufficient balance to create FD');
       } else if (response.data?.data === 1) {
@@ -1034,16 +1070,12 @@ const Dashboard = () => {
     urlEncodedData.append('fdpassword', fdpassword);
 
     try {
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/fd_pwd',
-        urlEncodedData,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(API_ENDPOINTS.FD_PWD, urlEncodedData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+      });
 
       if (response.data?.data === 0) {
         setFormFixedDepositErrors((prevErrors) => ({
@@ -1078,7 +1110,9 @@ const Dashboard = () => {
                 Please log in again to access your account.
               </p>
               <button
-                onClick={navigate('login')}
+                onClick={() => {
+                  navigate('/login');
+                }}
                 className='inline-flex text-white bg-[#0D427C] my-4 py-3 px-4 rounded-full font-SF_PRO_Light'
               >
                 Go to Login
@@ -1089,13 +1123,101 @@ const Dashboard = () => {
       </>
     );
   }
+
   return (
     <div className='flex'>
+      <div className='max-w-2xl mx-auto'>
+        {/* Password Confirmation Modal */}
+        {loading && <LoadingOverlayDashboard />}
+        <>
+          {isPasswordModalVisible && (
+            <div
+              className='fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50'
+              aria-hidden='true'
+            >
+              <div className='bg-white rounded-lg shadow-lg w-full max-w-md p-6 dark:bg-gray-700'>
+                <div className='flex items-start justify-between mb-4'>
+                  <h3 className='text-xl font-semibold text-gray-900 dark:text-white font-outfit'>
+                    Confirm Account Deletion
+                  </h3>
+                  <button
+                    className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg p-1.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
+                    onClick={() => setIsPasswordModalVisible(false)}
+                  >
+                    <svg
+                      className='w-5 h-5'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                        clipRule='evenodd'
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+                <p className='text-gray-500 dark:text-gray-400 mb-4 font-outfit mb-8'>
+                  Enter your password to confirm the deletion of your account.
+                  Your remaining balance will be forfeited and cannot be
+                  accessed again.
+                </p>
+                <input
+                  type='password'
+                  className='w-full p-2 mb-4 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white mb-20'
+                  placeholder='Enter your password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <div className='flex justify-end space-x-2'>
+                  <button
+                    className='px-4 py-2 bg-gray-300 rounded-full font-outfit hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500'
+                    onClick={() => setIsPasswordModalVisible(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className='px-4 py-2 bg-[#D96B6E] hover:bg-[#D13639] text-white font-outfit rounded-full '
+                    onClick={handleAccountDelete}
+                  >
+                    Confirm Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+
+        {/* Amount Confirmation Modal */}
+        {isAmountModalVisible && (
+          <div
+            className='fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 font-outfit '
+            aria-hidden='true'
+          >
+            <div className='bg-white rounded-lg shadow-lg w-full max-w-md p-6 dark:bg-gray-700'>
+              <div className='flex items-start justify-between mb-4'>
+                <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+                  Account Deleted
+                </h3>
+              </div>
+              <p className='text-gray-500 dark:text-gray-400 mb-4'>
+                Your account has been successfully deleted. The forfeited amount
+                is <strong>{formatCurrency(forfeitedAmount)}</strong>. You
+                cannot access it again.
+              </p>
+              <p className='text-gray-500 dark:text-gray-400'>
+                Redirecting you to the login page...
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
       {/* Sidebar */}
       <aside className='w-[280px] h-screen bg-[#163172]'>
         <div className='w-full h-full flex flex-col justify-center items-center'>
           {/* Logo Section */}
-          <div className='h-[20%] w-full flex justify-center items-center'>
+          <div className='h-[20%] w-full flex justify-start pl-8 items-center '>
             <img
               src='src/assets/Images/name&logo.png'
               alt='Logo'
@@ -1241,7 +1363,7 @@ const Dashboard = () => {
             {SessionAccountDetails.accountOwnerName}
           </h1>
         </header>
-        <div className='h-[600px] w-full px-24 pt-8 overflow-scroll'>
+        <div className='h-[600px] w-full px-24 pt-8 overflow-y-scroll overflow-x-hidden'>
           {/*Home*/}
           {current === 'Home' && (
             <>
@@ -1277,16 +1399,26 @@ const Dashboard = () => {
 
                   {/*CTA*/}
                   <div className='h-[30%] w-full flex justify-start items-center gap-1.5'>
-                    <button className='font-outfit bg-[#363636] rounded-[10px] font-light gap-1.5 text-white flex justify-center items-center py-2 px-4'>
+                    <button
+                      className='font-outfit bg-[#363636] rounded-[10px] font-light gap-1.5 text-white flex justify-center items-center py-2 px-4'
+                      onClick={() => setCurrent('Pay or Transfer')}
+                    >
                       <img
                         src='src/assets/Images/pay_vector.png'
                         alt='Pay or Transfer'
                       />
                       Pay or Transfer
                     </button>
-                    <button className='font-outfit bg-[#EBEAFF] rounded-[10px] font-light gap-1.5 text-[#5C58FF] flex justify-center items-center py-2 px-4'>
-                      <img src='src/assets/Images/add_img.png' alt='Top Up' />
-                      Top Up
+                    <button
+                      className='font-outfit bg-[#EBEAFF] rounded-[10px] font-light gap-1.5 text-[#5C58FF] flex justify-center items-center py-2 px-4'
+                      onClick={() => {
+                        setCurrent('Auto Pay');
+                        setCurrentAutoPayState(0); // Update state
+                        setFormAutoPayErrors({});
+                        handleAutoPayUIUpdate();
+                      }}
+                    >
+                      Auto Pay
                     </button>
                   </div>
                 </div>
@@ -1861,6 +1993,12 @@ const Dashboard = () => {
                   <>
                     {basicLoading && <LoadingOverlay />}
                     <div>
+                      <button
+                        className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
+                        onClick={() => setCurrentAutoPayState(1)}
+                      >
+                        <img src='src\assets\Images\back_arrow.png' />
+                      </button>
                       <h1 className='font-outfit font-bold text-2xl'>
                         Enter Account Password
                       </h1>
@@ -1999,6 +2137,17 @@ const Dashboard = () => {
             <>
               {loading && <LoadingOverlayDashboard />}
               <UserInformationDisplay userData={userData.accountInfo} />
+              <div className='h-auto w-full flex justify-end items-start mb-20'>
+                <button
+                  className='block text-white bg-[#d13639] font-outfit rounded-full text-md px-5 py-2.5 text-center mr-8'
+                  onClick={() => {
+                    setIsPasswordModalVisible(true);
+                    setPassword('');
+                  }}
+                >
+                  Delete Account
+                </button>
+              </div>
             </>
           )}
           {current === 'Fixed Deposit' && (
@@ -2214,6 +2363,12 @@ const Dashboard = () => {
                   <>
                     {basicLoading && <LoadingOverlay />}
                     <div>
+                      <button
+                        className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
+                        onClick={() => setCurrentFixedDepositState(1)}
+                      >
+                        <img src='src/assets/Images/back_arrow.png' />
+                      </button>
                       <h1 className='font-outfit font-bold text-2xl'>
                         Enter Account Password
                       </h1>
