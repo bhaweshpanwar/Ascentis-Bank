@@ -514,7 +514,7 @@ export function DefaultStepper() {
                       htmlFor='gender'
                       className='block mb-2 text-sm font-medium text-gray-900'
                     >
-                      Gender (Optional)
+                      Gender
                     </label>
                     <select
                       id='gender'
@@ -527,9 +527,6 @@ export function DefaultStepper() {
                       <option value='male'>Male</option>
                       <option value='female'>Female</option>
                       <option value='other'>Other</option>
-                      <option value='prefer_not_to_say'>
-                        Prefer not to say
-                      </option>
                     </select>
                     {formErrors.gender && (
                       <p className='text-red-500 text-sm'>

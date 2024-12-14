@@ -5,114 +5,114 @@ import { useLocation } from 'react-router-dom';
 import UserInformationDisplay from '../components/UserInformationDisplay';
 import { API_ENDPOINTS } from '/src/config.js';
 
-// const SessionFixedDepositDetailsDummy = [
-//   {
-//     fd_Id: '001FD',
-//     name: 'John Doe',
-//     interestRate: 5.5,
-//     amount: 10000,
-//     endDate: '2025-12-31',
-//   },
-//   {
-//     fd_Id: '002FD',
-//     name: 'Jane Smith',
-//     interestRate: 6.2,
-//     amount: 5000,
-//     endDate: '2026-06-15',
-//   },
-//   {
-//     fd_Id: '003FD',
-//     name: 'Alice Johnson',
-//     interestRate: 4.8,
-//     amount: 20000,
-//     endDate: '2024-09-10',
-//   },
-// ];
+/*const SessionFixedDepositDetailsDummy = [
+  {
+    fd_Id: '001FD',
+    name: 'John Doe',
+    interestRate: 5.5,
+    amount: 10000,
+    endDate: '2025-12-31',
+  },
+  {
+    fd_Id: '002FD',
+    name: 'Jane Smith',
+    interestRate: 6.2,
+    amount: 5000,
+    endDate: '2026-06-15',
+  },
+  {
+    fd_Id: '003FD',
+    name: 'Alice Johnson',
+    interestRate: 4.8,
+    amount: 20000,
+    endDate: '2024-09-10',
+  },
+];
 
-// const SessionAccountDetailsDummy = {
-//   accountOwnerName: 'Bhawesh Panwar',
-//   accountBalance: 45000.0,
-//   recentTransactions: [
-//     {
-//       name: 'Tanmay Sharma',
-//       type: 'Outgoing',
-//       status: 'In Progress',
-//       date: new Date('2024-11-18T14:00:00'),
-//       amount: 10000.0,
-//     },
-//     {
-//       name: 'Krishna Yadav',
-//       type: 'Incoming',
-//       status: 'Completed',
-//       date: new Date('2024-11-17T10:30:00'),
-//       amount: 1000.0,
-//     },
-//     {
-//       name: 'Raj Yadav',
-//       type: 'Outgoing',
-//       status: 'Pending',
-//       date: new Date('2024-11-16T09:00:00'),
-//       amount: 90.0,
-//     },
-//     {
-//       name: 'MP Portal',
-//       type: 'Outgoing',
-//       status: 'Done',
-//       date: new Date('2024-11-15T18:45:00'),
-//       amount: 90.0,
-//     },
-//     {
-//       name: 'Akash Singh',
-//       type: 'Outgoing',
-//       status: 'Completed',
-//       date: new Date('2024-11-20T13:15:00'),
-//       amount: 1000.0,
-//     },
-//   ],
-// };
+const SessionAccountDetailsDummy = {
+  accountOwnerName: 'Bhawesh Panwar',
+  accountBalance: 45000.0,
+  recentTransactions: [
+    {
+      name: 'Tanmay Sharma',
+      type: 'Outgoing',
+      status: 'In Progress',
+      date: new Date('2024-11-18T14:00:00'),
+      amount: 10000.0,
+    },
+    {
+      name: 'Krishna Yadav',
+      type: 'Incoming',
+      status: 'Completed',
+      date: new Date('2024-11-17T10:30:00'),
+      amount: 1000.0,
+    },
+    {
+      name: 'Raj Yadav',
+      type: 'Outgoing',
+      status: 'Pending',
+      date: new Date('2024-11-16T09:00:00'),
+      amount: 90.0,
+    },
+    {
+      name: 'MP Portal',
+      type: 'Outgoing',
+      status: 'Done',
+      date: new Date('2024-11-15T18:45:00'),
+      amount: 90.0,
+    },
+    {
+      name: 'Akash Singh',
+      type: 'Outgoing',
+      status: 'Completed',
+      date: new Date('2024-11-20T13:15:00'),
+      amount: 1000.0,
+    },
+  ],
+};
 
-// const SessionAutoPayDetailsDummy = [
-//   {
-//     autopay_Id: '001AP',
-//     name: 'Amit Sharma',
-//     startDate: '2023-01-01',
-//     endDate: '2024-01-01',
-//     paymentFrequency: 'Monthly',
-//     amount: 5000,
-//   },
-//   {
-//     autopay_Id: '002AP',
-//     name: 'Sneha Iyer',
-//     startDate: '2022-06-15',
-//     endDate: '2023-06-15',
-//     paymentFrequency: 'Yearly',
-//     amount: 60000,
-//   },
-//   {
-//     autopay_Id: '003AP',
-//     name: 'Rohan Mehta',
-//     startDate: '2023-03-01',
-//     endDate: '2023-12-01',
-//     paymentFrequency: 'Weekly',
-//     amount: 1200,
-//   },
-//   {
-//     autopay_Id: '004AP',
-//     name: 'Pooja Deshmukh',
-//     startDate: '2023-07-10',
-//     endDate: '2024-07-10',
-//     paymentFrequency: 'Monthly',
-//     amount: 7500,
-//   },
-//   {
-//     autopay_Id: '005AP',
-//     name: 'Karan Verma',
-//     startDate: '2023-08-01',
-//     endDate: '2024-08-01',
-//     paymentFrequency: 'Weekly',
-//     amount: 1000,
-//   },
-// ];
+const SessionAutoPayDetailsDummy = [
+  {
+    autopay_Id: '001AP',
+    name: 'Amit Sharma',
+    startDate: '2023-01-01',
+    endDate: '2024-01-01',
+    paymentFrequency: 'Monthly',
+    amount: 5000,
+  },
+  {
+    autopay_Id: '002AP',
+    name: 'Sneha Iyer',
+    startDate: '2022-06-15',
+    endDate: '2023-06-15',
+    paymentFrequency: 'Yearly',
+    amount: 60000,
+  },
+  {
+    autopay_Id: '003AP',
+    name: 'Rohan Mehta',
+    startDate: '2023-03-01',
+    endDate: '2023-12-01',
+    paymentFrequency: 'Weekly',
+    amount: 1200,
+  },
+  {
+    autopay_Id: '004AP',
+    name: 'Pooja Deshmukh',
+    startDate: '2023-07-10',
+    endDate: '2024-07-10',
+    paymentFrequency: 'Monthly',
+    amount: 7500,
+  },
+  {
+    autopay_Id: '005AP',
+    name: 'Karan Verma',
+    startDate: '2023-08-01',
+    endDate: '2024-08-01',
+    paymentFrequency: 'Weekly',
+    amount: 1000,
+  },
+];*/
 
 const Dashboard = () => {
   const [current, setCurrent] = useState('Home'); // State to track active section
@@ -1158,14 +1158,14 @@ const Dashboard = () => {
                     </svg>
                   </button>
                 </div>
-                <p className='text-gray-500 dark:text-gray-400 mb-4 font-outfit mb-8'>
+                <p className='text-gray-500 dark:text-gray-400 font-outfit mb-8'>
                   Enter your password to confirm the deletion of your account.
                   Your remaining balance will be forfeited and cannot be
                   accessed again.
                 </p>
                 <input
                   type='password'
-                  className='w-full p-2 mb-4 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white mb-20'
+                  className='w-full p-2  border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white mb-20'
                   placeholder='Enter your password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -1435,7 +1435,13 @@ const Dashboard = () => {
                     <p className='font-outfit font-medium text-[20px]'>
                       Recent transactions
                     </p>
-                    <button className='font-outfit text-black rounded-[10px] font-light border-[1.5px] border-[#C9C9C9] py-1 px-2 text-[16px]'>
+                    <button
+                      className='font-outfit text-black rounded-[10px] font-light border-[1.5px] border-[#C9C9C9] py-1 px-2 text-[16px]'
+                      onClick={() => {
+                        setCurrent('Transactions');
+                        handleTransactionUIUpdate();
+                      }}
+                    >
                       View all
                     </button>
                   </div>

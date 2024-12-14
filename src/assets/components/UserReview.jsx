@@ -58,7 +58,7 @@ const UserReview = () => {
                 Words from Others
               </div>
               <h1
-                className='mb-5 text-3xl text-[#2B3031] font-SF_PRO_Light  md:text-center md:text-5xl'
+                className='mb-5 text-[48px] text-black font-SF_Pro_Regular'
                 // style={{
                 //     background:
                 //         'var(--Brand-Gradient, linear-gradient(270deg, #8CB9BD 0%, #163172 100%))',
@@ -67,10 +67,10 @@ const UserReview = () => {
                 //     webkitTextFillColor: 'transparent',
                 // }}
               >
-                It's not just us.
+                It&apos;s not just us.
               </h1>
               <p className='text-xl text-gray-400 md:text-center md:text-2xl font-SF_PRO_Light'>
-                Here's what others have to say about us.
+                Here&apos;s what others have to say about us.
               </p>
             </div>
           </div>
@@ -78,7 +78,7 @@ const UserReview = () => {
             {reviews.map((review, index) => (
               <div key={index} className='text-sm leading-6'>
                 <div className='relative'>
-                  <div className='relative p-6 space-y-6 leading-none rounded-[20px] bg-[#F2F3F5] hover:bg-[#dedfe2] hover:scale-105 transition-all  shadow-md'>
+                  <div className='relative p-6 space-y-6 leading-none rounded-[20px] bg-black bg-opacity-0  hover:scale-105 transition-all  shadow-md'>
                     <div className='flex items-center space-x-4'>
                       <img
                         src={review.image}

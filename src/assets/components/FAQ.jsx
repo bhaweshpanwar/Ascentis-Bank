@@ -3,52 +3,52 @@ const FAQ = () => {
     {
       question: 'How do I open a bank account?',
       answer:
-        'Opening a bank account with us is easy. You can apply online through our website or visit any of our branches with the necessary identification documents. Our staff will guide you through the process.',
+        'Opening a bank account is quick and fully online. Visit our website, fill out the application form, and upload your identification documents. Your account will be activated once the verification process is complete.',
     },
     {
       question: 'What documents are required to open an account?',
       answer:
-        'To open a bank account, you will need to provide identification documents such as a valid ID proof (Aadhaar card, PAN card, Passport) and address proof (utility bill, rental agreement). Additional documents may be required based on the type of account.',
+        'You will need to upload valid identification documents such as Aadhaar Card, PAN Card, or Passport during the online application process.',
     },
     {
-      question: 'How can I apply for a loan?',
+      question: 'How can I open a Fixed Deposit (FD) account?',
       answer:
-        'You can apply for a loan online through our website or visit any of our branches. Our loan officers will assist you in selecting the right loan product and guide you through the application process.',
+        'You can open an FD account by logging into your dashboard. Navigate to the “Fixed Deposits” section, select the desired tenure and amount, and complete the process online.',
+    },
+    {
+      question: 'How do I enable auto-pay for my bills?',
+      answer:
+        'To set up auto-pay, log in to your dashboard, navigate to the “Payments & Bills” section, and add the bills you want to automate. Select auto-pay, set the amount and schedule, and confirm.',
     },
     {
       question: 'What is the interest rate for savings accounts?',
       answer:
-        'Our savings account interest rates are competitive and vary based on the account type and balance. For the latest interest rates, please visit our website or contact our customer service.',
+        'Our savings accounts offer competitive interest rates. Log in to your dashboard or visit the savings section on our website for the latest rates.',
     },
     {
       question: 'How do I report a lost or stolen card?',
       answer:
-        'If your card is lost or stolen, please contact our customer service immediately to report it. You can also block your card through our mobile app or online banking portal to prevent unauthorized transactions.',
+        'To report a lost or stolen card, log in to your account dashboard, go to the “Cards” section, and block the card immediately. You can also contact our 24/7 customer support for assistance.',
     },
     {
       question: 'How can I reset my online banking password?',
       answer:
-        "To reset your online banking password, go to the login page and click on the 'Forgot Password' link. Follow the instructions to reset your password securely.",
+        "To reset your password, click on 'Forgot Password' on the login page. Follow the instructions sent to your registered email or phone number to securely reset your password.",
     },
     {
-      question: 'What are the benefits of a credit card?',
+      question: 'What benefits do your credit cards offer?',
       answer:
-        'Our credit cards offer various benefits, including cashback, reward points, travel privileges, and more. For detailed information, please visit the credit card section on our website.',
+        'Our credit cards provide a range of benefits, including cashback, reward points, travel perks, and exclusive discounts on online shopping. Visit the “Cards” section in your dashboard for details.',
     },
     {
       question: 'How do I update my contact information?',
       answer:
-        'You can update your contact information through our online banking portal or mobile app. Alternatively, you can visit any of our branches to update your details.',
-    },
-    {
-      question: 'What are the charges for international transactions?',
-      answer:
-        'Charges for international transactions may vary based on the type of account and transaction. Please refer to our fee schedule on the website or contact customer service for detailed information.',
+        'You can update your contact information by logging into your dashboard and navigating to the “Profile Settings” section. Changes will be reflected immediately upon verification.',
     },
     {
       question: 'How can I close my account?',
       answer:
-        'To close your account, please visit your nearest branch and submit a written request. Our staff will assist you with the account closure process.',
+        'To close your account, log in to your dashboard and request account closure under “Account Settings.” You can also contact our support team for assistance.',
     },
   ];
 

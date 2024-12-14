@@ -39,12 +39,6 @@ const Header = () => {
         >
           Services
         </a>
-        <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
-          Business
-        </a>
-        <a href='#' className='text-gray-700 text-base hover:text-gray-900'>
-          Personal
-        </a>
         <a
           className='text-gray-700 text-base hover:text-gray-900 cursor-pointer'
           onClick={() => {
@@ -118,16 +112,6 @@ const Header = () => {
               }}
             >
               Services
-            </a>
-          </li>
-          <li>
-            <a href='#' className='text-lg hover:text-yellow-300'>
-              Business
-            </a>
-          </li>
-          <li>
-            <a href='#' className='text-lg hover:text-yellow-300'>
-              Personal
             </a>
           </li>
           <li>

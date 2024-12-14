@@ -66,7 +66,7 @@ const Footer = () => {
                 <ul className='mt-6 space-y-4'>
                   <li>
                     <a
-                      href='/personal-banking'
+                      href='/services'
                       className='text-md text-gray-600 hover:text-gray-800'
                     >
                       Personal Banking
@@ -74,7 +74,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <a
-                      href='/business-banking'
+                      href='/services'
                       className='text-md text-gray-600 hover:text-gray-800'
                     >
                       Business Banking
@@ -82,7 +82,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <a
-                      href='/investment-services'
+                      href='/services'
                       className='text-md text-gray-600 hover:text-gray-800'
                     >
                       Investment Services
@@ -97,7 +97,7 @@ const Footer = () => {
                 <ul className='mt-6 space-y-4'>
                   <li>
                     <a
-                      href='/loans'
+                      href='/services'
                       className='text-md text-gray-600 hover:text-gray-800'
                     >
                       Loans
@@ -105,7 +105,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <a
-                      href='/credit-cards'
+                      href='/services'
                       className='text-md text-gray-600 hover:text-gray-800'
                     >
                       Credit Cards
@@ -113,7 +113,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <a
-                      href='/online-mobile-banking'
+                      href='/services'
                       className='text-md text-gray-600 hover:text-gray-800'
                     >
                       Online & Mobile Banking
