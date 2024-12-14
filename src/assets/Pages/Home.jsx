@@ -54,7 +54,7 @@ const Home = () => {
       <div className='h-[360px] w-auto max-w-screen-2xl mx-auto  flex items-start justify-start'>
         <div className=' h-full w-full relative'>
           <img
-            src='/src/assets/Images/hero_image.png'
+            src='src/assets/Images/hero_image.png'
             className='absolute top-[-450px] scale-90'
             // style={{
             //   boxShadow: '2px 2px 152.3px -27px rgba(22, 49, 114, 0.49)',
@@ -80,7 +80,7 @@ const Home = () => {
           {/* Card 01 */}
           <div className='min-w-[240px] md:w-full flex flex-col p-1'>
             <img
-              src='/src/assets/Images/card01.png'
+              src='src/assets/Images/card01.png'
               alt='card01'
               className='object-cover rounded-[36px]'
             />
@@ -91,7 +91,7 @@ const Home = () => {
           {/* Card 02 */}
           <div className='min-w-[240px] md:w-full flex flex-col p-1'>
             <img
-              src='/src/assets/Images/card02.png'
+              src='src/assets/Images/card02.png'
               alt='card02'
               className='object-cover rounded-[36px]'
             />
@@ -102,7 +102,7 @@ const Home = () => {
           {/* Card 03 */}
           <div className='min-w-[240px] md:w-full flex flex-col p-1'>
             <img
-              src='/src/assets/Images/card03.png'
+              src='src/assets/Images/card03.png'
               alt='card03'
               className='h-[55%] md:h-[72%] object-cover rounded-[36px]'
             />
@@ -113,7 +113,7 @@ const Home = () => {
           {/* Card 04 */}
           <div className='min-w-[240px] md:w-full flex flex-col p-1'>
             <img
-              src='/src/assets/Images/card04.png'
+              src='src/assets/Images/card04.png'
               alt='card04'
               className='object-cover rounded-[36px]'
             />
@@ -361,7 +361,7 @@ const Home = () => {
           </div>
 
           <div className='flex-1 h-full w-full  flex justify-center items-center p-2'>
-            <img src='/src/assets/Images/fd_mockup.png' alt='fd_image' />
+            <img src='src/assets/Images/fd_mockup.png' alt='fd_image' />
           </div>
         </div>
 
@@ -405,7 +405,7 @@ const Home = () => {
 
           <div className='flex-1 h-full w-full  flex justify-center items-center p-2'>
             <img
-              src='/src/assets/Images/autopay_mockup.png'
+              src='src/assets/Images/autopay_mockup.png'
               alt='autopay_image'
             />
           </div>
@@ -447,7 +447,7 @@ const Home = () => {
           {/* Image Section */}
           <div className='flex-1 h-full w-full flex justify-center items-center '>
             <img
-              src='/src/assets/Images/payment.png'
+              src='src/assets/Images/payment.png'
               alt='payment'
               className='w-[80%] h-full object-cover'
             />
@@ -482,7 +482,7 @@ const Home = () => {
             <div className='w-6/12 max-md:w-full flex justify-center items-center'>
               <img
                 loading='lazy'
-                src='/src/assets/Images/Home/cards.png'
+                src='src/assets/Images/cards.png'
                 alt='Collection of credit cards showcasing different card types including Platinum, Business, Student, Reward, and Secured cards'
                 className='w-full object-contain'
               />
