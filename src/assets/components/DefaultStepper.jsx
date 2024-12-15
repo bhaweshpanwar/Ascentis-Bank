@@ -12,6 +12,7 @@ export function DefaultStepper() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [otp, setOtp] = React.useState('');
+  const [otpErrors, setOtpErrors] = React.useState('');
   const navigate = useNavigate();
   // const [isChecked, setIsChecked] = React.useState(false);
   const [countries, setCountries] = React.useState([]);
@@ -151,10 +152,9 @@ export function DefaultStepper() {
           errors.age = `The provided age does not match the Date of Birth. Expected age based on Date of Birth: ${calculatedAge}`;
         }
       }
-      if (FormData.country !== 'IN') {
-        alert(
-          'Our banking services are currently available only in India. Please select India to proceed.'
-        );
+      if (!FormData.country) {
+        errors.country = 'Country is required.';
+      } else if (FormData.country !== 'IN') {
         errors.country = 'Service available only in India';
       }
     }
@@ -190,8 +190,6 @@ export function DefaultStepper() {
     }
 
     setFormErrors(errors);
-    console.log(errors);
-    console.log(FormData);
 
     // Return true if there are no errors
     return Object.keys(errors).length === 0;
@@ -265,7 +263,7 @@ export function DefaultStepper() {
           withCredentials: true,
         });
 
-        const { exists, message } = response.data;
+        const { exists, message, emailMessage, phoneMessage } = response.data;
 
         if (exists === false) {
           // Move to the next step if email does not exist
@@ -275,8 +273,12 @@ export function DefaultStepper() {
           }, 3000);
         } else {
           setLoading(false);
-          formErrors.email = message;
-          alert(message || 'An error occurred'); // Show error message
+          setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            email: emailMessage || message,
+            phone: phoneMessage || message,
+          }));
+          // alert(message || 'An error occurred'); // Show error message
         }
       } catch (error) {
         setLoading(false); // Hide loading overlay
@@ -360,10 +362,13 @@ export function DefaultStepper() {
   };
 
   const handleOtpSubmit = () => {
+    // Clear any previous errors
+    setOtpErrors('');
+
     // Validate that OTP input is provided
     if (!otp) {
-      alert('Please enter the OTP');
-      return; // Stop if no OTP is entered
+      setOtpErrors('OTP is required'); // Show error if OTP is empty
+      return; // Stop further execution
     }
 
     const urlencodedData = new URLSearchParams();
@@ -377,17 +382,21 @@ export function DefaultStepper() {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-
         if (response.status === 201) {
           navigate('/successPage', { state: { fromRegistration: true } });
         } else {
-          alert(response.data.message);
+          // Handle unexpected responses (e.g., 200 with an error message)
+          setOtpErrors(
+            response.data.message || 'An error occurred. Please try again.'
+          );
         }
       })
       .catch((error) => {
         console.error('Error verifying OTP:', error);
-        alert('Invalid OTP. Please try again.');
+        // Set a specific error message from the server if available
+        const errorMessage =
+          error.response?.data?.message || 'Invalid OTP. Please try again.';
+        setOtpErrors(errorMessage);
       });
   };
 
@@ -415,6 +424,7 @@ export function DefaultStepper() {
         alert(
           additionalMessage || 'Required data not found in the secondary API.'
         );
+        navigate('/');
       }
     } catch (error) {
       console.error('Error fetching data from secondary API:', error);
@@ -1081,21 +1091,25 @@ export function DefaultStepper() {
                   Please enter the OTP sent to your Email to verify your
                   Ascentis account.
                 </p>
-                <div className='grid gap-6 mb-6'>
+                <div className='grid gap-2 mb-6'>
                   <div>
                     <label htmlFor='otp'></label>
                     <input
                       type='number'
                       id='otp'
                       name='otp'
-                      value={otp} // You will store OTP in a separate state
-                      onChange={(e) => setOtp(e.target.value)} // Handle OTP change separately
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
                       placeholder='Enter OTP'
                       required
                       className={getInputClasses('otp')}
                     />
                   </div>
+                  {otpErrors && (
+                    <p className='text-red-500 text-sm pl-3'>{otpErrors}</p>
+                  )}
                 </div>
+
                 <div className='flex items-center'>
                   <p className='font-SF_PRO_Light text-[18px]'>
                     Didn&#39;t Receive Code{' '}

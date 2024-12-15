@@ -38,74 +38,6 @@ const LoginBasic = () => {
     return Object.keys(errors).length === 0;
   };
 
-  /*const handleSubmit = async () => {
-    if (!validateLogin()) {
-      return;
-    }
-
-    setIsLoading(true);
-    const urlEncodedData = new URLSearchParams();
-    urlEncodedData.append('username', userCredentials.username);
-    urlEncodedData.append('password', userCredentials.password);
-
-    try {
-      const response = await axios.post(
-        'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/login',
-        urlEncodedData,
-        {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          withCredentials: true, // Ensures the cookie is set by the browser
-        }
-      );
-
-      setIsLoading(false);
-
-      if (response.status === 201) {
-        // Retrieve the session ID from response data
-        const sessionId = response.data.session; // Adjust if 'session' key differs
-        console.log('JSESSIONID:', sessionId);
-
-        if (!sessionId) {
-          throw new Error('Session ID not found in response');
-        }
-
-        // Encode the session ID and other parameters
-        const encodedSessionId = encodeURIComponent(sessionId);
-        const additionalParams = `user=${encodeURIComponent(
-          userCredentials.username
-        )}&extra=${encodeURIComponent('then%20or%20access')}`;
-        const dashboardUrl = `/dashboard/${encodedSessionId}?${additionalParams}`;
-
-        console.log('Navigating to URL:', dashboardUrl);
-
-        // Fetch additional session details if needed
-        const sessionResponse = await axios.get(
-          'https://ghoul-causal-adder.ngrok-free.app/AscentisBank/home',
-          {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true, // Sends the session cookie
-          }
-        );
-
-        const parsedData =
-          typeof sessionResponse.data === 'string'
-            ? JSON.parse(sessionResponse.data)
-            : sessionResponse.data;
-
-        console.log('Parsed SessionResponse data:', parsedData);
-
-        // Navigate to the encoded URL
-        navigate(dashboardUrl, {
-          state: { sessionAccountDetails: parsedData },
-        });
-      }
-    } catch (error) {
-      setIsLoading(false);
-      alert('An error occurred. Please try again.');
-      console.error('Error during login:', error);
-    }
-  };*/
-
   const handleSubmit = async () => {
     if (!validateLogin()) {
       return;
@@ -145,8 +77,6 @@ const LoginBasic = () => {
           typeof sessionResponse.data === 'string'
             ? JSON.parse(sessionResponse.data)
             : sessionResponse.data;
-
-        console.log('Parsed SessionResponse data:', parsedData);
 
         navigate(`/dashboard`, {
           state: { sessionAccountDetails: parsedData },
@@ -216,7 +146,7 @@ const LoginBasic = () => {
                   } bg-[#F2F2F2] text-[#989898]`}
                 />
                 {userCredentialsErrors.username && (
-                  <p className='text-red-500 text-sm'>
+                  <p className='text-red-500 text-sm self-start pl-8'>
                     {userCredentialsErrors.username}
                   </p>
                 )}
@@ -238,7 +168,7 @@ const LoginBasic = () => {
                   } bg-[#F2F2F2] text-[#989898]`}
                 />
                 {userCredentialsErrors.password && (
-                  <p className='text-red-500 text-sm'>
+                  <p className='text-red-500 text-sm self-start pl-8'>
                     {userCredentialsErrors.password}
                   </p>
                 )}

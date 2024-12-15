@@ -134,7 +134,10 @@ const ForgotPassPageOne = () => {
         withCredentials: true,
       });
 
-      if (response.data.exists === true) {
+      if (
+        response.data.exists === true &&
+        response.data.message !== 'Your email is currently blocked'
+      ) {
         try {
           // Second API Call
           const secondaryResponse = await axios.get(API_ENDPOINTS.OTP, {
@@ -157,12 +160,10 @@ const ForgotPassPageOne = () => {
           alert('Error with secondary API. Please try again later.');
         }
       } else {
-        // Set error for unregistered email
-        // setUserCredentialsErrors((prevErrors) => ({
-        //   ...prevErrors,
-        //   email: 'Please Enter a Registered Email.',
-        // }));
-        alert(response.data.message);
+        setUserCredentialsErrors((prevErrors) => ({
+          ...prevErrors,
+          email: response.data.message,
+        }));
       }
     } catch (error) {
       console.error('Error with primary API:', error);
@@ -173,8 +174,6 @@ const ForgotPassPageOne = () => {
   };
 
   const handleOtpSubmit = async () => {
-    console.log(activestep);
-
     if (!validate()) {
       return;
     }
@@ -233,6 +232,7 @@ const ForgotPassPageOne = () => {
         alert(
           additionalMessage || 'Required data not found in the secondary API.'
         );
+        navigate('/');
       }
     } catch (error) {
       console.error('Error fetching data from secondary API:', error);
@@ -352,7 +352,7 @@ const ForgotPassPageOne = () => {
                       } bg-[#F2F2F2] text-[#989898]`}
                     />
                     {userCredentialsErrors.email && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 text-sm self-start pl-10 mt-1'>
                         {userCredentialsErrors.email}
                       </p>
                     )}

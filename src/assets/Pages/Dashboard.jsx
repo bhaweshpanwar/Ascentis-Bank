@@ -1305,7 +1305,7 @@ const Dashboard = () => {
               {/* Tranactions */}
               <li
                 className={`h-[40px] w-full flex items-center gap-2 cursor-pointer rounded-[10px] pl-3 ${
-                  current === 'Tranactions' ? 'bg-[#FAFAFA] bg-opacity-15' : ''
+                  current === 'Transactions' ? 'bg-[#FAFAFA] bg-opacity-15' : ''
                 }`}
                 onClick={() => {
                   setCurrent('Transactions');
