@@ -1142,7 +1142,10 @@ const Dashboard = () => {
                   </h3>
                   <button
                     className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg p-1.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
-                    onClick={() => setIsPasswordModalVisible(false)}
+                    onClick={() => {
+                      setIsPasswordModalVisible(false);
+                      setPassword('');
+                    }}
                   >
                     <svg
                       className='w-5 h-5'
