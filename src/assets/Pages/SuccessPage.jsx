@@ -1,5 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import onlyAscentis from '../Images/only_ascentis.png';
+import check from '../Images/check.png';
 
 const SuccessPage = () => {
   const navigate = useNavigate();
@@ -30,16 +32,8 @@ const SuccessPage = () => {
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-white text-center p-4'>
-      <img
-        src='/src/assets/Images/only_ascentis.png'
-        alt='ascentis'
-        className='h-20 mb-4'
-      />
-      <img
-        src='/src/assets/Images/check.png'
-        alt='check'
-        className='h-24 w-24 mb-4'
-      />
+      <img src={onlyAscentis} alt='ascentis' className='h-20 mb-4' />
+      <img src={check} alt='check' className='h-24 w-24 mb-4' />
       <h1 className='text-2xl md:text-3xl font-SF_PRO_Semibold text-green-600 mb-2'>
         Registration Successful!
       </h1>

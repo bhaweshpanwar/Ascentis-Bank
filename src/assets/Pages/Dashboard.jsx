@@ -4,6 +4,19 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import UserInformationDisplay from '../components/UserInformationDisplay';
 import { API_ENDPOINTS } from '/src/config.js';
+import DashaccountInfo from '../Images/account_info.png';
+import DashaddImg from '../Images/add_img.png';
+import DashbackArrow from '../Images/back_arrow.png';
+import DasheyeOen from '../Images/eye_open.png';
+import DasheyeClose from '../Images/eye_close_new.png';
+import DashfixedDeposit from '../Images/fixed_deposit.png';
+import DashhomeVector from '../Images/home_vector.png';
+import DashlogOut from '../Images/log_out.png';
+import DashnameAndLogo from '../Images/name&logo.png';
+import DashpayVector from '../Images/pay_vector.png';
+import Dashtransaction from '../Images/transaction.png';
+import DashautoPay from '../Images/auto_pay.png';
+import Dashcheck from '../Images/check.png';
 
 /*const SessionFixedDepositDetailsDummy = [
   {
@@ -1125,7 +1138,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className='flex'>
+    <div className='flex overflow-hidden'>
       <div className='max-w-2xl mx-auto'>
         {/* Password Confirmation Modal */}
         {loading && <LoadingOverlayDashboard />}
@@ -1176,7 +1189,10 @@ const Dashboard = () => {
                 <div className='flex justify-end space-x-2'>
                   <button
                     className='px-4 py-2 bg-gray-300 rounded-full font-outfit hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500'
-                    onClick={() => setIsPasswordModalVisible(false)}
+                    onClick={() => {
+                      setIsPasswordModalVisible(false);
+                      setPassword('');
+                    }}
                   >
                     Cancel
                   </button>
@@ -1221,11 +1237,7 @@ const Dashboard = () => {
         <div className='w-full h-full flex flex-col justify-center items-center'>
           {/* Logo Section */}
           <div className='h-[20%] w-full flex justify-start pl-8 items-center '>
-            <img
-              src='src/assets/Images/name&logo.png'
-              alt='Logo'
-              className='w-[185px]'
-            />
+            <img src={DashnameAndLogo} alt='Logo' className='w-[185px]' />
           </div>
 
           {/* Navigation Section */}
@@ -1241,7 +1253,7 @@ const Dashboard = () => {
                   handleHomeUIUpdate();
                 }}
               >
-                <img src='src/assets/Images/home_vector.png' alt='Home' />
+                <img src={DashhomeVector} alt='Home' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Home
                 </span>
@@ -1255,10 +1267,7 @@ const Dashboard = () => {
                 }`}
                 onClick={() => setCurrent('Pay or Transfer')}
               >
-                <img
-                  src='src/assets/Images/pay_vector.png'
-                  alt='Pay or Transfer'
-                />
+                <img src={DashpayVector} alt='Pay or Transfer' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Pay or Transfer
                 </span>
@@ -1276,7 +1285,7 @@ const Dashboard = () => {
                   handleAutoPayUIUpdate();
                 }}
               >
-                <img src='src/assets/Images/auto_pay.png' alt='Auto Pay' />
+                <img src={DashautoPay} alt='Auto Pay' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Auto Pay
                 </span>
@@ -1296,10 +1305,7 @@ const Dashboard = () => {
                   handleFixedDepositUIUpdate();
                 }}
               >
-                <img
-                  src='src/assets/Images/fixed_deposit.png'
-                  alt='Fixed Deposit'
-                />
+                <img src={DashfixedDeposit} alt='Fixed Deposit' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Fixed Deposit
                 </span>
@@ -1315,7 +1321,7 @@ const Dashboard = () => {
                   handleTransactionUIUpdate(); // Update state
                 }}
               >
-                <img src='src/assets/Images/transaction.png' alt='Auto Pay' />
+                <img src={Dashtransaction} alt='Auto Pay' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Transactions
                 </span>
@@ -1331,10 +1337,7 @@ const Dashboard = () => {
                   fetchUserInfo();
                 }}
               >
-                <img
-                  src='src/assets/Images/account_info.png'
-                  alt='Pay or Transfer'
-                />
+                <img src={DashaccountInfo} alt='Pay or Transfer' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Account Info
                 </span>
@@ -1349,7 +1352,7 @@ const Dashboard = () => {
                   handleLogoutButtonClick();
                 }}
               >
-                <img src='src/assets/Images/log_out.png' alt='Settings' />
+                <img src={DashlogOut} alt='LogOut' />
                 <span className='font-outfit font-light text-[18px] text-white'>
                   Log Out
                 </span>
@@ -1387,11 +1390,7 @@ const Dashboard = () => {
                         Total Account Balance
                       </h1>
                       <img
-                        src={
-                          balanceVisible
-                            ? 'src/assets/Images/eye_open.png'
-                            : 'src/assets/Images/eye_close_new.png'
-                        }
+                        src={balanceVisible ? DasheyeOen : DasheyeClose}
                         className='w-[20px] ml-4 cursor-pointer '
                         onClick={toggleBalanceVisibility}
                       />
@@ -1412,10 +1411,7 @@ const Dashboard = () => {
                       className='font-outfit bg-[#363636] rounded-[10px] font-light gap-1.5 text-white flex justify-center items-center py-2 px-4'
                       onClick={() => setCurrent('Pay or Transfer')}
                     >
-                      <img
-                        src='src/assets/Images/pay_vector.png'
-                        alt='Pay or Transfer'
-                      />
+                      <img src={DashpayVector} alt='Pay or Transfer' />
                       Pay or Transfer
                     </button>
                     <button
@@ -1696,7 +1692,7 @@ const Dashboard = () => {
                         Payment Sucessfull!
                       </h1>
                       <img
-                        src='/src/assets/Images/check.png'
+                        src={Dashcheck}
                         alt='check'
                         className='h-24 w-24 mb-4'
                       />
@@ -1723,10 +1719,7 @@ const Dashboard = () => {
                             setFormAutoPayErrors({});
                           }}
                         >
-                          <img
-                            src='src/assets/Images/add_img.png'
-                            alt='Top Up'
-                          />
+                          <img src={DashaddImg} alt='Top Up' />
                           New
                         </button>
                       </div>
@@ -1811,7 +1804,7 @@ const Dashboard = () => {
                         className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
                         onClick={() => setCurrentAutoPayState(0)}
                       >
-                        <img src='src\assets\Images\back_arrow.png' />
+                        <img src={DashbackArrow} />
                       </button>
                       <h1 className='font-outfit font-bold text-2xl'>
                         Auto Pay
@@ -1821,7 +1814,7 @@ const Dashboard = () => {
                       </p>
                     </div>
 
-                    <form className='space-y-6 mt-8' noValidate>
+                    <form className='space-y-6 mt-8 pb-28' noValidate>
                       {/* Recipient Name */}
                       <div className='space-y-2'>
                         <label
@@ -2012,7 +2005,7 @@ const Dashboard = () => {
                         className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
                         onClick={() => setCurrentAutoPayState(1)}
                       >
-                        <img src='src\assets\Images\back_arrow.png' />
+                        <img src={DashbackArrow} />
                       </button>
                       <h1 className='font-outfit font-bold text-2xl'>
                         Enter Account Password
@@ -2072,7 +2065,7 @@ const Dashboard = () => {
                       <h1 className='font-outfit text-3xl text-green-600'>
                         Auto Pay Set Successfull
                       </h1>
-                      <img src='src\assets\Images\check.png' className='w-24' />
+                      <img src={Dashcheck} className='w-24' />
                     </div>
                   </>
                 )}
@@ -2183,10 +2176,7 @@ const Dashboard = () => {
                             // setFormFixedDeposit({})
                           }}
                         >
-                          <img
-                            src='src/assets/Images/add_img.png'
-                            alt='Top Up'
-                          />
+                          <img src={DashaddImg} alt='Top Up' />
                           New
                         </button>
                       </div>
@@ -2382,7 +2372,7 @@ const Dashboard = () => {
                         className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
                         onClick={() => setCurrentFixedDepositState(1)}
                       >
-                        <img src='src/assets/Images/back_arrow.png' />
+                        <img src={DashbackArrow} />
                       </button>
                       <h1 className='font-outfit font-bold text-2xl'>
                         Enter Account Password
@@ -2442,7 +2432,7 @@ const Dashboard = () => {
                       <h1 className='font-outfit text-3xl text-green-600'>
                         Fixed Deposit Created Successfull
                       </h1>
-                      <img src='src\assets\Images\check.png' className='w-24' />
+                      <img src={Dashcheck} className='w-24' />
                     </div>
                   </>
                 )}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CroppedLogo from '../Images/03_cropped.png';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ const Header = () => {
       {/* Logo */}
       <div className='w-40'>
         <img
-          src='/src/assets/Images/03_cropped.png'
+          src={CroppedLogo}
           alt='Ascentis Logo'
           className='object-cover w-full'
         />

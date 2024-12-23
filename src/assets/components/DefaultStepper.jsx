@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Country, State, City } from 'country-state-city';
 import { API_ENDPOINTS } from '/src/config.js';
+import onlyAscentis from '../Images/only_ascentis.png';
 
 export function DefaultStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -14,7 +15,6 @@ export function DefaultStepper() {
   const [otp, setOtp] = React.useState('');
   const [otpErrors, setOtpErrors] = React.useState('');
   const navigate = useNavigate();
-  // const [isChecked, setIsChecked] = React.useState(false);
   const [countries, setCountries] = React.useState([]);
   const [states, setStates] = React.useState([]);
   const [cities, setCities] = React.useState([]);
@@ -45,26 +45,23 @@ export function DefaultStepper() {
   });
 
   const [resendDisabled, setResendDisabled] = React.useState(true);
-  const [timer, setTimer] = React.useState(120); // 2 minutes = 120 seconds
+  const [timer, setTimer] = React.useState(120);
 
   useEffect(() => {
     let interval;
 
     if (activeStep === 2 && timer > 0) {
-      // Start timer only on OTP stage
       interval = setInterval(() => {
         setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : prevTimer));
       }, 1000);
     }
 
-    // When timer hits 0, enable Resend button
     if (timer === 0) {
       setResendDisabled(false);
     }
 
-    // Cleanup timer
     return () => clearInterval(interval);
-  }, [activeStep, timer]); // Dependencies
+  }, [activeStep, timer]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -215,7 +212,7 @@ export function DefaultStepper() {
     });
     setFormErrors({
       ...formErrors,
-      [name]: '', // Clear error when user starts typing
+      [name]: '',
     });
   };
 
@@ -223,31 +220,29 @@ export function DefaultStepper() {
     const { value } = event.target;
     setFormData({ ...FormData, country: value, state: '', city: '' });
     setSelectedCountry(value);
+    setFormErrors({ ...formErrors, country: '' });
   };
 
   const handleStateChange = (event) => {
     const { value } = event.target;
     setFormData({ ...FormData, state: value, city: '' });
     setSelectedState(value);
+    setFormErrors({ ...formErrors, state: '' });
   };
 
   const handleCityChange = (event) => {
     const { value } = event.target;
     setFormData({ ...FormData, city: value });
+    setFormErrors({ ...formErrors, city: '' });
   };
 
-  // const handleCheckboxChange = (event) => {
-  //   setIsChecked(event.target.checked);
-  // };
-
   const handleNext = async () => {
-    // Controls moving to the next step in a multistep form.
     if (activeStep === 0 && !validateForm()) {
-      return; // Exit if form validation fails
+      return;
     }
 
     if (activeStep === 0) {
-      setLoading(true); // Show loading overlay
+      setLoading(true);
 
       const params = new URLSearchParams({
         email: FormData.email,
@@ -266,10 +261,9 @@ export function DefaultStepper() {
         const { exists, message, emailMessage, phoneMessage } = response.data;
 
         if (exists === false) {
-          // Move to the next step if email does not exist
           setTimeout(() => {
             setActiveStep((cur) => cur + 1);
-            setLoading(false); // Hide loading overlay
+            setLoading(false);
           }, 3000);
         } else {
           setLoading(false);
@@ -278,10 +272,9 @@ export function DefaultStepper() {
             email: emailMessage || message,
             phone: phoneMessage || message,
           }));
-          // alert(message || 'An error occurred'); // Show error message
         }
       } catch (error) {
-        setLoading(false); // Hide loading overlay
+        setLoading(false);
         if (error.response) {
           console.error('Error Response:', error.response.data);
           alert(error.response.data.message);
@@ -305,13 +298,11 @@ export function DefaultStepper() {
     setLoading(true);
 
     try {
-      // Encode form data to URLSearchParams format
       const urlEncodedData = new URLSearchParams();
       for (const key in FormData) {
         urlEncodedData.append(key, FormData[key]);
       }
 
-      // Check user ID
       const checkUserResponse = await axios.post(
         API_ENDPOINTS.CHECK_USER_ID,
         urlEncodedData,
@@ -326,7 +317,6 @@ export function DefaultStepper() {
       const { exists, message } = checkUserResponse.data;
 
       if (exists === false) {
-        // Fetch secondary data
         try {
           const secondaryResponse = await axios.get(API_ENDPOINTS.OTP, {
             headers: {
@@ -362,13 +352,11 @@ export function DefaultStepper() {
   };
 
   const handleOtpSubmit = () => {
-    // Clear any previous errors
     setOtpErrors('');
 
-    // Validate that OTP input is provided
     if (!otp) {
-      setOtpErrors('OTP is required'); // Show error if OTP is empty
-      return; // Stop further execution
+      setOtpErrors('OTP is required');
+      return;
     }
 
     const urlencodedData = new URLSearchParams();
@@ -385,7 +373,6 @@ export function DefaultStepper() {
         if (response.status === 201) {
           navigate('/successPage', { state: { fromRegistration: true } });
         } else {
-          // Handle unexpected responses (e.g., 200 with an error message)
           setOtpErrors(
             response.data.message || 'An error occurred. Please try again.'
           );
@@ -393,7 +380,6 @@ export function DefaultStepper() {
       })
       .catch((error) => {
         console.error('Error verifying OTP:', error);
-        // Set a specific error message from the server if available
         const errorMessage =
           error.response?.data?.message || 'Invalid OTP. Please try again.';
         setOtpErrors(errorMessage);
@@ -438,7 +424,7 @@ export function DefaultStepper() {
     <div className='h-full w-full flex justify-center items-center'>
       <div className='w-full py-4 md:px-8 px-3 max-w-[1200px]'>
         <img
-          src='/src/assets/Images/only_ascentis.png'
+          src={onlyAscentis}
           alt=''
           className='h-20 w-44 max-sm:h-24 max-sm:w-52 mt-8 cursor-pointer'
           onClick={() => navigate('/')}
@@ -490,7 +476,7 @@ export function DefaultStepper() {
                       name='full_name'
                     />
                     {formErrors.full_name && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.full_name}
                       </p>
                     )}
@@ -514,7 +500,9 @@ export function DefaultStepper() {
                       onChange={handleChange}
                     />
                     {formErrors.dob && (
-                      <p className='text-red-500 text-sm'>{formErrors.dob}</p>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
+                        {formErrors.dob}
+                      </p>
                     )}
                   </div>
 
@@ -539,7 +527,7 @@ export function DefaultStepper() {
                       <option value='other'>Other</option>
                     </select>
                     {formErrors.gender && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.gender}
                       </p>
                     )}
@@ -564,7 +552,9 @@ export function DefaultStepper() {
                       onChange={handleChange}
                     />
                     {formErrors.age && (
-                      <p className='text-red-500 text-sm'>{formErrors.age}</p>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
+                        {formErrors.age}
+                      </p>
                     )}
                   </div>
 
@@ -588,7 +578,9 @@ export function DefaultStepper() {
                       onChange={handleChange}
                     />
                     {formErrors.phone && (
-                      <p className='text-red-500 text-sm'>{formErrors.phone}</p>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
+                        {formErrors.phone}
+                      </p>
                     )}
                   </div>
 
@@ -611,7 +603,9 @@ export function DefaultStepper() {
                       onChange={handleChange}
                     />
                     {formErrors.email && (
-                      <p className='text-red-500 text-sm'>{formErrors.email}</p>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
+                        {formErrors.email}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -640,7 +634,7 @@ export function DefaultStepper() {
                       onChange={handleChange}
                     />
                     {formErrors.res_address && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.res_address}
                       </p>
                     )}
@@ -670,7 +664,7 @@ export function DefaultStepper() {
                       ))}
                     </select>
                     {formErrors.country && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.country}
                       </p>
                     )}
@@ -701,7 +695,9 @@ export function DefaultStepper() {
                       ))}
                     </select>
                     {formErrors.state && (
-                      <p className='text-red-500 text-sm'>{formErrors.state}</p>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
+                        {formErrors.state}
+                      </p>
                     )}
                   </div>
 
@@ -730,7 +726,9 @@ export function DefaultStepper() {
                       ))}
                     </select>
                     {formErrors.city && (
-                      <p className='text-red-500 text-sm'>{formErrors.city}</p>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
+                        {formErrors.city}
+                      </p>
                     )}
                   </div>
 
@@ -753,7 +751,7 @@ export function DefaultStepper() {
                       onChange={handleChange}
                     />
                     {formErrors.postal_code && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.postal_code}
                       </p>
                     )}
@@ -784,7 +782,7 @@ export function DefaultStepper() {
                     <option value='student'>Student</option>
                   </select>
                   {formErrors.occupation && (
-                    <p className='text-red-500 text-sm'>
+                    <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                       {formErrors.occupation}
                     </p>
                   )}
@@ -813,7 +811,7 @@ export function DefaultStepper() {
                     <option value='current'>Current</option>
                   </select>
                   {formErrors.account_type && (
-                    <p className='text-red-500 text-sm'>
+                    <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                       {formErrors.account_type}
                     </p>
                   )}
@@ -927,7 +925,7 @@ export function DefaultStepper() {
                       required
                     />
                     {formErrors.username && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.username}
                       </p>
                     )}
@@ -965,7 +963,7 @@ export function DefaultStepper() {
                       {showPassword ? 'Hide' : 'Show'}
                     </button>
                     {formErrors.password && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.password}
                       </p>
                     )}
@@ -991,91 +989,11 @@ export function DefaultStepper() {
                       onPaste={(e) => e.preventDefault()}
                     />
                     {formErrors.confirm_password && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {formErrors.confirm_password}
                       </p>
                     )}
                   </div>
-
-                  {/* <div className='mt-16 mb-4'>
-                    <p>
-                      <strong className='text-xl font-bold '>
-                        Terms and Conditions
-                      </strong>
-                      <br />
-                      <br />
-                      Welcome to Ascentis! These terms and conditions outline
-                      the rules and regulations for the use of Ascentis Website,
-                      located at www.ascentis.com. By accessing this website we
-                      assume you accept these terms and conditions. Do not
-                      continue to use Ascentis Web if you do not agree to all of
-                      the terms and conditions stated on this page.
-                      <br />
-                      <br />
-                      <strong>1. Privacy</strong>
-                      <br />
-                      We value your privacy. Please review our Privacy Policy to
-                      understand how we collect and use your personal data.
-                      <br />
-                      <br />
-                      <strong>2. User Accounts</strong>
-                      <br />
-                      You are responsible for maintaining the confidentiality of
-                      your username and password. You agree to provide accurate,
-                      complete, and current information. We reserve the right to
-                      suspend or terminate your account if any information
-                      provided is inaccurate or misleading.
-                      <br />
-                      <br />
-                      <strong>3. Intellectual Property</strong>
-                      <br />
-                      All content provided on this site is the intellectual
-                      property of [Your Company Name] unless otherwise stated.
-                      You may not copy, distribute, or use any material without
-                      prior consent.
-                      <br />
-                      <br />
-                      <strong>4. Prohibited Use</strong>
-                      <br />
-                      You agree not to: Use the website for any unlawful
-                      purpose. Distribute any harmful software, viruses, or code
-                      that could harm the website. Engage in any activity that
-                      interferes with the proper functioning of the website.
-                      <br />
-                      <br />
-                      <strong>5. Limitation of Liability</strong>
-                      <br />
-                      We will not be liable for any damages arising from your
-                      use or inability to use the site or its services. Your use
-                      of the website is at your own risk.
-                      <br />
-                      <br />
-                      <strong>6. Changes to Terms</strong>
-                      <br />
-                      We may update these terms from time to time. Continued use
-                      of the website after changes have been made constitutes
-                      your acceptance of the new terms.
-                      <br />
-                      <br />
-                      <strong>7. Contact Us</strong>
-                      <br />
-                      If you have any questions about our Terms and Conditions,
-                      please contact us at [email/contact info].
-                    </p>
-                  </div> */}
-
-                  {/* <div>
-                    <input
-                      type='checkbox'
-                      value='agree'
-                      id='termsCheckbox'
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                    />
-                    <label htmlFor='termsCheckbox' className='ml-4'>
-                      Agree to All Terms and Conditions
-                    </label>
-                  </div> */}
                 </div>
               </>
             )}
@@ -1106,7 +1024,9 @@ export function DefaultStepper() {
                     />
                   </div>
                   {otpErrors && (
-                    <p className='text-red-500 text-sm pl-3'>{otpErrors}</p>
+                    <p className='text-red-500 font-SF_Pro_Regular text-sm pl-3'>
+                      {otpErrors}
+                    </p>
                   )}
                 </div>
 

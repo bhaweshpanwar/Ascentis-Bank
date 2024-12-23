@@ -4,6 +4,8 @@ import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { RECAPTCHA_KEY } from '/src/config.js';
 import { API_ENDPOINTS } from '/src/config.js';
+import onlyAscentis from '../Images/only_ascentis.png';
+import userAvatar from '../Images/user_avatar.png';
 
 const LoginBasic = () => {
   const navigate = useNavigate();
@@ -65,7 +67,7 @@ const LoginBasic = () => {
       if (Object.keys(errors).length > 0) {
         setUserCredentailsErrors(errors);
       } else if (response.status === 201) {
-        // Fetch additional session details (if needed)
+        // Fetching user details
         const sessionResponse = await axios.get(API_ENDPOINTS.HOME, {
           headers: {
             'Content-Type': 'application/json',
@@ -99,7 +101,7 @@ const LoginBasic = () => {
           {/* Left section */}
           <div className='flex-1 h-full pt-14 w-full md:w-56 sm:px-8'>
             <img
-              src='/src/assets/Images/only_ascentis.png'
+              src={onlyAscentis}
               alt='logo img'
               className='h-20 w-48 pl-3 max-sm:h-24 max-sm:w-56 cursor-pointer'
               onClick={() => navigate('/')}
@@ -124,7 +126,7 @@ const LoginBasic = () => {
             <section className='h-full w-full bg-white flex flex-col gap-4'>
               <div className='flex-1 flex justify-center items-center'>
                 <img
-                  src='/src/assets/Images/user_avatar.png'
+                  src={userAvatar}
                   alt='user_icon'
                   className='h-[50px] w-[50px]'
                 />
@@ -146,7 +148,7 @@ const LoginBasic = () => {
                   } bg-[#F2F2F2] text-[#989898]`}
                 />
                 {userCredentialsErrors.username && (
-                  <p className='text-red-500 text-sm self-start pl-8'>
+                  <p className='text-red-500 text-sm self-start font-SF_Pro_Regular pl-8'>
                     {userCredentialsErrors.username}
                   </p>
                 )}
@@ -168,7 +170,7 @@ const LoginBasic = () => {
                   } bg-[#F2F2F2] text-[#989898]`}
                 />
                 {userCredentialsErrors.password && (
-                  <p className='text-red-500 text-sm self-start pl-8'>
+                  <p className='text-red-500 text-sm self-start font-SF_Pro_Regular pl-8'>
                     {userCredentialsErrors.password}
                   </p>
                 )}

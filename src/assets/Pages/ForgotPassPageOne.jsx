@@ -4,6 +4,8 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_ENDPOINTS } from '/src/config.js';
+import onlyAscentis from '../Images/only_ascentis.png';
+import userAvatar from '../Images/user_avatar.png';
 
 const ForgotPassPageOne = () => {
   const navigate = useNavigate();
@@ -279,7 +281,7 @@ const ForgotPassPageOne = () => {
         <div className='rounded-lg flex flex-col md:flex-row justify-center items-center h-[520px] w-[1100px]'>
           <div className='flex-1 h-full md:pt-20 w-full md:w-56 sm:px-8'>
             <img
-              src='/src/assets/Images/only_ascentis.png'
+              src={onlyAscentis}
               alt='logo img'
               className='h-20 w-48 pl-3 max-sm:h-24 max-sm:w-56 cursor-pointer'
               onClick={() => navigate('/')}
@@ -332,7 +334,7 @@ const ForgotPassPageOne = () => {
                   </div>
                   <div className=' flex justify-center items-center'>
                     <img
-                      src='/src/assets/Images/user_avatar.png'
+                      src={userAvatar}
                       alt='user_icon'
                       className='h-[50px] w-[50px]'
                     />
@@ -347,12 +349,12 @@ const ForgotPassPageOne = () => {
                       placeholder='Enter Email'
                       className={`h-[65px] w-[90%] px-[24px] py-[10px] rounded-[8.5px] border ${
                         userCredentialsErrors.email
-                          ? 'border-red-500'
+                          ? 'border-red-500 '
                           : 'border-[#E5E5E5]'
                       } bg-[#F2F2F2] text-[#989898]`}
                     />
                     {userCredentialsErrors.email && (
-                      <p className='text-red-500 text-sm self-start pl-10 mt-1'>
+                      <p className='text-red-500 text-sm self-start pl-6 font-SF_Pro_Regular mt-1'>
                         {userCredentialsErrors.email}
                       </p>
                     )}
@@ -394,7 +396,7 @@ const ForgotPassPageOne = () => {
                       } bg-[#F2F2F2] text-[#989898]`}
                     />
                     {userCredentialsErrors.otp && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {userCredentialsErrors.otp}
                       </p>
                     )}
@@ -473,7 +475,7 @@ const ForgotPassPageOne = () => {
                       </button>
                     </div>
                     {userCredentialsErrors.newPassword && (
-                      <p className='text-red-500 text-sm mt-2 pl-6 pr-6'>
+                      <p className='text-red-500 text-sm mt-2 font-SF_Pro_Regular pl-6 pr-6'>
                         {userCredentialsErrors.newPassword}
                       </p>
                     )}
@@ -495,7 +497,7 @@ const ForgotPassPageOne = () => {
                     />
 
                     {userCredentialsErrors.confirmNewPassword && (
-                      <p className='text-red-500 text-sm'>
+                      <p className='text-red-500 font-SF_Pro_Regular text-sm'>
                         {userCredentialsErrors.confirmNewPassword}
                       </p>
                     )}

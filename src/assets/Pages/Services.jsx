@@ -1,4 +1,12 @@
 import { useState } from 'react';
+import servicesAutoPay from '../Images/Services/auto_pay.png';
+import servicesPersonalBanking from '../Images/Services/personal_banking.png';
+import servicesBusinessBanking from '../Images/Services/business_banking.png';
+import servicesInvestmentServices from '../Images/Services/investment_services.png';
+import servicesOnlineBanking from '../Images/Services/online_banking.png';
+import servicesLoan from '../Images/Services/loan_services.png';
+import servicesCreditCard from '../Images/Services/credit_card_services.png';
+import servicesCustomer from '../Images/Services/customer_support.png';
 
 const data = [
   {
@@ -7,7 +15,7 @@ const data = [
     fullParagraph:
       'Automate Your Payments Effortlessly With Auto Pay, you can set up automatic payments for your recurring bills and loans. This service ensures that you never miss a due date by automatically deducting the payment from your account on the scheduled date. It saves you time and eliminates the hassle of remembering multiple payment dates, providing peace of mind and helping you avoid late fees.',
     shortParagraph: 'Automate Your Payments Effortlessly With Auto Pay...',
-    image: 'src/assets/Images/Services/auto_pay.png',
+    image: servicesAutoPay,
   },
   {
     id: '2',
@@ -16,7 +24,7 @@ const data = [
       "Personalized Banking Solutions Our Personal Banking services are designed to cater to your individual financial needs. From savings and checking accounts to personalized financial advice, we offer a range of products and services to help you manage your money effectively. Whether you're planning for the future, saving for a big purchase, or simply managing your day-to-day expenses, our personal banking services provide the tools and support you need.",
     shortParagraph:
       'Personalized Banking Solutions Our Personal Banking services...',
-    image: 'src/assets/Images/Services/personal_banking.png',
+    image: servicesPersonalBanking,
   },
   {
     id: '3',
@@ -24,7 +32,7 @@ const data = [
     fullParagraph:
       'Tailored Services for Your Business We understand that every business is unique, which is why our Business Banking services are tailored to meet the specific needs of your business. We offer a variety of solutions including business loans, credit lines, merchant services, and cash management tools. Our goal is to support your business growth by providing flexible financing options and expert advice to help you navigate the financial landscape.',
     shortParagraph: 'Tailored Services for Your Business We understand...',
-    image: 'src/assets/Images/Services/business_banking.png',
+    image: servicesBusinessBanking,
   },
   {
     id: '4',
@@ -33,7 +41,7 @@ const data = [
       "Grow Your Wealth with Expert Advice Our Investment Services are designed to help you achieve your financial goals through personalized guidance and a wide range of investment options. Whether you're a seasoned investor or just starting out, our team of experts can help you create a diversified portfolio that aligns with your risk tolerance and financial objectives. We offer investment opportunities in stocks, bonds, mutual funds, and more, along with regular reviews to ensure your investments are on track.",
     shortParagraph:
       'Grow Your Wealth with Expert Advice Our Investment Services...',
-    image: 'src/assets/Images/Services/investment_services.png',
+    image: servicesInvestmentServices,
   },
   {
     id: '5',
@@ -42,7 +50,7 @@ const data = [
       'Bank Anytime, Anywhere Our Online & Mobile Banking services give you the flexibility to manage your accounts from anywhere, at any time. You can access your account information, transfer funds, pay bills, and even deposit checks using our secure mobile app. With features like real-time alerts and mobile payments, you can stay on top of your finances and make banking convenient and secure.',
     shortParagraph:
       'Bank Anytime, Anywhere Our Online & Mobile Banking services...',
-    image: 'src/assets/Images/Services/online_banking.png',
+    image: servicesOnlineBanking,
   },
   {
     id: '6',
@@ -51,7 +59,7 @@ const data = [
       'Flexible Loan Options We offer a variety of loan services to meet your financial needs, including personal loans, auto loans, and mortgages. Our loan products come with competitive interest rates and flexible terms to make borrowing more accessible and affordable. Our team can help you navigate the loan application process, ensuring you get the financing you need with terms that fit your budget.',
     shortParagraph:
       'Flexible Loan Options We offer a variety of loan services...',
-    image: 'src/assets/Images/Services/loan_services.png',
+    image: servicesLoan,
   },
   {
     id: '7',
@@ -60,7 +68,7 @@ const data = [
       "Comprehensive Credit Card Management Our Credit Card Services are designed to provide you with the flexibility and security you need. Whether you're looking to earn rewards, build credit, or enjoy low-interest rates, we offer a range of credit card options to suit your needs. You can manage your account online, track your spending, and receive fraud protection to keep your financial information safe.",
     shortParagraph:
       'Comprehensive Credit Card Management Our Credit Card Services...',
-    image: 'src/assets/Images/Services/credit_card_services.png',
+    image: servicesCreditCard,
   },
   {
     id: '8',
@@ -68,7 +76,7 @@ const data = [
     fullParagraph:
       '24/7 Customer Support At Acsentis Bank, we prioritize customer satisfaction. Our dedicated Customer Support team is available 24/7 to assist you with any questions or issues you may have. Whether you need help with your account, technical support, or financial advice, our team is here to provide prompt and professional assistance.',
     shortParagraph: '24/7 Customer Support At Acsentis Bank...',
-    image: 'src/assets/Images/Services/customer_support.png',
+    image: servicesCustomer,
   },
 ];
 

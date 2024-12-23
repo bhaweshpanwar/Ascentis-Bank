@@ -1,3 +1,4 @@
+import fourLogo from '../Images/04.png';
 const Footer = () => {
   return (
     <footer
@@ -18,11 +19,7 @@ const Footer = () => {
                 href='/'
                 className='flex items-center space-x-2 text-2xl font-medium'
               >
-                <img
-                  src='src/assets/Images/04.png'
-                  alt='Ascentis Bank Logo'
-                  className='w-12'
-                />
+                <img src={fourLogo} alt='Ascentis Bank Logo' className='w-12' />
                 <span className='text-[#163172] font-SF_PRO_Semibold'>
                   Ascentis Bank
                 </span>

@@ -1,4 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import alexCEO_new from '../Images/About_Us/alexCEO_new.png';
+import community_investments from '../Images/About_Us/community_investments.png';
+import csr_programs from '../Images/About_Us/csr_programs.png';
+import extensive_reach from '../Images/About_Us/extensive_react.png';
+import global_standards from '../Images/About_Us/global_standards.png';
+import heritage_of_trust from '../Images/About_Us/heritage_of_trust.png';
+import innovative_solutions from '../Images/About_Us/innovative_solutions.png';
+import sophiaCFO_new from '../Images/About_Us/sophiaCFO_new.png';
+import team_aboutus_transparent from '../Images/About_Us/team_aboutus_transparent.png';
+import workshop from '../Images/About_Us/workshop.png';
 
 const About = () => {
   const navigate = useNavigate();
@@ -20,7 +30,7 @@ const About = () => {
           </h1>
 
           <img
-            src='src/assets/Images/About_Us/team_aboutus_transparent.png'
+            src={team_aboutus_transparent}
             className='relative z-0 -mt-20 w-full'
             alt='team'
           />
@@ -50,7 +60,7 @@ const About = () => {
         <div className='h-[500px] w-full rounded-3xl flex justify-center items-center relative'>
           <div className='overflow-hidden flex-1 relative'>
             <img
-              src='src/assets/Images/About_Us/heritage_of_trust.png'
+              src={heritage_of_trust}
               className='rounded-3xl w-full h-full object-cover'
             />
             <div
@@ -104,7 +114,7 @@ const About = () => {
           </div>
           <div className='overflow-hidden flex-1 relative'>
             <img
-              src='src/assets/Images/About_Us/global_standards.png'
+              src={global_standards}
               className='rounded-3xl w-full h-full object-cover'
             />
             <div
@@ -126,7 +136,7 @@ const About = () => {
         <div className='h-[500px] w-full rounded-3xl flex justify-center items-center relative'>
           <div className='overflow-hidden flex-1 relative'>
             <img
-              src='src/assets/Images/About_Us/innovative_solutions.png'
+              src={innovative_solutions}
               className='rounded-3xl w-full h-full object-cover'
             />
             <div
@@ -180,10 +190,7 @@ const About = () => {
         {/* First Section */}
         <div className='h-full w-full flex flex-col justify-center items-center px-24'>
           <div className=' h-[350px] w-full relative'>
-            <img
-              src='src/assets/Images/About_Us/alexCEO_new.png'
-              className='absolute top-[-80px]'
-            />
+            <img src={alexCEO_new} className='absolute top-[-80px]' />
           </div>
           <div>
             <h1 className='text-3xl font-SF_PRO_Light text-center text-white'>
@@ -204,10 +211,7 @@ const About = () => {
         {/* Second Section */}
         <div className='h-full w-full flex flex-col justify-center items-center px-24'>
           <div className='h-[350px] w-full relative'>
-            <img
-              src='src/assets/Images/About_Us/sophiaCFO_new.png'
-              className='absolute top-[-80px]'
-            />
+            <img src={sophiaCFO_new} className='absolute top-[-80px]' />
           </div>
           <div>
             <h1 className='text-3xl font-SF_PRO_Light text-center text-white'>
@@ -250,7 +254,7 @@ const About = () => {
             <div className='w-full h-full flex flex-col justify-start items-center gap-[20px]'>
               <div className='h-[560px] w-full rounded-[40px] bg-gray-400 overflow-hidden relative'>
                 <img
-                  src='src/assets/Images/About_Us/workshop.png'
+                  src={workshop}
                   className='w-full h-full object-cover absolute'
                 />
                 <div
@@ -285,7 +289,7 @@ const About = () => {
                 </div>
                 <div className='h-full w-full flex-1 pr-4 py-4'>
                   <img
-                    src='src/assets/Images/About_Us/csr_programs.png'
+                    src={csr_programs}
                     className='h-full w-full object-cover rounded-[40px]'
                   />
                 </div>
@@ -305,14 +309,14 @@ const About = () => {
                 </div>
                 <div className='h-full w-full flex-1 pr-4 py-4'>
                   <img
-                    src='src/assets/Images/About_Us/community_investments.png'
+                    src={community_investments}
                     className='h-full w-full object-cover rounded-[40px]'
                   />
                 </div>
               </div>
               <div className='h-[560px] w-full rounded-[40px] bg-gray-400 overflow-hidden relative'>
                 <img
-                  src='src/assets/Images/About_Us/extensive_react.png'
+                  src={extensive_reach}
                   className='w-full h-full object-cover'
                 />
                 <div
