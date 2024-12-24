@@ -2003,7 +2003,10 @@ const Dashboard = () => {
                     <div>
                       <button
                         className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
-                        onClick={() => setCurrentAutoPayState(1)}
+                        onClick={() => {
+                          setCurrentAutoPayState(1);
+                          setPassword('');
+                        }}
                       >
                         <img src={DashbackArrow} />
                       </button>
@@ -2254,7 +2257,7 @@ const Dashboard = () => {
                         className='rounded-full border-[1px] border-gray-600 py-2 px-[6px]'
                         onClick={() => setCurrentFixedDepositState(0)}
                       >
-                        <img src='src/assets/Images/back_arrow.png' />
+                        <img src={DashbackArrow} />
                       </button>
                       <h1 className='font-outfit font-bold text-2xl'>
                         Fixed Deposit
