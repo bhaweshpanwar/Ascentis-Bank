@@ -128,7 +128,7 @@ const SessionAutoPayDetailsDummy = [
 ];*/
 
 const Dashboard = () => {
-  const [current, setCurrent] = useState('Home'); // State to track active section
+  const [current, setCurrent] = useState('Home');
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [currentPaymentState, setCurrentPaymentState] = useState(0);
   const [currentAutoPayState, setCurrentAutoPayState] = useState(0);
@@ -141,7 +141,7 @@ const Dashboard = () => {
   const [password, setPassword] = useState('');
   const [fdpassword, setfdPassword] = useState('');
   const [SessionTransactionDetails, setSessionTransactionDetails] = useState({
-    recentTransactions: [], // Default to an empty array
+    recentTransactions: [],
   });
   const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false);
   const [isAmountModalVisible, setIsAmountModalVisible] = useState(false);
