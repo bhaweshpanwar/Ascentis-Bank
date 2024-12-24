@@ -915,6 +915,7 @@ const Dashboard = () => {
       console.error('Error during sending payment:', error);
       alert('An error occurred. Please try again.');
     } finally {
+      setPassword('');
       setBasicLoading(false);
     }
   };
