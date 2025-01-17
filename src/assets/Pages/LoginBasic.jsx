@@ -67,7 +67,6 @@ const LoginBasic = () => {
       if (Object.keys(errors).length > 0) {
         setUserCredentailsErrors(errors);
       } else if (response.status === 201) {
-        // Fetching user details
         const sessionResponse = await axios.get(API_ENDPOINTS.HOME, {
           headers: {
             'Content-Type': 'application/json',

@@ -275,7 +275,6 @@ const Dashboard = () => {
   });
   const [formPaymentDataErrors, setFormPaymentDataErrors] = useState({});
 
-  // State for Auto Pay Form
   const [formAutoPay, setFormAutoPay] = useState({
     recipientName: '',
     recipientAccountNumber: '',
@@ -326,7 +325,6 @@ const Dashboard = () => {
       event.preventDefault();
       event.returnValue = '';
 
-      // Perform the logout request
       axios
         .get(API_ENDPOINTS.LOGOUT, {
           headers: { 'Content-Type': 'application/json' },
@@ -354,29 +352,9 @@ const Dashboard = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const handleBeforeUnload = async (event) => {
-  //     event.preventDefault();
-  //     event.returnValue = '';
-  //     try {
-  //       await axios.get(API_ENDPOINTS.LOGOUT, {
-  //         headers: { 'Content-Type': 'application/json' },
-  //         withCredentials: true,
-  //       });
-  //     } catch (error) {
-  //       console.error('Failed to logout:', error);
-  //     }
-  //   };
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Handle Auto Pay form
     if (current === 'Auto Pay' && currentAutoPayState === 1) {
       setFormAutoPay({
         ...formAutoPay,
@@ -385,11 +363,10 @@ const Dashboard = () => {
 
       setFormAutoPayErrors({
         ...formAutoPayErrors,
-        [name]: '', // Clear error when user is typing
+        [name]: '',
       });
     }
 
-    // Handle Fixed Deposit form
     if (current === 'Fixed Deposit' && currentFixedDepositState === 1) {
       setFormFixedDeposit((prev) => ({
         ...prev,
@@ -405,14 +382,12 @@ const Dashboard = () => {
         }),
       }));
 
-      // Only validate when explicitly triggered, not while user is typing
       setFormFixedDepositErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: '', // Clear error when user is typing
+        [name]: '',
       }));
     }
 
-    // Handle Pay or Transfer form
     if (current === 'Pay or Transfer' && currentPaymentState === 0) {
       setFormPaymentData({
         ...formPaymentData,
@@ -420,7 +395,7 @@ const Dashboard = () => {
       });
       setFormPaymentDataErrors({
         ...formPaymentDataErrors,
-        [name]: '', // Clear error when user is typing
+        [name]: '',
       });
     }
   };
@@ -450,7 +425,7 @@ const Dashboard = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 2000, // Ensure it's above other elements
+    zIndex: 2000,
   };
 
   const LoadingOverlay = () => (
@@ -468,7 +443,6 @@ const Dashboard = () => {
   const validatePayment = () => {
     let errors = {};
 
-    // Pay or Transfer: Initial State Validation
     if (current === 'Pay or Transfer' && currentPaymentState === 0) {
       if (!formPaymentData.recipientName)
         errors.recipientName = 'Recipient Name is Required.';
@@ -479,14 +453,12 @@ const Dashboard = () => {
       return Object.keys(errors).length === 0;
     }
 
-    // Pay or Transfer: OTP Validation
     if (current === 'Pay or Transfer' && currentPaymentState === 1) {
       if (!formPaymentData.otp) errors.otp = 'OTP is Required.';
       setFormPaymentDataErrors(errors);
       return Object.keys(errors).length === 0;
     }
 
-    // Auto Pay: Form Fields Validation
     if (current === 'Auto Pay' && currentAutoPayState === 1) {
       let validAutoPayDate = new Date();
       validAutoPayDate.setDate(validAutoPayDate.getDate() + 7);
@@ -498,7 +470,7 @@ const Dashboard = () => {
       if (!formAutoPay.endDate) {
         errors.autoPayEndDate = 'End Date is Required.';
       } else {
-        const enteredEndDate = new Date(formAutoPay.endDate); // Parse the entered endDate
+        const enteredEndDate = new Date(formAutoPay.endDate);
         if (enteredEndDate <= validAutoPayDate) {
           errors.autoPayEndDate = `End Date must be at least 7 days from today .i.e. ${formatDate(
             today
@@ -512,14 +484,12 @@ const Dashboard = () => {
       return Object.keys(errors).length === 0;
     }
 
-    // Auto Pay: Password Validation
     if (current === 'Auto Pay' && currentAutoPayState === 2) {
       if (!password) errors.password = 'Password is Required.';
       setFormAutoPayErrors(errors);
       return Object.keys(errors).length === 0;
     }
 
-    // Fixed Deposit: Form Validation
     if (current === 'Fixed Deposit' && currentFixedDepositState === 1) {
       if (!formFixedDeposit.depositAmount)
         errors.depositAmount = 'Deposit Amount is Required.';
@@ -531,7 +501,6 @@ const Dashboard = () => {
       return Object.keys(errors).length === 0;
     }
 
-    // Fixed Deposit: Password Validation
     if (current === 'Fixed Deposit' && currentFixedDepositState === 2) {
       if (!fdpassword) errors.fdpassword = 'Password is Required.';
       setFormFixedDepositErrors(errors);
@@ -575,11 +544,10 @@ const Dashboard = () => {
         },
         withCredentials: true,
       });
-      console.log(response.data); // Log response data for debugging
+      console.log(response.data);
 
       if (response.data.data === 2) {
         try {
-          // Second API Call
           const secondaryResponse = await axios.get(API_ENDPOINTS.OTP, {
             headers: {
               'Content-Type': 'application/json',
@@ -631,11 +599,10 @@ const Dashboard = () => {
     setBasicLoading(true);
 
     const urlEncodedData = new URLSearchParams();
-    urlEncodedData.append('password', password); // Assuming `password` is your variable holding the password input
-
+    urlEncodedData.append('password', password);
     try {
       const response = await axios.post(
-        API_ENDPOINTS.DELETE_ACCOUNT, // Replace with the actual endpoint
+        API_ENDPOINTS.DELETE_ACCOUNT,
         urlEncodedData,
         {
           headers: {
@@ -665,8 +632,6 @@ const Dashboard = () => {
         setForfeitedAmount(response.data.amount || 0);
         setIsPasswordModalVisible(false);
         setIsAmountModalVisible(true);
-
-        // Navigate to /login after 2-3 seconds
         setTimeout(() => {
           navigate('/login');
         }, 3000);
@@ -717,7 +682,6 @@ const Dashboard = () => {
     }
   };
 
-  // Fetch updated session details when needed
   const handleHomeUIUpdate = async () => {
     setLoading(true);
     try {
@@ -728,18 +692,18 @@ const Dashboard = () => {
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
-        parsedData = JSON.parse(sessionResponse.data); // Parse if string
+        parsedData = JSON.parse(sessionResponse.data);
       } else {
-        parsedData = sessionResponse.data; // Use directly if object
+        parsedData = sessionResponse.data;
       }
 
-      setSessionAccountDetails(parsedData); // Update session details
+      setSessionAccountDetails(parsedData);
     } catch (error) {
       console.error('Error fetching session details:', error);
       alert('Failed to fetch session details. Please try again.');
     } finally {
       setTimeout(() => {
-        setLoading(false); // Hide the loader after the delay
+        setLoading(false);
       }, 1000);
     }
   };
@@ -754,13 +718,13 @@ const Dashboard = () => {
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
-        parsedData = JSON.parse(sessionResponse.data); // Parse if string
+        parsedData = JSON.parse(sessionResponse.data);
       } else {
-        parsedData = sessionResponse.data; // Use directly if object
+        parsedData = sessionResponse.data;
       }
       console.log(parsedData);
 
-      setSessionTransactionDetails(parsedData); // Update session details
+      setSessionTransactionDetails(parsedData);
     } catch (error) {
       console.error('Error fetching session details:', error);
       alert('Failed to fetch session details. Please try again.');
@@ -772,7 +736,7 @@ const Dashboard = () => {
   };
 
   const handleAutoPayUIUpdate = async () => {
-    setLoading(true); // Show the loader immediately
+    setLoading(true);
 
     try {
       const sessionResponse = await axios.get(API_ENDPOINTS.AUTOPAY_LIST, {
@@ -782,25 +746,24 @@ const Dashboard = () => {
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
-        parsedData = JSON.parse(sessionResponse.data); // Parse if string
+        parsedData = JSON.parse(sessionResponse.data);
       } else {
-        parsedData = sessionResponse.data; // Use directly if object
+        parsedData = sessionResponse.data;
       }
 
-      setSessionAutoPayDetails(parsedData); // Update session details
+      setSessionAutoPayDetails(parsedData);
     } catch (error) {
       console.error('Error fetching session details:', error);
       alert('Failed to fetch session details. Please try again.');
     } finally {
-      // Add a delay to ensure the loader stays visible for 2-3 seconds
       setTimeout(() => {
-        setLoading(false); // Hide the loader after the delay
-      }, 1000); // Delay of 2 seconds
+        setLoading(false);
+      }, 1000);
     }
   };
 
   const handleFixedDepositUIUpdate = async () => {
-    setLoading(true); // Show the loader immediately
+    setLoading(true);
 
     try {
       const sessionResponse = await axios.get(API_ENDPOINTS.EXISTING_FD, {
@@ -810,20 +773,19 @@ const Dashboard = () => {
 
       let parsedData;
       if (typeof sessionResponse.data === 'string') {
-        parsedData = JSON.parse(sessionResponse.data); // Parse if string
+        parsedData = JSON.parse(sessionResponse.data);
       } else {
-        parsedData = sessionResponse.data; // Use directly if object
+        parsedData = sessionResponse.data;
       }
 
-      setSessionFixedDepositDetails(parsedData); // Update session details
+      setSessionFixedDepositDetails(parsedData);
     } catch (error) {
       console.error('Error fetching session details:', error);
       alert('Failed to fetch session details. Please try again.');
     } finally {
-      // Add a delay to ensure the loader stays visible for 2-3 seconds
       setTimeout(() => {
-        setLoading(false); // Hide the loader after the delay
-      }, 1000); // Delay of 2 seconds
+        setLoading(false);
+      }, 1000);
     }
   };
 
@@ -853,9 +815,8 @@ const Dashboard = () => {
         withCredentials: true,
       });
 
-      console.log(response.data); // Debugging log, remove in production
+      console.log(response.data);
 
-      // Handle response data
       if (response.data?.data === 0) {
         setFormAutoPayErrors((prevErrors) => ({
           ...prevErrors,
@@ -868,13 +829,13 @@ const Dashboard = () => {
           autoPayRecipientName: 'Name & Account Number do not match.',
         }));
       } else if (response.data?.data === 2 || response.status === 201) {
-        setCurrentAutoPayState(2); // Move to next state
+        setCurrentAutoPayState(2);
       }
     } catch (error) {
       console.error('Error during setting auto-pay:', error);
       alert('An error occurred. Please try again.');
     } finally {
-      setBasicLoading(false); // Ensure loading is stopped in all scenarios
+      setBasicLoading(false);
     }
   };
 
@@ -920,7 +881,6 @@ const Dashboard = () => {
     }
   };
 
-  // Logout handler
   const handleLogout = useCallback(() => {
     axios
       .get(API_ENDPOINTS.LOGOUT, {
@@ -929,7 +889,7 @@ const Dashboard = () => {
       })
       .then((response) => {
         if (response.status === 201) {
-          navigate('/login'); // Redirect to login on successful logout
+          navigate('/login');
         } else {
           console.error('Logout failed with status:', response.status);
           alert('Logout failed. Please try again.');
@@ -941,25 +901,21 @@ const Dashboard = () => {
       });
   }, [navigate]);
 
-  // Handle back button navigation
   useEffect(() => {
     const handlePopState = () => {
       const userConfirmed = window.confirm(
         'Are you sure you want to leave this page?'
       );
       if (!userConfirmed) {
-        // Prevent navigation
         window.history.pushState(null, '', window.location.href);
       } else {
-        handleLogout(); // Log out if the user confirms
+        handleLogout();
       }
     };
 
-    // Push initial state into history stack
     window.history.pushState(null, '', window.location.href);
     window.addEventListener('popstate', handlePopState);
 
-    // Cleanup listener on unmount
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
@@ -973,7 +929,7 @@ const Dashboard = () => {
   const handleFdDelete = async (transaction) => {
     setIsLoading((prevLoadingState) => ({
       ...prevLoadingState,
-      [transaction.fd_Id]: true, // Use the unique ID
+      [transaction.fd_Id]: true,
     }));
     console.log(transaction.fd_Id);
     const urlEncodedData = new URLSearchParams();
@@ -998,7 +954,7 @@ const Dashboard = () => {
     } finally {
       setIsLoading((prevLoadingState) => ({
         ...prevLoadingState,
-        [transaction.fd_Id]: false, // Reset the loading state for the specific button
+        [transaction.fd_Id]: false,
       }));
     }
   };
@@ -1734,7 +1690,7 @@ const Dashboard = () => {
                               (transaction) =>
                                 transaction !== null &&
                                 transaction !== undefined
-                            ) // Ensure valid entries
+                            )
                             .map((transaction, index) => (
                               <div
                                 key={index}

@@ -26,20 +26,17 @@ const ForgotPassPageOne = () => {
     let interval;
 
     if (activestep === 1 && timer > 0) {
-      // Start timer only on OTP stage
       interval = setInterval(() => {
         setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : prevTimer));
       }, 1000);
     }
 
-    // When timer hits 0, enable Resend button
     if (timer === 0) {
       setResendDisabled(false);
     }
 
-    // Cleanup timer
     return () => clearInterval(interval);
-  }, [activestep, timer]); // Dependencies
+  }, [activestep, timer]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -82,7 +79,6 @@ const ForgotPassPageOne = () => {
   const validate = () => {
     let errors = {};
 
-    // Regex patterns
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
@@ -124,7 +120,6 @@ const ForgotPassPageOne = () => {
     setLoading(true);
 
     try {
-      // First API Call
       const urlEncodedData = new URLSearchParams();
       urlEncodedData.append('email', userCredentials.email);
       urlEncodedData.append('form', 'forgot_email');
@@ -141,7 +136,6 @@ const ForgotPassPageOne = () => {
         response.data.message !== 'Your email is currently blocked'
       ) {
         try {
-          // Second API Call
           const secondaryResponse = await axios.get(API_ENDPOINTS.OTP, {
             headers: {
               'Content-Type': 'application/json',
@@ -198,7 +192,7 @@ const ForgotPassPageOne = () => {
       );
 
       if (response.data.check === true) {
-        setActiveStep((cur) => cur + 1); // Move to the next step
+        setActiveStep((cur) => cur + 1);
       } else {
         alert('Invalid OTP. Please try again.');
       }
@@ -206,7 +200,7 @@ const ForgotPassPageOne = () => {
       console.error('Error during OTP submission:', error);
       alert('Error submitting the OTP. Please try again later.');
     } finally {
-      setLoading(false); // Ensure loading is turned off in all scenarios
+      setLoading(false);
     }
   };
 
@@ -228,8 +222,8 @@ const ForgotPassPageOne = () => {
         alert(
           'OTP has been sent to your registered email. This OTP is only valid for 2 minutes.'
         );
-        setTimer(120); // Reset timer to 2 minutes
-        setResendDisabled(true); // Disable "Resend" again
+        setTimer(120);
+        setResendDisabled(true);
       } else {
         alert(
           additionalMessage || 'Required data not found in the secondary API.'
@@ -271,7 +265,7 @@ const ForgotPassPageOne = () => {
       console.error('Error submitting password:', error);
       alert('Error sending the data. Please try again later.');
     } finally {
-      setLoading(false); // Ensure loading is turned off in all scenarios
+      setLoading(false);
     }
   };
 

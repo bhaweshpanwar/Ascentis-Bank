@@ -110,14 +110,12 @@ export function DefaultStepper() {
   const validateForm = () => {
     let errors = {};
 
-    // Regex patterns
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[6-9]\d{9}$/;
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
     const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
 
-    // Check for empty fields and validate using regex
     if (!FormData.full_name) errors.full_name = 'Full Name is required';
     if (!FormData.dob) errors.dob = 'Date of Birth is required';
     if (!FormData.phone || !phoneRegex.test(FormData.phone))
@@ -157,7 +155,6 @@ export function DefaultStepper() {
     }
 
     if (activeStep === 1) {
-      // Username validation
       if (!FormData.username) {
         errors.username = 'Username is required';
       } else if (!usernameRegex.test(FormData.username)) {
@@ -165,7 +162,6 @@ export function DefaultStepper() {
           'Username must be 3-16 characters long, and can contain letters, numbers, and underscores only';
       }
 
-      // Password validation
       if (!FormData.password) {
         errors.password = 'Password is required';
       } else if (!passwordRegex.test(FormData.password)) {
@@ -173,14 +169,12 @@ export function DefaultStepper() {
           'Password must be at least 8 characters, include one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=!)';
       }
 
-      // Confirm password match
       if (!FormData.confirm_password) {
         errors.confirm_password = 'Please confirm your password';
       } else if (FormData.password !== FormData.confirm_password) {
         errors.confirm_password = 'Passwords do not match';
       }
 
-      // Check if username and full_name are the same
       if (FormData.username === FormData.full_name) {
         errors.username = 'Username cannot be the same as your full name';
       }
@@ -188,7 +182,6 @@ export function DefaultStepper() {
 
     setFormErrors(errors);
 
-    // Return true if there are no errors
     return Object.keys(errors).length === 0;
   };
 
@@ -404,8 +397,8 @@ export function DefaultStepper() {
         alert(
           'OTP has been sent to your registered email. This OTP is only valid for 2 minutes.'
         );
-        setTimer(120); // Reset timer to 2 minutes
-        setResendDisabled(true); // Disable "Resend" again
+        setTimer(120);
+        setResendDisabled(true);
       } else {
         alert(
           additionalMessage || 'Required data not found in the secondary API.'

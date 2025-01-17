@@ -11,10 +11,11 @@ import PasswordSuccessPage from './assets/Pages/PasswordSuccessPage.jsx';
 import Services from './assets/Pages/Services.jsx';
 import Header from './assets/components/Header.jsx';
 import Footer from './assets/components/Footer.jsx';
-
+import ChatBot from './assets/components/ChatBot.jsx';
 function App() {
   return (
     <Router>
+      <ChatBot />
       <Routes>
         <Route
           path='/'
