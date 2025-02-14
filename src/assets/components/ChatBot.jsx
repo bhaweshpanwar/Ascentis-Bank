@@ -112,8 +112,7 @@ const ChatBot = () => {
               />
               <button
                 type='submit'
-                className='bg-[#0D427C] text-white rounded-full px-3 py-2 transition-colors flex items-center justify-center'
-                disabled={isLoading} // Disable button while loading
+                className='bg-[#0D427C] text-white rounded-full px-3 py-2 hover:bg-blue-700 transition-colors'
               >
                 {isLoading ? (
                   <ImSpinner8 className='animate-spin' size={20} />
