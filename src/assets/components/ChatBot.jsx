@@ -3,6 +3,7 @@ import axios from 'axios';
 import { IoMdSend } from 'react-icons/io';
 import { BsChatDots } from 'react-icons/bs';
 import { AiOutlineClose } from 'react-icons/ai';
+import { ImSpinner8 } from 'react-icons/im';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,10 +15,11 @@ const ChatBot = () => {
       timestamp: new Date().toLocaleTimeString(),
     },
   ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!message.trim()) return;
+    if (!message.trim() || isLoading) return;
 
     const userMessage = {
       type: 'user',
@@ -26,6 +28,8 @@ const ChatBot = () => {
     };
 
     setChatHistory((prev) => [...prev, userMessage]);
+    setMessage(''); // Clear the input field immediately
+    setIsLoading(true); // Set loading state to true
 
     try {
       const response = await axios.post(
@@ -48,9 +52,9 @@ const ChatBot = () => {
         timestamp: new Date().toLocaleTimeString(),
       };
       setChatHistory((prev) => [...prev, botMessage]);
+    } finally {
+      setIsLoading(false); // Set loading state to false
     }
-
-    setMessage('');
   };
 
   return (
@@ -102,12 +106,18 @@ const ChatBot = () => {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder='Type your message...'
                 className='flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-500'
+                disabled={isLoading} // Disable input while loading
               />
               <button
                 type='submit'
-                className='bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors'
+                className='bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors flex items-center justify-center'
+                disabled={isLoading} // Disable button while loading
               >
-                <IoMdSend size={20} />
+                {isLoading ? (
+                  <ImSpinner8 className='animate-spin' size={20} />
+                ) : (
+                  <IoMdSend size={20} />
+                )}
               </button>
             </div>
           </form>
