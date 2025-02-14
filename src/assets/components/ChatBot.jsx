@@ -61,8 +61,10 @@ const ChatBot = () => {
     <div className='fixed bottom-4 right-4 z-50'>
       {isOpen && (
         <div className='bg-white rounded-lg shadow-2xl w-80 md:w-96 mb-4 transition-all duration-300 ease-in-out transform translate-y-0 opacity-100'>
-          <div className='bg-blue-600 rounded-t-lg p-4 flex justify-between items-center'>
-            <h2 className='text-white font-semibold text-lg'>Chat Support</h2>
+          <div className='bg-[#0D427C] rounded-t-lg p-4 flex justify-between items-center'>
+            <h2 className='text-white font-SF_Pro_Regular text-lg'>
+              Chat Support
+            </h2>
             <button
               onClick={() => setIsOpen(false)}
               className='text-white hover:text-gray-200 transition-colors'
@@ -82,12 +84,12 @@ const ChatBot = () => {
                 <div
                   className={`max-w-[80%] rounded-lg p-3 ${
                     msg.type === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-800'
+                      ? 'bg-gray-100 text-gray-800'
+                      : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  <p className='text-sm'>{msg.content}</p>
-                  <span className='text-xs opacity-70 mt-1 block'>
+                  <p className='text-[16px] font-SF_PRO_Light'>{msg.content}</p>
+                  <span className='text-xs opacity-25 mt-1 block'>
                     {msg.timestamp}
                   </span>
                 </div>
@@ -110,7 +112,7 @@ const ChatBot = () => {
               />
               <button
                 type='submit'
-                className='bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors flex items-center justify-center'
+                className='bg-[#0D427C] text-white rounded-full px-3 py-2 transition-colors flex items-center justify-center'
                 disabled={isLoading} // Disable button while loading
               >
                 {isLoading ? (
@@ -126,7 +128,7 @@ const ChatBot = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='bg-blue-600 text-white rounded-full p-4 shadow-lg hover:bg-blue-700 transition-colors'
+        className='bg-[#0D427C] text-white rounded-full p-4 shadow-lg hover:bg-[#08294d] transition-colors'
       >
         <BsChatDots size={24} />
       </button>
