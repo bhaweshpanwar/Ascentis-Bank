@@ -1,72 +1,169 @@
-# 🏦 Ascentis Bank
+# Ascentis Bank
 
-A modern, secure, and user-friendly banking interface built with **React + Vite**, **Material UI**, and **Tailwind CSS**. Ascentis Bank is designed to streamline your digital banking experience — from quick registration to seamless account management.
-
-> 🚀 **Live App**: [Ascentis Bank on Render](https://ascentis-bank.onrender.com/register)
+Ascentis Bank is a modern banking web application built with **React (Vite)**, **Material UI**, **Tailwind CSS**, and **Axios**. It offers a clean and user-friendly interface for users to manage their accounts, perform secure transactions, and explore banking services seamlessly. This project features complete authentication flows, a feature-rich dashboard, and clear documentation to ensure an optimal user experience.
 
 ---
 
-## 📌 Overview
+## 🌐 Live Demo
 
-Ascentis Bank is a full-stack-ready frontend prototype of a digital banking system. With sleek Material UI components, responsive Tailwind layouts, and secure OTP-based transactions, it delivers a smooth, mobile-friendly banking interface ideal for real-world integration.
-
----
-
-## ⚙️ Tech Stack
-
-- ⚛️ **React (Vite)** – Fast and modern frontend framework
-- 💄 **Material UI** – Accessible and responsive components
-- 🎨 **Tailwind CSS** – Utility-first styling framework
-- 🔗 **Axios** – Simplified API communication
-- 🧠 **JSX** – React component templating
+[https://ascentis-bank.onrender.com](https://ascentis-bank.onrender.com)
 
 ---
 
-## 🌟 Features
+## 📌 Project Highlights
 
-### 🛡️ Authentication
+### 🔹 Key Features
 
-- 🔐 **User Registration**
-- 🔑 **Login with credentials**
-- 🔁 **Forgot Password recovery**
-- ✅ **OTP Verification for Transactions**
+- **Authentication & Security**
 
-### 🧾 Account Types
+  - User Registration and Login
+  - OTP-secured Account-to-Account Transfers
+  - Forgot Password functionality
+  - Encrypted data handling
 
-- 🏦 **Savings Account** – Personal savings with interest
-- 🏢 **Current Account** – For businesses with frequent transactions
+- **User Dashboard**
 
-### 💳 Payment System
+  - Auto Pay Setup
+  - Secure Payments
+  - Fixed Deposit Management
+  - Account Settings
+  - Account Closure Option
 
-- 🔁 **Account-to-Account Transfer** (via OTP)
-- ❌ **No UPI or Net Banking** – Focused on secure transfers
+- **Account Types**
 
-### 📊 Dashboard Functionalities
+  - Savings Account
+  - Current Account
 
-- 📅 **Auto Pay** – Schedule recurring payments
-- 💸 **Pay** – Send money to other users
-- 💰 **Fixed Deposits** – Open/manage FDs
-- ⚙️ **Settings** – Personalize your experience
-- 🛑 **Close Account** – Self-service account closure
+- **Transaction Methods**
 
----
+  - Account-to-Account Transfers
+  - No support for UPI or Net Banking (by design)
 
-## 📸 UI Previews
-
-Here are some previews of the app's user interface:
-
-![Login Page](./assets/Images/login.png)
-![Dashboard](./assets/Images/dashboard.png)
-![Register Page](./assets/Images/register.png)
+- **Responsive UI**
+  - Built using Material UI and Tailwind CSS for a seamless and modern look across devices
 
 ---
 
-## 🚀 Getting Started
+## 🧩 Tech Stack
 
-Follow these steps to set up the project locally:
+| Technology   | Purpose                      |
+| ------------ | ---------------------------- |
+| React (Vite) | Frontend framework           |
+| Material UI  | Pre-built UI components      |
+| Tailwind CSS | Utility-first custom styling |
+| Axios        | HTTP client for API requests |
+| React Router | Page navigation and routing  |
+| JSX          | Component-based architecture |
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/your-username/ascentis-bank.git
-   cd ascentis-bank
-   ```
+---
+
+## 🧭 Pages & Components
+
+### Pages:
+
+- Home
+- About
+- Login / Register / Forgot Password
+- Dashboard
+  - Pay
+  - Auto Pay
+  - Fixed Deposits
+  - Settings
+  - Close Account
+- Success & Error Screens
+
+### Reusable Components:
+
+- Header, Footer
+- ChatBot
+- FAQ
+- User Info Display
+- User Reviews
+
+---
+
+## 📂 Project Structure
+
+```
+
+src/
+│
+├── assets/
+│ ├── components/ # Reusable components (ChatBot, Header, Footer, etc.)
+│ └── Pages/ # Main page components (Dashboard, Login, etc.)
+│
+├── App.jsx # Main app component
+├── main.jsx # React DOM render
+├── config.js # API endpoints / configuration
+├── index.css / App.css # Styling files
+├── .env # Environment variables
+
+```
+
+---
+
+## 🚀 How to Run Locally
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/ascentis-bank.git
+cd ascentis-bank
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the Development Server
+
+```bash
+npm run dev
+```
+
+The app will be live at: `http://localhost:5173`
+
+---
+
+## 🔐 Security Features
+
+- OTP verification on all transactions
+- Encrypted data transmission
+- Safe handling of user credentials
+
+---
+
+## ❓ FAQs
+
+- **How to send money?**  
+  Use the "Pay" section in your dashboard. Enter account number and verify using OTP.
+
+- **How to open a Fixed Deposit?**  
+  Accessible directly via your dashboard.
+
+- **Is UPI supported?**  
+  No. Only account-to-account transfers with OTP verification are supported.
+
+- **How to close the account?**  
+  Use the "Close Account" feature or contact support.
+
+---
+
+## 📬 Contact & Support
+
+For queries or issues:
+
+- Email: [support@ascentisbank.com](mailto:support@ascentisbank.com)
+- Website: [Ascentis Bank](https://ascentis-bank.onrender.com)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. You are free to use, modify, and distribute this software with proper attribution. See the [LICENSE](./LICENSE) file for more details.
+
+```
+
+```
