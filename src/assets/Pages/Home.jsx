@@ -17,22 +17,22 @@ const Home = () => {
   return (
     <>
       {/* Section-01 */}
-      <div className='h-[800px] w-full max-w-screen-2xl mx-auto  flex justify-center items-start  pt-24'>
-        <div className='w-[95%] max-w-screen-lg mx-auto md:w-3/5 h-[300px] flex flex-col justify-center items-center'>
-          <div className='h-[143px] md:h-[150px] flex justify-center items-center'>
+      <div className='h-auto md:h-[800px] w-full max-w-screen-2xl mx-auto flex justify-center items-start pt-16 md:pt-24'>
+        <div className='w-[95%] max-w-screen-lg mx-auto md:w-3/5 h-auto md:h-[300px] flex flex-col justify-center items-center'>
+          <div className='h-auto md:h-[150px] flex justify-center items-center'>
             <h1 className='h-full text-center font-geologica text-[40px] md:text-[70px] font-light leading-none bg-gradient-to-r from-[#8CB9BD] to-[#163172] bg-clip-text text-transparent'>
               Banking Redefined with Trust and Technology
             </h1>
           </div>
 
-          <div className='h-28 md:h-20 w-full flex flex-col md:flex-row px-6 md:px-24'>
+          <div className='h-auto md:h-20 w-full flex flex-col md:flex-row px-4 mt-4 md:mt-0 md:px-24'>
             <div className='flex-1 flex justify-center items-center'>
               <p className='text-center text-[14px] md:text-[16px] font-SF_PRO_Light text-gray-600'>
                 Join millions of satisfied customers and take control of your
                 finances today with Ascentis Bank
               </p>
             </div>
-            <div className='flex justify-center items-center md:mt-0 md:w-48 h-full'>
+            <div className='flex justify-center items-center mt-6 md:mt-0 md:w-48 h-full'>
               <button
                 className='h-[50px] px-8 bg-[#0D427C] text-white rounded-full font-SF_PRO_Thin text-[16px] flex items-center justify-center cursor-pointer'
                 onClick={() => {
@@ -42,10 +42,10 @@ const Home = () => {
                 Get Started
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
-                  width='30' // Increase the width
-                  height='30' // Increase the height
+                  width='30'
+                  height='30'
                   fill='currentColor'
-                  className='bi bi-arrow-right-short cursor-pointer' // Add cursor-pointer to the SVG
+                  className='bi bi-arrow-right-short cursor-pointer'
                   viewBox='0 0 16 16'
                 >
                   <path
@@ -60,34 +60,30 @@ const Home = () => {
       </div>
 
       {/*Hero Image*/}
-      <div className='h-[360px] w-auto max-w-screen-2xl mx-auto  flex items-start justify-start'>
-        <div className=' h-full w-full relative'>
+      <div className='hidden md:flex h-[250px] md:h-[360px] w-full max-w-screen-2xl mx-auto items-start justify-center md:justify-start'>
+        <div className='h-full w-full relative'>
           <img
             src={heroImage}
-            className='absolute top-[-450px] scale-90'
-            // style={{
-            //   boxShadow: '2px 2px 152.3px -27px rgba(22, 49, 114, 0.49)',
-            //   // border: '2px solid ',
-            //   // borderColor: '#323232',
-            // }}
+            alt='Ascentis Bank App Mockup'
+            className='absolute top-[-180px] md:top-[-450px] scale-[0.8] md:scale-90 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0'
           />
         </div>
       </div>
 
       {/* Section-02 */}
-      <div className='h-auto w-full max-w-screen-2xl mx-auto  flex flex-col justify-center items-center relative overflow-hidden py-16 px-4 md:px-8'>
+      <div className='h-auto w-full max-w-screen-2xl mx-auto flex flex-col justify-center items-center relative overflow-hidden py-12 md:py-16 px-4 md:px-8'>
         {/* Heading */}
-        <div className='text-center mb-4 mt-8'>
-          <h1 className='text-[32px] md:text-[48px] pr-4 md:pr-64 text-left font-SF_PRO_Light text-black leading-tight pl-4'>
+        <div className='text-center md:text-left mb-4 mt-8 md:w-full'>
+          <h1 className='text-[32px] md:text-[48px] pr-0 md:pr-12 lg:pr-64 font-SF_PRO_Light text-black leading-tight pl-0 md:pl-4'>
             Helping You Find the Right Financial Solutions Customized for Your
             Goals.
           </h1>
         </div>
 
         {/* Cards Section */}
-        <div className='h-[480px] w-full mt-6 md:grid md:grid-cols-4 flex overflow-x-scroll scrollbar-hide'>
+        <div className='h-auto md:h-[480px] w-full mt-6 md:grid md:grid-cols-4 flex overflow-x-auto md:overflow-x-hidden snap-x snap-mandatory scrollbar-hide gap-4 md:gap-0'>
           {/* Card 01 */}
-          <div className='min-w-[240px] md:w-full flex flex-col p-1'>
+          <div className='min-w-[240px] md:w-full flex flex-col p-1 snap-center'>
             <img
               src={card01}
               alt='card01'
@@ -98,7 +94,7 @@ const Home = () => {
             </p>
           </div>
           {/* Card 02 */}
-          <div className='min-w-[240px] md:w-full flex flex-col p-1'>
+          <div className='min-w-[240px] md:w-full flex flex-col p-1 snap-center'>
             <img
               src={card02}
               alt='card02'
@@ -109,7 +105,7 @@ const Home = () => {
             </p>
           </div>
           {/* Card 03 */}
-          <div className='min-w-[240px] md:w-full flex flex-col p-1'>
+          <div className='min-w-[240px] md:w-full flex flex-col p-1 snap-center'>
             <img
               src={card03}
               alt='card03'
@@ -120,7 +116,7 @@ const Home = () => {
             </p>
           </div>
           {/* Card 04 */}
-          <div className='min-w-[240px] md:w-full flex flex-col p-1'>
+          <div className='min-w-[240px] md:w-full flex flex-col p-1 snap-center'>
             <img
               src={card04}
               alt='card04'
@@ -134,27 +130,27 @@ const Home = () => {
       </div>
 
       {/* Section-03 */}
-      <div className='h-auto w-full max-w-screen-2xl mx-auto  '>
+      <div className='h-auto w-full max-w-screen-2xl mx-auto py-16 md:py-24'>
         {/* Heading Section */}
         <div>
-          <h1 className='text-center text-black text-[48px]'>Why Choose Us</h1>
-          <p className='text-center text-[26px] mt-4 px-60 font-SF_PRO_Thin text-black text-opacity-55'>
+          <h1 className='text-center text-black text-4xl md:text-[48px]'>
+            Why Choose Us
+          </h1>
+          <p className='text-center text-lg md:text-[26px] mt-4 px-4 md:px-16 lg:px-60 font-SF_PRO_Thin text-black text-opacity-55'>
             We are dedicated to providing unparalleled banking solutions,
             fostering trust, and driving innovation to enhance your experience.
           </p>
         </div>
 
         {/* Cards Section */}
-        <div className='flex justify-center items-center gap-8 px-8 mt-20'>
+        <div className='flex flex-col md:flex-row justify-center items-center gap-8 px-8 mt-12 md:mt-20'>
           {/* Card 01 */}
-          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-[260px]'>
+          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-full max-w-sm md:w-[260px]'>
             <div className='h-20 w-full flex justify-start items-start '>
               <div
                 className='rounded-full w-auto pr-3 h-8 flex items-center'
                 style={{
-                  bordeRadius: '30px',
-                  background:
-                    'var(--color-azure-4330, rgba(0, 151, 220, 0.30))',
+                  background: 'rgba(0, 151, 220, 0.30)',
                   backdropFilter: 'blur(10px)',
                 }}
               >
@@ -164,27 +160,13 @@ const Home = () => {
                 </h2>
               </div>
             </div>
-
             <div className='h-32 w-full'>
-              <p
-                className='text-left font-SF_PRO_Light text-gray-600 mt-2'
-                style={{
-                  color: 'rgba(0, 0, 0, 0.50)',
-                  fontSize: 'var(--line-height-24, 18px)',
-                }}
-              >
+              <p className='text-left font-SF_PRO_Light text-black/50 mt-2 text-[18px]'>
                 Serving over 20,000 customers across India, our bank is built on
                 trust and long-lasting relationships.
               </p>
             </div>
-
-            <div
-              className='mt-4 h-20 w-52 flex justify-center items-center self-end '
-              style={{
-                borderRadius: '50px',
-                background: 'rgba(0, 0, 0, 0.05)',
-              }}
-            >
+            <div className='mt-4 h-20 w-52 flex justify-center items-center self-end rounded-[50px] bg-black/5'>
               <p className='font-SF_Pro_Regular text-[19px]'>
                 20K+ Satisfied <br /> Customers
               </p>
@@ -192,13 +174,12 @@ const Home = () => {
           </div>
 
           {/* Card 02 */}
-          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-[260px]'>
+          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-full max-w-sm md:w-[260px]'>
             <div className='h-20 w-full flex justify-start items-start '>
               <div
                 className='rounded-full w-auto pr-3 h-8 flex items-center'
                 style={{
-                  bordeRadius: '30px',
-                  background: 'var(--color-red-6130, rgba(243, 108, 66, 0.30))',
+                  background: 'rgba(243, 108, 66, 0.30)',
                   backdropFilter: 'blur(10px)',
                 }}
               >
@@ -208,27 +189,13 @@ const Home = () => {
                 </h2>
               </div>
             </div>
-
             <div className='h-32 w-full'>
-              <p
-                className='text-left font-SF_PRO_Light text-gray-600 mt-2'
-                style={{
-                  color: 'rgba(0, 0, 0, 0.50)',
-                  fontSize: 'var(--line-height-24, 18px)',
-                }}
-              >
+              <p className='text-left font-SF_PRO_Light text-black/50 mt-2 text-[18px]'>
                 Round-the-clock assistance to address all your banking needs,
                 ensuring peace of mind.
               </p>
             </div>
-
-            <div
-              className='mt-4 h-20 w-52 flex justify-center items-center self-end '
-              style={{
-                borderRadius: '50px',
-                background: 'rgba(0, 0, 0, 0.05)',
-              }}
-            >
+            <div className='mt-4 h-20 w-52 flex justify-center items-center self-end rounded-[50px] bg-black/5'>
               <p className='font-SF_Pro_Regular text-[19px]'>
                 24/7 Customer <br /> Support
               </p>
@@ -236,14 +203,12 @@ const Home = () => {
           </div>
 
           {/* Card 03 */}
-          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-[260px]'>
+          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-full max-w-sm md:w-[260px]'>
             <div className='h-20 w-full flex justify-start items-start '>
               <div
                 className='rounded-full w-auto pr-3 h-8 flex items-center'
                 style={{
-                  bordeRadius: '30px',
-                  background:
-                    'var(--color-spring-green-3830, rgba(18, 178, 89, 0.30))',
+                  background: 'rgba(18, 178, 89, 0.30)',
                   backdropFilter: 'blur(10px)',
                 }}
               >
@@ -253,27 +218,13 @@ const Home = () => {
                 </h2>
               </div>
             </div>
-
             <div className='h-32 w-full'>
-              <p
-                className='text-left font-SF_PRO_Light text-gray-600 mt-2'
-                style={{
-                  color: 'rgba(0, 0, 0, 0.50)',
-                  fontSize: 'var(--line-height-24, 18px)',
-                }}
-              >
+              <p className='text-left font-SF_PRO_Light text-black/50 mt-2 text-[18px]'>
                 Stay connected to your finances anytime, anywhere, with our
                 user-friendly mobile app.
               </p>
             </div>
-
-            <div
-              className='mt-4 h-20 w-52 flex justify-center items-center self-end '
-              style={{
-                borderRadius: '50px',
-                background: 'rgba(0, 0, 0, 0.05)',
-              }}
-            >
+            <div className='mt-4 h-20 w-52 flex justify-center items-center self-end rounded-[50px] bg-black/5'>
               <p className='font-SF_Pro_Regular text-[19px]'>
                 Seamless Mobile <br /> Banking
               </p>
@@ -281,14 +232,12 @@ const Home = () => {
           </div>
 
           {/* Card 04 */}
-          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-[260px]'>
+          <div className='flex flex-col items-start bg-black bg-opacity-5 rounded-[50px] p-6 h-[360px] w-full max-w-sm md:w-[260px]'>
             <div className='h-20 w-full flex justify-start items-start '>
               <div
                 className='rounded-full w-auto pr-3 h-8 flex items-center'
                 style={{
-                  bordeRadius: '30px',
-                  background:
-                    'var(--color-violet-5630, rgba(179, 49, 235, 0.30))',
+                  background: 'rgba(179, 49, 235, 0.30)',
                   backdropFilter: 'blur(10px)',
                 }}
               >
@@ -298,27 +247,13 @@ const Home = () => {
                 </h2>
               </div>
             </div>
-
             <div className='h-32 w-full'>
-              <p
-                className='text-left font-SF_PRO_Light text-gray-600 mt-2'
-                style={{
-                  color: 'rgba(0, 0, 0, 0.50)',
-                  fontSize: 'var(--line-height-24, 18px)',
-                }}
-              >
+              <p className='text-left font-SF_PRO_Light text-black/50 mt-2 text-[18px]'>
                 Manage all your accounts, transactions, and services
                 effortlessly through our secure online platform.
               </p>
             </div>
-
-            <div
-              className='mt-4 h-20 w-52 flex justify-center items-center self-end '
-              style={{
-                borderRadius: '50px',
-                background: 'rgba(0, 0, 0, 0.05)',
-              }}
-            >
+            <div className='mt-4 h-20 w-52 flex justify-center items-center self-end rounded-[50px] bg-black/5'>
               <p className='font-SF_Pro_Regular text-[19px]'>
                 Web Dashboard <br /> Access
               </p>
@@ -328,70 +263,53 @@ const Home = () => {
       </div>
 
       {/* Section-04 */}
-      <div className='h-auto  w-full max-w-screen-2xl mx-auto py-32 flex flex-col justify-center items-center'>
-        <h1 className='text-[48px]  text-center font-SF_PRO_Light text-black leading-tight mb-16'>
+      <div className='h-auto w-full max-w-screen-2xl mx-auto py-16 md:py-32 flex flex-col justify-center items-center gap-12'>
+        <h1 className='text-3xl md:text-4xl lg:text-[48px] text-center font-SF_PRO_Light text-black leading-tight mb-4 md:mb-8 px-4'>
           Smart Banking Features to Simplify Your Life
         </h1>
 
         {/* Card-01 */}
-        <div
-          className='w-[90%] h-[510px] flex justify-center items-center mb-12'
-          style={{ borderRadius: '50px', background: 'rgba(0, 0, 0, 0.05)' }}
-        >
-          <div className='flex-1 h-full w-full  flex flex-col justify-center items-start py-12 px-6'>
-            {/* Heading */}
+        <div className='w-[90%] h-auto flex flex-col lg:flex-row justify-center items-center rounded-[50px] bg-black/5 overflow-hidden'>
+          <div className='flex-1 h-full w-full flex flex-col justify-center items-start py-8 px-6 md:p-12'>
             <h1 className='text-2xl font-SF_Pro_Regular text-black mb-4'>
               Create Your FD in Just 2 Minutes
             </h1>
-
-            {/* Description */}
             <p className='font-SF_PRO_Light text-[#757575] text-[18px] mb-4'>
               Start earning with the best interest rates. Our process is quick,
               secure, and hassle-free.
             </p>
-
-            {/* Points List */}
             <ul className='text-left font-SF_PRO_Light text-[#757575] text-base list-decimal pl-6 mb-6'>
               <li className='mb-2'>Instant Setup</li>
               <li className='mb-2'>Attractive Interest Rates</li>
               <li className='mb-2'>Flexible Tenures</li>
               <li className='mb-2'>24/7 Access</li>
             </ul>
-
-            {/* Button */}
             <button
-              className='py-2 px-4 bg-[#0D427C] text-white rounded-full font-SF_PRO_Thin text-[16px] flex items-center justify-center cursor-pointer'
-              onClick={() => {
-                navigate('/register');
-              }}
+              className='h-[50px] px-6 bg-[#0D427C] text-white rounded-full font-SF_PRO_Thin text-[16px] flex items-center justify-center cursor-pointer'
+              onClick={() => navigate('/register')}
             >
               Start Your FD Now
             </button>
           </div>
-
-          <div className='flex-1 h-full w-full  flex justify-center items-center p-2'>
-            <img src={fdMockup} alt='fd_image' />
+          <div className='flex-1 h-full w-full flex justify-center items-center p-2'>
+            <img
+              src={fdMockup}
+              alt='Fixed Deposit mockup'
+              className='w-full h-auto max-w-md'
+            />
           </div>
         </div>
 
         {/* Card-02 */}
-        <div
-          className='w-[90%] h-[510px] flex justify-center items-center'
-          style={{ borderRadius: '50px', background: 'rgba(0, 0, 0, 0.05)' }}
-        >
-          <div className='flex-1 h-full w-full  flex flex-col justify-center items-start py-12 px-6'>
-            {/* Heading */}
+        <div className='w-[90%] h-auto flex flex-col lg:flex-row-reverse justify-center items-center rounded-[50px] bg-black/5 overflow-hidden'>
+          <div className='flex-1 h-full w-full flex flex-col justify-center items-start py-8 px-6 md:p-12'>
             <h1 className='text-2xl font-SF_Pro_Regular text-black mb-4'>
               Automate Payments with Auto Pay
             </h1>
-
-            {/* Description */}
             <p className='font-SF_PRO_Light text-[#757575] text-[18px] mb-4'>
               Never miss a payment. Set up automatic bill payments and stay
               worry-free.
             </p>
-
-            {/* Points List */}
             <ul className='text-left font-SF_PRO_Light text-[#757575] text-base list-decimal pl-6 mb-6'>
               <li className='mb-2'>
                 Enter 5 key details and your account password.
@@ -400,29 +318,28 @@ const Home = () => {
                 Boom! Your Auto Pay is successfully set up.
               </li>
             </ul>
-
-            {/* Button */}
             <button
-              className='py-2 px-4 bg-[#0D427C] text-white rounded-full font-SF_PRO_Thin text-[16px] flex items-center justify-center cursor-pointer'
-              onClick={() => {
-                navigate('/register');
-              }}
+              className='h-[50px] px-6 bg-[#0D427C] text-white rounded-full font-SF_PRO_Thin text-[16px] flex items-center justify-center cursor-pointer'
+              onClick={() => navigate('/register')}
             >
               Activate Auto Pay
             </button>
           </div>
-
-          <div className='flex-1 h-full w-full  flex justify-center items-center p-2'>
-            <img src={autopayMockup} alt='autopay_image' />
+          <div className='flex-1 h-full w-full flex justify-center items-center p-2'>
+            <img
+              src={autopayMockup}
+              alt='Autopay mockup'
+              className='w-full h-auto max-w-md'
+            />
           </div>
         </div>
       </div>
 
       {/* Section-05 */}
-      <div className='h-screen w-full max-w-screen-2xl mx-auto  flex justify-center items-center'>
-        <div className='h-[500px] w-[80%] overflow-hidden  rounded-[50px] flex justify-center items-center'>
+      <div className='h-auto lg:h-screen w-full max-w-screen-2xl mx-auto flex justify-center items-center py-16 lg:py-0'>
+        <div className='h-auto lg:h-[500px] w-[90%] lg:w-[80%] overflow-hidden rounded-[50px] flex flex-col lg:flex-row justify-center items-center gap-8'>
           {/* Text Section */}
-          <div className='flex-1 h-full w-full  flex flex-col justify-center items-start gap-4'>
+          <div className='flex-1 h-full w-full flex flex-col justify-center items-center text-center lg:items-start lg:text-left gap-4'>
             <h1 className='font-SF_PRO_Light text-black text-[30px]'>
               Transparent Banking. No Hidden Fees.
             </h1>
@@ -443,7 +360,7 @@ const Home = () => {
               <br /> Start Banking Smarter Today.
             </p>
             <button
-              className='bg-[#0D427C] rounded-full px-8 py-2 text-white font-SF_PRO_Light cursor-pointer'
+              className='bg-[#0D427C] rounded-full px-8 py-3 text-white font-SF_PRO_Light cursor-pointer'
               onClick={() => navigate('/register')}
             >
               Get Your Ascentis Account Now
@@ -451,11 +368,11 @@ const Home = () => {
           </div>
 
           {/* Image Section */}
-          <div className='flex-1 h-full w-full flex justify-center items-center '>
+          <div className='flex-1 h-full w-full flex justify-center items-center'>
             <img
               src={payment}
               alt='payment'
-              className='w-[80%] h-full object-cover'
+              className='w-full max-w-md lg:w-[80%] lg:h-full object-contain'
             />
           </div>
         </div>
@@ -463,91 +380,83 @@ const Home = () => {
 
       {/* Section-06 */}
       <div
-        className='w-full max-w-screen-2xl mx-auto flex flex-col items-center px-16 pt-24 pb-9 bg-white max-md:px-5'
+        className='w-full max-w-screen-2xl mx-auto flex flex-col items-center px-5 md:px-16 pt-16 md:pt-24 pb-9 bg-white'
         role='region'
         aria-labelledby='discover-cards-title'
       >
-        {/* Main Heading */}
         <h1
           id='discover-cards-title'
-          className='text-[48px] font-SF_PRO_Regular text-black text-center max-md:text-4xl'
+          className='text-4xl md:text-[48px] font-SF_PRO_Regular text-black text-center'
         >
           Discover the Perfect Card for Every Lifestyle
         </h1>
-
-        {/* Subheading */}
-        <p className=' text-[24px] font-SF_PRO_Light text-center text-[#6E6E6E] mt-4'>
+        <p className='text-lg md:text-[24px] font-SF_PRO_Light text-center text-[#6E6E6E] mt-4'>
           From students to business professionals, our cards are tailored to
           meet your unique needs.
         </p>
-
-        {/* Card Section */}
-        <div className='self-stretch mt-16'>
-          <div className='flex gap-5 max-md:flex-col'>
-            {/* Image Section */}
-            <div className='w-6/12 max-md:w-full flex justify-center items-center'>
+        <div className='self-stretch mt-12 md:mt-16'>
+          <div className='flex flex-col md:flex-row gap-5'>
+            <div className='w-full md:w-6/12 flex justify-center items-center'>
               <img
                 loading='lazy'
                 src={cards}
-                alt='Collection of credit cards showcasing different card types including Platinum, Business, Student, Reward, and Secured cards'
+                alt='Collection of credit cards showcasing different card types'
                 className='w-full object-contain'
               />
             </div>
-
-            {/* Card Descriptions */}
-            <div className='w-6/12 max-md:w-full'>
-              <div className='bg-black bg-opacity-5 rounded-[48px] px-10 py-14'>
+            <div className='w-full md:w-6/12'>
+              <div className='bg-black bg-opacity-5 rounded-[48px] px-6 py-8 md:px-10 md:py-14'>
                 <ul
                   role='list'
                   aria-label='Available credit card types'
                   className='space-y-6'
                 >
                   <li>
-                    <span className='text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
+                    <span className='text-base md:text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
                       Platinum Card:
                     </span>
                     <br />
-                    <span className='text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
+                    <span className='text-base md:text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
                       Luxury redefined for high-net-worth individuals. Exclusive
                       privileges at your fingertips.
                     </span>
                   </li>
                   <li>
-                    <span className='text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
+                    <span className='text-base md:text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
                       Business Card:
                     </span>
                     <br />
-                    <span className='text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
+                    <span className='text-base md:text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
                       Streamline your business expenses with tailored solutions
                       for professionals.
                     </span>
                   </li>
                   <li>
-                    <span className='text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
+                    <span className='text-base md:text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
                       Student Card:
                     </span>
                     <br />
-                    <span className='text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
+                    <span className='text-base md:text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
                       Empowering students with credit-building opportunities and
                       practical perks.
                     </span>
                   </li>
                   <li>
-                    <span className='text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
+                    <span className='text-base md:text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
                       Reward Card:
                     </span>
                     <br />
-                    <span className='text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
+                    <span className='text-base md:text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
                       Maximize every purchase with unmatched rewards for your
                       everyday spending.
                     </span>
                   </li>
                   <li>
-                    <span className='text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
+                    <span className='text-base md:text-[20px] uppercase text-zinc-800 font-SF_PRO_Regular'>
                       Secured Card:
                     </span>
                     <br />
-                    <span className='text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
+                    <span className='text-base md:text-[20px] text-[#6E6E6E] font-SF_PRO_Light'>
                       A reliable option to build credit, backed by a secure
                       deposit.
                     </span>
@@ -564,7 +473,7 @@ const Home = () => {
 
       <FAQ />
 
-      <div className='h-[100px] w-full max-w-screen-2xl m-auto'></div>
+      <div className='h-16 md:h-[100px] w-full max-w-screen-2xl m-auto'></div>
     </>
   );
 };
