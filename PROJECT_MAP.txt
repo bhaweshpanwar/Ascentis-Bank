@@ -1,0 +1,246 @@
+================================================================================
+ASCENTIS BANK FRONTEND — PROJECT MIND MAP
+Read this file first to get a fast, complete picture of the project.
+This is a personal reference, not user-facing documentation.
+================================================================================
+
+WHAT IS THIS PROJECT
+--------------------
+- A React (Vite) SPA for a fictional "Ascentis Bank".
+- No UPI, no Net Banking — only account-to-account transfers secured by OTP.
+- Two account types: Savings, Current.
+- Live demo: https://ascentis-bank.onrender.com
+
+STACK
+-----
+- React + Vite (JSX, not TS)
+- Material UI + Tailwind CSS + Material Tailwind (for the Stepper)
+- Axios for HTTP, react-router-dom for routing
+- react-google-recaptcha on the Login page
+- country-state-city lib for cascading Country → State → City dropdowns in the
+  registration form
+- External chatbot service: https://chatbot-backend-neeo.onrender.com/get
+- All API URLs come from VITE_API_* env vars, composed in src/config.js
+
+ROUTES (App.jsx)
+----------------
+- /                  → Home (public; wrapped in Header + Footer)
+- /about             → About (public; wrapped in Header + Footer)
+- /services          → Services (public; wrapped in Header + Footer)
+- /login             → LoginBasic
+- /register          → UserRegistrationForm → DefaultStepper (3 steps)
+- /forgotPassword    → ForgotPassPageOne (3 steps)
+- /dashboard         → Dashboard (single page, tab-switched; ChatBot is global)
+- /successPage       → Post-registration success
+- /passwordsuccess   → Post forgot-password success
+- ChatBot is mounted globally in App.jsx (always visible bottom-right).
+
+FILE MAP
+--------
+src/
+├── main.jsx                  — root render
+├── App.jsx                   — BrowserRouter + routes (see above)
+├── config.js                 — exports API_BASE_URL + API_ENDPOINTS object
+│                              built from VITE_API_* env vars (24 entries).
+│                              ReCAPTCHA key also exported.
+├── index.css / App.css       — Tailwind + custom styles, spinner styles
+└── assets/
+    ├── Pages/
+    │   ├── Home.jsx              — Landing page (no API calls)
+    │   ├── About.jsx             — Static
+    │   ├── Services.jsx          — Static
+    │   ├── LoginBasic.jsx        — LOGIN + HOME
+    │   ├── UserRegistrationFrom.jsx — wrapper around DefaultStepper
+    │   ├── DefaultStepper.jsx    — Registration: CHECK_EMAIL, CHECK_USER_ID,
+    │   │                            OTP, VALIDATE_OTP
+    │   ├── ForgotPassPageOne.jsx — Forgot password: FORGOT, OTP, VALIDATE,
+    │   │                            CHANGE
+    │   ├── Dashboard.jsx         — Big tab-switched dashboard, calls ~13
+    │   │                            endpoints (see Dashboard section below)
+    │   ├── SuccessPage.jsx       — Landing target after registration
+    │   ├── PasswordSuccessPage.jsx — Landing target after password reset
+    │   └── PreRegistration.jsx   — Present but unused in routing
+    └── components/
+        ├── Header.jsx            — Public nav, mobile menu, navigate()
+        ├── Footer.jsx            — Static
+        ├── ChatBot.jsx           — Calls external chatbot service
+        ├── FAQ.jsx               — Static accordion
+        ├── UserReview.jsx        — Static
+        ├── UserInformationDisplay.jsx — Pure presentational, takes
+        │                              userData.accountInfo prop
+        └── DefaultStepper.jsx    — Also imported by UserRegistrationFrom
+
+AUTH & SESSION MODEL
+--------------------
+- All requests use `withCredentials: true` (cookie-based session).
+- All POST/PUT bodies are `application/x-www-form-urlencoded` (URLSearchParams).
+- All GETs send `Content-Type: application/json` but no body.
+- Login → POST LOGIN → on 201 → GET HOME → navigate to /dashboard with the
+  parsed session account details in router state. Dashboard seeds
+  SessionAccountDetails from that state on first render.
+- Dashboard guards "Session Expired" UI when SessionAccountDetails is null.
+- Logout happens in three places: explicit button, beforeunload, popstate.
+  All three hit GET LOGOUT.
+
+RESPONSE CODE CONVENTIONS THE FRONTEND RELIES ON
+------------------------------------------------
+The backend returns small integers in `response.data.data` to encode business
+outcomes, and the frontend switches on them. This is the single most important
+convention to remember:
+
+- LOGIN:    0 = no such user, 1 = wrong password, anything else = success (201)
+- PAY:      0 = bad account number, 1 = name+account mismatch,
+            2 = valid → trigger OTP send
+- TRANSACTION (verify payment OTP):  0 = wrong OTP, 1 = insufficient balance,
+            2 (or 201) = success
+- AUTOPAY:  0 = bad account, 1 = name+account mismatch,
+            2 (or 201) = valid → ask for password
+- AUTO_PWD: 0 = wrong password, 1 = set up but first transfer failed (no $),
+            2 = success
+- FD:       0 = insufficient balance, 1 = proceed to password
+- FD_PWD:   0 = wrong password, 1 (or 201) = success
+- DELETE_ACCOUNT:  0 = wrong password, 1 = AutoPay still attached,
+            2 = FD still attached, 3 + 201 = deleted;
+            response.data.amount is the forfeited balance to display.
+
+For "OTP send" type endpoints (OTP, CHECK_EMAIL, FORGOT) the convention is
+`response.data.exists === true/false` with an optional `message`.
+For "validate OTP" endpoints the convention is `response.data.check` (forgot
+password) or HTTP 201 (registration).
+
+DASHBOARD INTERNAL STATE (Dashboard.jsx)
+----------------------------------------
+- `current`               — which tab is open: 'Home' | 'Pay or Transfer' |
+                            'Auto Pay' | 'Fixed Deposit' | 'Transactions' |
+                            'Account Info' | 'Log Out'
+- `currentPaymentState`   — 0 = form, 1 = OTP, 2 = success (auto-resets after 5s)
+- `currentAutoPayState`   — 0 = list, 1 = form, 2 = password, 3 = success
+- `currentFixedDepositState` — 0 = list, 1 = form, 2 = password, 3 = success
+
+DASHBOARD ENDPOINTS (mapped to handler functions)
+------------------------------------------------
+- fetchUserInfo             → GET  ACCOUNT_INFO
+- handleHomeUIUpdate        → GET  HOME
+- handleTransactionUIUpdate → GET  TRANSACTION_LIST
+- handleAutoPayUIUpdate     → GET  AUTOPAY_LIST
+- handleFixedDepositUIUpdate→ GET  EXISTING_FD
+- handleSendPayment         → POST PAY            (data===2 → calls OTP)
+- handleOtpSubmit           → POST TRANSACTION    (verify payment OTP)
+- handleSetAutoPay          → POST AUTOPAY        (data===2 → next step)
+- handleAutoPayPassword     → POST AUTO_PWD
+- handleAutoPayDelete       → POST DROP_AUTOPAY   (autopay_Id)
+- handleOpenFixedDeposit    → POST FD
+- handleFixedDepositPassword→ POST FD_PWD         (note: form field is
+                            "fdpassword", NOT "password")
+- handleFdDelete            → POST DROP_FD        (fd_Id)
+- handleAccountDelete       → POST DELETE_ACCOUNT (password)
+- handleLogout              → GET  LOGOUT
+- + OTP (GET) called from inside handleSendPayment as a follow-up
+
+REGISTRATION FORM FIELDS (DefaultStepper.jsx)
+--------------------------------------------
+Step 0: full_name, dob, gender, age, phone, email, res_address, country (ISO),
+        state (ISO), city (name string), postal_code, occupation, account_type
+        (savings/current), nominee_name, nominee_age, nominee_contact,
+        nominee_relation
+Step 1: username, password, confirm_password
+Step 2: otp
+
+Step 0 → calls CHECK_EMAIL with {email, phone, form:'register_email'}.
+Step 1 (Get OTP) → calls CHECK_USER_ID with the entire FormData, then on
+        exists===false calls GET OTP to send the email.
+Step 2 (Submit) → calls VALIDATE_OTP with just {otp}.
+
+OTP RESEND pattern: GET OTP endpoint is reused in three flows (registration,
+forgot-password, payment). The frontend logic is identical: read `exists` to
+decide whether to advance or show `message`. Resend buttons are disabled with a
+120-second timer in the UI.
+
+FORM HIDDEN FIELDS THE BACKEND MUST RECOGNIZE
+---------------------------------------------
+- CHECK_EMAIL:  form = "register_email"
+- FORGOT:       form = "forgot_email"
+- PAY:          form = "payment_email"
+- All date fields the frontend sends: "YYYY-MM-DDTHH:mm:ss" local time
+  (transactionDate, autoPayDate, fixedDepositDate) via formatDateSend().
+- The form-data sent in CHECK_USER_ID and PAY uses URLSearchParams with a
+  for-in loop — all keys go in flat form-urlencoded, even nested object keys.
+
+PASSWORD RULES (enforced in frontend)
+-------------------------------------
+- Min 8 chars, ≥1 upper, ≥1 lower, ≥1 digit, ≥1 of @#$%^&+=!
+- Username regex: 3–16 chars, [A-Za-z0-9_] only, cannot equal full_name.
+- Phone regex: /^[6-9]\d{9}$/ (Indian 10-digit starting 6-9).
+- Email: standard basic regex check.
+- DOB vs Age: both must be provided in step 0, and currentYear - birthYear
+  must equal the entered age. Country must be "IN" (service is India-only).
+- Forgot-password endDate (auto pay): must be ≥ today + 7 days.
+
+QUIRKS / GOTCHAS WORTH REMEMBERING
+----------------------------------
+- Dashboard.jsx has large blocks of commented-out dummy data (lines ~21-128).
+  These are intentionally left in as reference shapes for SessionAutoPayDetails
+  etc. The data structures from the backend should match those shapes.
+- handleResponseErrors in Dashboard interprets PAY data codes 0/1; the
+  happy path is data===2 which then triggers the OTP send.
+- The fixed-deposit interest rate is computed client-side from a hardcoded
+  lookup: 6mo=4.5%, 1y=5.0%, 3y=5.5%, 5y=6.0%. The backend should not
+  re-derive it independently (or if it does, the values must match).
+- The chatbot service is on a completely different domain; no credentials
+  sent, no withCredentials flag.
+- `PreRegistration.jsx` exists but is dead code — it is not imported anywhere
+  in App.jsx routing.
+- `LOGOUT` is GET (not POST), which is unusual.
+- The user clicks `useNavigate` a lot; logout, popstate, beforeunload, and
+  router state passing all matter for "session continuity" behavior.
+- After account deletion, frontend shows the forfeited amount from
+  response.data.amount and auto-redirects to /login after 3 seconds.
+
+ENV VARS USED (src/config.js)
+-----------------------------
+VITE_RECAPTCHA_KEY
+VITE_API_BASE_URL
+VITE_API_LOGIN, _HOME, _OTP, _FORGOT, _VALIDATE, _CHANGE, _TRANSACTION,
+VITE_API_TRANSACTION_LIST, _AUTOPAY_LIST, _EXISTING_FD, _AUTOPAY, _AUTO_PWD,
+VITE_API_LOGOUT, _DROP_FD, _DROP_AUTOPAY, _FD, _FD_PWD, _ACCOUNT_INFO, _PAY,
+VITE_API_CHECK_EMAIL, _CHECK_USER_ID, _VALIDATE_OTP, _DELETE_ACCOUNT
+
+NON-OBVIOUS NAMING / FIELD MISMATCHES
+-------------------------------------
+- The form field for FD password is "fdpassword" (no underscore), not
+  "password" like Auto Pay.
+- Auto Pay frequency values from the backend use "Quaterly" (misspelled).
+  Frontend sends "quaterly" (lowercase, same misspelling) — keep that
+  spelling consistent end-to-end.
+- `EXISTING_FD` returns interestRate as a number but the FD form input is
+  type="number" and disabled (driven by duration). The backend should still
+  return a real interest rate value, even though the form auto-fills it.
+- response.data.data === 2 means different things in different endpoints;
+  always check the per-endpoint legend above.
+
+AUTO_LOGOUT TRIGGERS
+--------------------
+- beforeunload → GET LOGOUT
+- popstate (back button) → confirm dialog → on confirm, GET LOGOUT
+- explicit "Log Out" sidebar item → confirm dialog → on confirm, GET LOGOUT
+
+WHAT'S NOT IN THE FRONTEND (so you don't go hunting)
+-----------------------------------------------------
+- No state management library (no Redux, no Zustand). Plain useState +
+  useEffect + useLocation for cross-page session data.
+- No tests directory in the project tree.
+- No service worker / PWA setup.
+- No internationalization layer; copy is hardcoded in JSX.
+- No analytics SDK.
+
+EXTENSION POINTS / WHAT A NEW ENDPOINT WOULD LOOK LIKE
+------------------------------------------------------
+1. Add VITE_API_FOO to .env
+2. Add `FOO: \`${API_BASE_URL}${import.meta.env.VITE_API_FOO}\`` to API_ENDPOINTS
+3. Import { API_ENDPOINTS } from '/src/config.js' in the calling file
+4. Use axios.get / axios.post with URLSearchParams and withCredentials: true
+5. Switch on response.data.data or response.data.exists per the conventions
+   above (don't invent a new convention unless the backend team agrees)
+
+END OF MAP
+================================================================================
